@@ -168,6 +168,9 @@
 			<input type="text" class="form-control typeahead" id="form-card" placeholder="Enter card name">
       <button type="submit" class="btn btn-success" id="card-submit">Submit</button>
 		</section>
+		<section id="testingSection">
+					<!-- Going to add junk here to see if the DB works -->
+		</section>
 		<footer>
 			<section>
 				<p>Magic the Gathering, FNM is TM and copyright Wizards of the Coast, Inc, a subsidiary of Hasbro, Inc. All rights reserved. This site is unaffiliated. /legalese
@@ -190,20 +193,8 @@
 	};
 	firebase.initializeApp(config);
 </script>
-
-<script>
-	document.getElementById("card-submit").onclick = function() {
-		submitCard(document.getElementById("form-card").value);
-		clearInput();
-	};
-
-	function submitCard(cardSubmitted) {
-	    console.log('This fucker was clicked, there was even text: ' + cardSubmitted);
-	};
-
-	function clearInput(){
-		document.getElementById("form-card").value = '';
-	}
-</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/vendor/jquery.min.js"><\/script>')</script>
+<script src="js/main.js"></script>
 
 </html>
