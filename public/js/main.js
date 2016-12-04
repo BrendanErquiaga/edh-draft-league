@@ -1,19 +1,18 @@
 'use strict';
 
-var userCardsRef,
+var draftedCardRef,
+    loggedInUserDraftedCardListRef,
     loggedInUserId;
 
 function saveCardForUser(pickingUserId, card) {
-  // firebase.database().ref('userCards/' + userId).set({
-  //   last_card: card,
-  //   last_card_picktime: Date.now()
-  // });
+  if(!cardIsFree(card)){
+    return;
+  }
 
-  var newCardRef = userCardsRef.push();
+  var newCardRef = loggedInUserDraftedCardListRef.push();
   newCardRef.set({
-    cardPicked: card,
+    cardName: card,
     pickTime: Date.now(),
-    userId: pickingUserId
   });
 
   console.log('userId: ' + pickingUserId + ' should have picked: ' + card + ' at: ' + Date.now());
@@ -27,8 +26,10 @@ function catchInput(){
 }
 
 $(document).ready(function() {
-    userCardsRef = firebase.database().ref('userCards/');
-
+    draftedCardRef = firebase.database().ref('draftedUserCards/');
+    draftedCardRef.on('value', function(snapshot) {
+      updateDraftedCardData(snapshot);
+    });
     catchInput();
 });
 
@@ -43,14 +44,19 @@ function onAuthStateChanged(user) {
 
   if (user) {
     loggedInUserId = user.uid;
-    //Display Logged In State
-    //Save User Data -> writeUserData(user.uid, user.displayName, user.email, user.photoURL);
+    writeUserData(user.uid, user.displayName, user.email, user.photoURL);
+    updatePageData();
     //Hit the DB -> startDatabaseQueries();
+    //Display Logged In State
   } else {
-    // Set currentUID to null.
     loggedInUserId = null;
     //Prompt Login
   }
+}
+
+//Update references for things like draftedCards
+function updatePageData(){
+  loggedInUserDraftedCardListRef = firebase.database().ref('draftedUserCards/' + loggedInUserId);
 }
 
 // Bindings on load.
@@ -58,3 +64,31 @@ window.addEventListener('load', function() {
   // Listen for auth state changes
   firebase.auth().onAuthStateChanged(onAuthStateChanged);
 });
+
+// Saves basic user data
+function writeUserData(userId, name, email, imageUrl) {
+  firebase.database().ref('users/' + userId).set({
+    username: name,
+    email: email,
+    profile_picture : imageUrl
+  });
+}
+
+function updateDraftedCardData(snapshot){
+  console.log('Someone drafted a card');
+}
+
+function cardIsFree(cardName){
+  for(var key in draftedCardRef){
+    if(draftedCardRef.hasOwnProperty(key)){
+      var obj = draftedCardRef[key];
+      for(var property in obj){
+        if(obj.hasOwnProperty(property)){
+          console.log('Object: ' + obj + ',Key: ' + key + ',Prop: ' + property);
+        }
+      }
+    }
+  }
+
+  return true;
+}

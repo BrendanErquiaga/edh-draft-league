@@ -24,10 +24,12 @@
     },
     "userData": {
       "user01": {
-        "name": "Brendan Erquiaga",
-        "shortName": "Brendar",
+        "username": "Brendan Erquiaga",
+        "email": "email@gmail.com",
+        "display_name": "Brendar",
+        "profile_picture": "http://www.image.url",
         "commanders": ["Marchesa, of the Black Rose"],
-        "colorIdentity" : ["U","B","R"]
+        "color_identity" : ["U","B","R"]
       },
       "user02": {...},
       "user03": {...}
