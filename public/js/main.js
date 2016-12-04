@@ -5,9 +5,9 @@ var draftedCardRef,
     loggedInUserId;
 
 function saveCardForUser(pickingUserId, card) {
-  if(!cardIsFree(card)){
-    return;
-  }
+  // if(!cardIsFree(card)){
+  //   return;
+  // }
 
   var newCardRef = loggedInUserDraftedCardListRef.push();
   newCardRef.set({
@@ -15,7 +15,7 @@ function saveCardForUser(pickingUserId, card) {
     pickTime: Date.now(),
   });
 
-  console.log('userId: ' + pickingUserId + ' should have picked: ' + card + ' at: ' + Date.now());
+  //console.log('userId: ' + pickingUserId + ' should have picked: ' + card + ' at: ' + Date.now());
 }
 
 function catchInput(){
@@ -30,6 +30,18 @@ $(document).ready(function() {
     draftedCardRef.on('value', function(snapshot) {
       updateDraftedCardData(snapshot);
     });
+
+    draftedCardRef.once("value")
+      .then(function(snapshot) {
+        snapshot.forEach(function(childSnapshot){
+          var key = childSnapshot.key;
+          var val = childSnapshot.val();
+          childSnapshot.forEach(function(deepSnap){
+            console.log(deepSnap.val());
+          });
+        });
+      });
+      
     catchInput();
 });
 
@@ -75,20 +87,35 @@ function writeUserData(userId, name, email, imageUrl) {
 }
 
 function updateDraftedCardData(snapshot){
-  console.log('Someone drafted a card');
+  console.log('updateDraftedCardData');
+  //console.log(snapshot.val());
+
+  // if(!cardIsFree(snapshot.val())){
+  //   return;
+  // }
 }
 
-function cardIsFree(cardName){
-  for(var key in draftedCardRef){
-    if(draftedCardRef.hasOwnProperty(key)){
-      var obj = draftedCardRef[key];
-      for(var property in obj){
-        if(obj.hasOwnProperty(property)){
-          console.log('Object: ' + obj + ',Key: ' + key + ',Prop: ' + property);
-        }
-      }
-    }
-  }
+function cardIsFree(draftedCardSnapshot){
+  // for(var key in cardName){
+  //   if(cardName.hasOwnProperty(key)){
+  //     var obj = cardName[key];
+  //     for(var property in obj){
+  //       if(obj.hasOwnProperty(property)){
+  //         console.log('Object: ' + obj + ',Key: ' + key + ',Prop: ' + property);
+  //         var subProperty = cardName[key][property];
+  //         for(var property in subProperty){
+  //           if(obj.hasOwnProperty(subProperty)){
+  //             console.log('subProperty: ' + subProperty);
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
+
+  // draftedCardSnapshot.forEach(function(childSnapshot){
+  //   console.log(childSnapshot.val());
+  // });
 
   return true;
 }
