@@ -1,13 +1,14 @@
 'use strict';
 
 var draftedCardRef,
+    draftedCardsSnapshot,
     loggedInUserDraftedCardListRef,
     loggedInUserId;
 
 function saveCardForUser(pickingUserId, card) {
-  // if(!cardIsFree(card)){
-  //   return;
-  // }
+  if(!cardIsFree(card)){
+    return;//Someone already had that card, do something about that
+  }
 
   var newCardRef = loggedInUserDraftedCardListRef.push();
   newCardRef.set({
@@ -15,14 +16,30 @@ function saveCardForUser(pickingUserId, card) {
     pickTime: Date.now(),
   });
 
-  //console.log('userId: ' + pickingUserId + ' should have picked: ' + card + ' at: ' + Date.now());
+  console.log('userId: ' + pickingUserId + ' should have picked: ' + card + ' at: ' + Date.now());
 }
 
 function catchInput(){
   $('#card-submit').on('click', function(e){
-    saveCardForUser(loggedInUserId, $('#form-card').val());
-		$('#form-card').val('');
+    saveCardInInputField();
+		clearCardInputField();
   });
+
+  $('#form-card').keypress(function(event){
+    var keycode = (event.keyCode ? event.keyCode : event.which);
+    if(keycode == '13'){
+      saveCardInInputField();
+      clearCardInputField();
+    }
+  });
+}
+
+function saveCardInInputField() {
+  saveCardForUser(loggedInUserId, $('#form-card').val());
+}
+
+function clearCardInputField() {
+  $('#form-card').val('');
 }
 
 $(document).ready(function() {
@@ -31,17 +48,6 @@ $(document).ready(function() {
       updateDraftedCardData(snapshot);
     });
 
-    draftedCardRef.once("value")
-      .then(function(snapshot) {
-        snapshot.forEach(function(childSnapshot){
-          var key = childSnapshot.key;
-          var val = childSnapshot.val();
-          childSnapshot.forEach(function(deepSnap){
-            console.log(deepSnap.val());
-          });
-        });
-      });
-      
     catchInput();
 });
 
@@ -87,35 +93,26 @@ function writeUserData(userId, name, email, imageUrl) {
 }
 
 function updateDraftedCardData(snapshot){
-  console.log('updateDraftedCardData');
-  //console.log(snapshot.val());
-
-  // if(!cardIsFree(snapshot.val())){
-  //   return;
-  // }
+  draftedCardsSnapshot = snapshot;
 }
 
-function cardIsFree(draftedCardSnapshot){
-  // for(var key in cardName){
-  //   if(cardName.hasOwnProperty(key)){
-  //     var obj = cardName[key];
-  //     for(var property in obj){
-  //       if(obj.hasOwnProperty(property)){
-  //         console.log('Object: ' + obj + ',Key: ' + key + ',Prop: ' + property);
-  //         var subProperty = cardName[key][property];
-  //         for(var property in subProperty){
-  //           if(obj.hasOwnProperty(subProperty)){
-  //             console.log('subProperty: ' + subProperty);
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
+function cardIsFree(card) {
+  var someoneHasCard = false;
+  draftedCardsSnapshot.forEach(function(childSnapshot){
+    var key = childSnapshot.key;
+    var val = childSnapshot.val();
+    childSnapshot.forEach(function(cardObjectSnapshot){
+      if(cardObjectSnapshot.val().cardName == card){
+        someoneHasCard = true;
+        return 'MONKEYS';
+      }
+    });
+  });
 
-  // draftedCardSnapshot.forEach(function(childSnapshot){
-  //   console.log(childSnapshot.val());
-  // });
-
-  return true;
+  if(someoneHasCard){
+    return false;
+  }
+  else {
+    return true;
+  }
 }
