@@ -1,5 +1,5 @@
 {
-    "userCards": {
+    "draftedUserCards": {
         "user01": {
             "Air Elemental": {
                 "layout": "normal",
@@ -16,16 +16,49 @@
                 "imageName": "air elemental",
                 "colorIdentity": ["U"]
             },
-            "card02": {...
-            },
-            "card03": {...
-            },
-            ...
+            "card02": {...},
+            "card03": {...},
         },
-        "user02": {...
-        },
-        "user03": {...
-        },
-        ...
-    }
+        "user02": {...},
+        "user03": {...}
+    },
+    "userData": {
+      "user01": {
+        "name": "Brendan Erquiaga",
+        "shortName": "Brendar",
+        "commanders": ["Marchesa, of the Black Rose"],
+        "colorIdentity" : ["U","B","R"]
+      },
+      "user02": {...},
+      "user03": {...}
+  },
+  "leagues": {
+      "league01": {
+          "name": "Best League Ever",
+          "members": [
+              "user01",
+              "user02",
+              "user03",
+              "user04",
+              "user05",
+              "user06",
+              "user07",
+              "user08"
+          ],
+          "status" : "Drafting",
+          "turnType": "RotatingSnake"
+      }
+  },
+  "turnOrder": {
+      "league01": [
+          "user01",
+          "user02",
+          "user03",
+          "user04",
+          "user05",
+          "user06",
+          "user07",
+          "user08"
+      ]
+  }
 }
