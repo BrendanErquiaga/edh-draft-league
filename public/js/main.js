@@ -37,7 +37,18 @@ function getCardObject(card){
 
   console.log(allcardsLocal[card]);
 
-  tempCard.name = allcardsLocal[card].name || card;
+  if(allcardsLocal[card] === undefined){
+    console.log('We couldnt find ' + card + ' jackass, so we made a fake entry.');
+    tempCard.name = card;
+    tempCard.cmc = null;
+    tempCard.manaCost = null;
+    tempCard.colorIdentity = null;
+    tempCard.type = null;
+    tempCard.types = null;
+    return tempCard;
+  }
+
+  tempCard.name = allcardsLocal[card].name;
   tempCard.cmc = allcardsLocal[card].cmc || null;
   tempCard.manaCost = allcardsLocal[card].manaCost || null;
   tempCard.colorIdentity = allcardsLocal[card].colorIdentity || null;
