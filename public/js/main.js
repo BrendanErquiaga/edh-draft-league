@@ -5,10 +5,17 @@ var draftedCardRef,
     loggedInUserDraftedCardListRef,
     loggedInUserId,
     allcardsLocal,
-    allcardsLocation = "/js/json/allcards.json";
+    allcardsLocation = "/js/json/allcards.json",
+    bannedCardList;
 
 function saveCardForUser(pickingUserId, card) {
+  if(cardIsBanned(card)){
+    console.log('Card is banned');
+    return;//Don't draft a card if it's banned
+  }
+
   if(!cardIsFree(card)){
+    console.log('Someone already had that card');
     return;//Someone already had that card, do something about that
   }
 
@@ -17,16 +24,12 @@ function saveCardForUser(pickingUserId, card) {
   newCardRef.set({
     name: cardObject.name,
     type: cardObject.type,
+    types: cardObject.types,
     cmc: cardObject.cmc,
     manaCost: cardObject.manaCost,
-    colors: cardObject.colors,
     colorIdentity: cardObject.colorIdentity,
     pickTime: Date.now()
   });
-
-
-
-  //console.log('userId: ' + pickingUserId + ' should have picked: ' + card + ' at: ' + Date.now());
 }
 
 function getCardObject(card){
@@ -37,7 +40,6 @@ function getCardObject(card){
   tempCard.name = allcardsLocal[card].name || card;
   tempCard.cmc = allcardsLocal[card].cmc || null;
   tempCard.manaCost = allcardsLocal[card].manaCost || null;
-  tempCard.colors = allcardsLocal[card].colors || null;
   tempCard.colorIdentity = allcardsLocal[card].colorIdentity || null;
   tempCard.type = allcardsLocal[card].type || null;
   tempCard.types = allcardsLocal[card].types || null;
@@ -69,10 +71,7 @@ function clearCardInputField() {
 }
 
 $(document).ready(function() {
-    draftedCardRef = firebase.database().ref('draftedUserCards/');
-    draftedCardRef.on('value', function(snapshot) {
-      updateDraftedCardData(snapshot);
-    });
+    getFirebaseData();
 
     catchInput();
 
@@ -82,6 +81,17 @@ $(document).ready(function() {
       allcardsLocal = data;
     });
 });
+
+function getFirebaseData(){
+  draftedCardRef = firebase.database().ref('draftedUserCards/');
+  draftedCardRef.on('value', function(snapshot) {
+    updateDraftedCardData(snapshot);
+  });
+
+  firebase.database().ref('/banList').once('value').then(function(snapshot) {
+    bannedCardList = snapshot.val();
+  });
+}
 
 /**
  * Triggers every time there is a change in the Firebase auth state (i.e. user signed-in or user signed out).
@@ -134,9 +144,9 @@ function cardIsFree(card) {
     var key = childSnapshot.key;
     var val = childSnapshot.val();
     childSnapshot.forEach(function(cardObjectSnapshot){
-      if(cardObjectSnapshot.val().cardName == card){
+      if(cardObjectSnapshot.val().name == card){
         someoneHasCard = true;
-        return 'MONKEYS';
+        return;
       }
     });
   });
@@ -145,6 +155,12 @@ function cardIsFree(card) {
     return false;
   }
   else {
+    return true;
+  }
+}
+
+function cardIsBanned(card){
+  if($.inArray(card, bannedCardList) !== -1){
     return true;
   }
 }
