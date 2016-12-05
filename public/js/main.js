@@ -3,7 +3,9 @@
 var draftedCardRef,
     draftedCardsSnapshot,
     loggedInUserDraftedCardListRef,
-    loggedInUserId;
+    loggedInUserId,
+    allcardsLocal,
+    allcardsLocation = "/js/json/allcards.json";
 
 function saveCardForUser(pickingUserId, card) {
   if(!cardIsFree(card)){
@@ -11,12 +13,36 @@ function saveCardForUser(pickingUserId, card) {
   }
 
   var newCardRef = loggedInUserDraftedCardListRef.push();
+  var cardObject = getCardObject(card);
   newCardRef.set({
-    cardName: card,
-    pickTime: Date.now(),
+    name: cardObject.name,
+    type: cardObject.type,
+    cmc: cardObject.cmc,
+    manaCost: cardObject.manaCost,
+    colors: cardObject.colors,
+    colorIdentity: cardObject.colorIdentity,
+    pickTime: Date.now()
   });
 
-  console.log('userId: ' + pickingUserId + ' should have picked: ' + card + ' at: ' + Date.now());
+
+
+  //console.log('userId: ' + pickingUserId + ' should have picked: ' + card + ' at: ' + Date.now());
+}
+
+function getCardObject(card){
+  var tempCard = {};
+
+  console.log(allcardsLocal[card]);
+
+  tempCard.name = allcardsLocal[card].name || card;
+  tempCard.cmc = allcardsLocal[card].cmc || null;
+  tempCard.manaCost = allcardsLocal[card].manaCost || null;
+  tempCard.colors = allcardsLocal[card].colors || null;
+  tempCard.colorIdentity = allcardsLocal[card].colorIdentity || null;
+  tempCard.type = allcardsLocal[card].type || null;
+  tempCard.types = allcardsLocal[card].types || null;
+
+  return tempCard;
 }
 
 function catchInput(){
@@ -51,6 +77,10 @@ $(document).ready(function() {
     catchInput();
 
     initTypeAhead();
+
+    $.getJSON( allcardsLocation, function(data){
+      allcardsLocal = data;
+    });
 });
 
 /**
