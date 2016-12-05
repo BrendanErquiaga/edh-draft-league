@@ -49,6 +49,8 @@ $(document).ready(function() {
     });
 
     catchInput();
+
+    initTypeAhead();
 });
 
 /**
@@ -114,5 +116,67 @@ function cardIsFree(card) {
   }
   else {
     return true;
+  }
+}
+
+function initTypeAhead() {
+  var retrievedData,
+        cards;
+
+  var typeaheadLaunch = function() {
+      if ($('body').hasClass('draft')) {
+          var substringMatcher = function(strs) {
+              return function findMatches(q, cb) {
+                  var matches, substrRegex;
+                  matches = [];
+                  substrRegex = new RegExp(q, 'i');
+                  $.each(strs, function(i, str) {
+                      if (substrRegex.test(str)) {
+                          matches.push(str);
+                      }
+                  });
+
+                  cb(matches);
+              };
+          };
+          retrievedData = localStorage.getItem("mtgjsonLocation");
+          cards = JSON.parse(retrievedData);
+          $('#userInput .typeahead').typeahead({
+              hint: false,
+              highlight: true,
+              minLength: 1
+          }, {
+              name: 'cards',
+              limit: 10,
+              source: substringMatcher(cards)
+          });
+      }
+  };
+
+  //Loads mtgjson object to client side for typeahead.js to reference
+  var needRefresh = false;
+  //var mtgjsonLocation = "http://andrewmaul.com/fun/draftleague2016/js/json/cardNames.json";
+  var mtgjsonLocation = "js/json/cardnames.json";
+
+
+  if (localStorage.getItem('mtgjsonLocation') == null) {
+      needRefresh = true;
+  }
+
+  if (needRefresh) {
+      $.getJSON(mtgjsonLocation, function(data) {
+          // var localjson=[];
+          // for (var key in data){
+          //     localjson.push(data[key].name);
+          // }
+          localStorage.setItem('mtgjsonLocation', JSON.stringify(data));
+          retrievedData = localStorage.getItem("mtgjsonLocation");
+          if (retrievedData != null) {
+              //initialize typeahead
+              typeaheadLaunch();
+          }
+      });
+  } else {
+      typeaheadLaunch();
   }
 }
