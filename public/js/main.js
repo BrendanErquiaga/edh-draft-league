@@ -35,8 +35,6 @@ function saveCardForUser(pickingUserId, card) {
 function getCardObject(card){
   var tempCard = {};
 
-  console.log(allcardsLocal[card]);
-
   if(allcardsLocal[card] === undefined){
     console.log('We couldnt find ' + card + ' jackass, so we made a fake entry.');
     tempCard.name = card;
