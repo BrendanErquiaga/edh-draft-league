@@ -29,12 +29,12 @@ $(document).ready(function() {
 
 function pickCardForUser(card) {
     if (cardIsBanned(card)) {
-        console.log('Card is banned');
+        console.log('Card is banned. (Cant Draft)');
         return; //Don't draft a card if it's banned
     }
 
     if (!cardIsFree(card)) {
-      console.log('Someone already had that card');
+      console.log('Someone already had that card. (Cant Draft)');
       return; //Someone already had that card, do something about that
     }
 
@@ -47,12 +47,12 @@ function pickCardForUser(card) {
 
 function queueCardForUser(card) {
   if (cardIsBanned(card)) {
-      console.log('Card is banned');
+      console.log('Card is banned. (Cant Queue)');
       return; //Don't draft a card if it's banned
   }
 
   if (!cardIsFree(card)) {
-    console.log('Someone already had that card');
+    console.log('Someone already had that card. (Cant Queue)');
     return; //Someone already had that card, do something about that
   }
 
@@ -148,7 +148,7 @@ function pickOrQueueCard(card){
   }
   else {
     console.log('Its not your turn, so I put the card in your queue');
-    saveCardToUserQueue(card);
+    queueCardForUser(card);
   }
 }
 
