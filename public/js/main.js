@@ -26,30 +26,38 @@ $(document).ready(function() {
     });
 });
 
-function saveCardForUser(pickingUserId, card) {
+function pickCardForUser(pickingUserId, card) {
     if (cardIsBanned(card)) {
         console.log('Card is banned');
         return; //Don't draft a card if it's banned
     }
 
     if (!cardIsFree(card)) {
-        console.log('Someone already had that card');
-        return; //Someone already had that card, do something about that
+      console.log('Someone already had that card');
+      return; //Someone already had that card, do something about that
     }
 
-    var newCardRef = loggedInUserDraftedCardListRef.push();
-    var cardObject = getCardObject(card);
-    newCardRef.set({
-        name: cardObject.name,
-        type: cardObject.type,
-        types: cardObject.types,
-        cmc: cardObject.cmc,
-        manaCost: cardObject.manaCost,
-        colorIdentity: cardObject.colorIdentity,
-        pickTime: Date.now()
-    });
+    if(!currentUsersTurn()){
+      console.log('Its not your turn sucka');
+      return;
+    }
+
+    saveCardToFirebase(getCardObject(card))
 
     goToNextTurn();
+}
+
+function saveCardToFirebase(cardObject){
+  var newCardRef = loggedInUserDraftedCardListRef.push();
+  newCardRef.set({
+      name: cardObject.name,
+      type: cardObject.type,
+      types: cardObject.types,
+      cmc: cardObject.cmc,
+      manaCost: cardObject.manaCost,
+      colorIdentity: cardObject.colorIdentity,
+      pickTime: Date.now()
+  });
 }
 
 function getCardObject(card) {
@@ -78,8 +86,6 @@ function getCardObject(card) {
 
 function goToNextTurn() {
   var tempTurnOrderObject = turnOrderSnapshot;
-  //Change turnOrder to array, makes life easier
-  tempTurnOrderObject.turnOrder = Object.values(turnOrderSnapshot.turnOrder);
 
   if(tempTurnOrderObject.ascendingTurnOrder){
     tempTurnOrderObject.turnIndex++;
@@ -134,7 +140,7 @@ function catchInput() {
 }
 
 function saveCardInInputField() {
-    saveCardForUser(loggedInUserId, $('#form-card').val());
+    pickCardForUser(loggedInUserId, $('#form-card').val());
 }
 
 function clearCardInputField() {
@@ -156,11 +162,13 @@ function getFirebaseData() {
 }
 
 function updateDraftedCardData(snapshot) {
-    draftedCardsSnapshot = snapshot;
+  draftedCardsSnapshot = snapshot;
 }
 
 function updateTurnOrderData(snapshot){
   turnOrderSnapshot = snapshot.val();
+  //Change turnOrder to array, makes life easier
+  turnOrderSnapshot.turnOrder = Object.values(turnOrderSnapshot.turnOrder);
 }
 
 //Update references for things like draftedCards
@@ -224,6 +232,17 @@ function cardIsBanned(card) {
     if ($.inArray(card, bannedCardList) !== -1) {
         return true;
     }
+}
+
+//Checks if it is the current users turn
+function currentUsersTurn(){
+  if(turnOrderSnapshot.turnOrder[turnOrderSnapshot.turnIndex] === loggedInUserId) {
+    console.log('Its your turn! Draft away!');
+
+    return true;
+  }
+
+  return false;
 }
 
 function initTypeAhead() {
