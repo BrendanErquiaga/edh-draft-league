@@ -1,7 +1,7 @@
 'use strict';
 
 var draftedCardsSnapshot,
-    loggedInUserDraftedCardListRef,
+    loggedInUserDraftedCardsRef,
     loggedInUserId,
     allcardsLocal,
     allcardsLocation = "/js/json/allcards.json",
@@ -48,7 +48,7 @@ function pickCardForUser(pickingUserId, card) {
 }
 
 function saveCardToFirebase(cardObject){
-  var newCardRef = loggedInUserDraftedCardListRef.push();
+  var newCardRef = loggedInUserDraftedCardsRef.push();
   newCardRef.set({
       name: cardObject.name,
       type: cardObject.type,
@@ -173,7 +173,7 @@ function updateTurnOrderData(snapshot){
 
 //Update references for things like draftedCards
 function updatePageData() {
-    loggedInUserDraftedCardListRef = firebase.database().ref('draftedUserCards/' + loggedInUserId);
+    loggedInUserDraftedCardsRef = firebase.database().ref('draftedUserCards/' + loggedInUserId);
 }
 
 /**
@@ -196,8 +196,6 @@ function onAuthStateChanged(user) {
         //Prompt Login
     }
 }
-
-
 
 // Saves basic user data
 function writeUserData(userId, name, email, imageUrl) {
