@@ -56,6 +56,11 @@ function queueCardForUser(card) {
     return; //Someone already had that card, do something about that
   }
 
+  if($.inArray(card, userQueuedCards) !== -1){
+    console.log('You already had that card in your queue.');
+    return;
+  }
+
   saveCardToUserQueue(card);
 }
 
@@ -180,10 +185,6 @@ function getFirebaseData() {
         updateDraftedCardData(snapshot);
     });
 
-    firebase.database().ref('queuedUserCards/' + userId + '/').on('value', function(snapshot) {
-        updateQueuedCardData(snapshot);
-    });
-
     firebase.database().ref('turns/').on('value', function(snapshot){
         updateTurnOrderData(snapshot);
     });
@@ -208,7 +209,6 @@ function updateQueuedCardData(snapshot){
   //Change turnOrder to array, makes life easier
   if(userQueuedCards !== null){
     userQueuedCards = Object.values(userQueuedCards);
-    console.log(userQueuedCards);
   } else {
     userQueuedCards = [];
   }
@@ -217,6 +217,10 @@ function updateQueuedCardData(snapshot){
 //Update references for things like draftedCards
 function updatePageData() {
     userDraftedCardsRef = firebase.database().ref('draftedUserCards/' + userId);
+
+    firebase.database().ref('queuedUserCards/' + userId + '/').on('value', function(snapshot) {
+        updateQueuedCardData(snapshot);
+    });
 }
 
 /**
