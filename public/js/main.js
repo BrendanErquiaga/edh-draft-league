@@ -139,7 +139,7 @@ function cleanOutQueuedCards(cardLastPicked){
   console.log(newQueueObject);
 
   if(newQueueObject !== null) {
-    queuedCardRef.setValue(newQueueObject);
+    queuedCardRef.set(newQueueObject);
   }
 }
 
