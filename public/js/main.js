@@ -170,6 +170,10 @@ function catchInput() {
             clearCardInputField();
         }
     });
+
+    $('#autoDraftSwitch').change(function(){
+      saveAutoDraftStatus(this.checked);
+    });
 }
 
 function saveCardInInputField() {
@@ -194,8 +198,15 @@ function getFirebaseData() {
     });
 }
 
+function saveAutoDraftStatus(autoDraftEnabled){
+  firebase.database().ref('users/' + userId).update({
+    autoDraft: autoDraftEnabled
+  });
+}
+
 function updateDraftedCardData(snapshot) {
   draftedCardsSnapshot = snapshot;
+  updatePickedCardUI();
 }
 
 function updateTurnOrderData(snapshot){
@@ -212,6 +223,34 @@ function updateQueuedCardData(snapshot){
   } else {
     userQueuedCards = [];
   }
+
+  updateQueuedCardUI();
+}
+
+//TODO: Right now this just clears the whole list every time, should only do that on load
+function updateQueuedCardUI(){
+  var queuedCardsUL = $("#queuedCards");
+  queuedCardsUL.empty();
+
+  for(var i = 0; i < userQueuedCards.length; i++){
+    queuedCardsUL.append('<li>' + userQueuedCards[i] + '</li>');
+  }
+}
+
+//TODO: Right now this just clears the whole list every time, should only do that on load
+function updatePickedCardUI(){
+  var pickedCardUL = $("#pickedCards");
+  pickedCardUL.empty();
+
+  draftedCardsSnapshot.forEach(function(childSnapshot) {
+      var key = childSnapshot.key;
+      var val = childSnapshot.val();
+      if(key === userId){
+        childSnapshot.forEach(function(cardObjectSnapshot) {
+            pickedCardUL.append('<li>' + cardObjectSnapshot.val().name + '</li>');
+        });
+      }
+  });
 }
 
 //Update references for things like draftedCards
