@@ -1,7 +1,10 @@
 'use strict';
 
-var draftedCardsSnapshot,
-    userDraftedCardsRef,
+var draftedCardRef,
+    draftedCardsSnapshot,
+    queuedCardRef,
+    queuedCardSnapshot,
+    usersSnapshot,
     userQueuedCards,
     userId,
     allcardsLocal,
@@ -38,12 +41,44 @@ function pickCardForUser(card) {
       return; //Someone already had that card, do something about that
     }
 
-    savePickedCardToFirebase(getCardObject(card));
+    savePickedCardToFirebase(getCardObject(card), userId);
 
     //TODO: Remove card from everyones draft queues
 
     goToNextTurn();
 }
+
+function autoDraftCardForUser(autoDraftedUserId){
+  var cardToAutoDraft = getNextCardFromUsersQueue(autoDraftedUserId);
+
+  if(!cardIsFree(cardToAutoDraft)){
+    console.log('Well shit, autodraft tried to draft: ' + cardToAutoDraft + ' someone else has it, get the next one I guess?');
+    //TODO: Remove card from queue
+    return;
+  }
+
+  savePickedCardToFirebase(getCardObject(cardToAutoDraft), autoDraftedUserId);
+
+  goToNextTurn();
+}
+
+function getNextCardFromUsersQueue(autoDraftedUserId){
+  var cardName;
+  queuedCardSnapshot.forEach(function(childSnapshot) {
+      var key = childSnapshot.key;
+      if(key === autoDraftedUserId){
+        cardName = childSnapshot.child("0").val();
+        return;
+      }
+  });
+
+  if(cardName === undefined || cardName === null){
+    console.log('Well ' + autoDraftedUserId + ' didnt have a card in their queue, bad times');
+  }
+
+  return cardName;
+}
+
 
 function queueCardForUser(card) {
   if (cardIsBanned(card)) {
@@ -70,8 +105,8 @@ function saveCardToUserQueue(card){
   firebase.database().ref('queuedUserCards/').child(userId).set(userQueuedCards);
 }
 
-function savePickedCardToFirebase(cardObject){
-  var newCardRef = userDraftedCardsRef.push();
+function savePickedCardToFirebase(cardObject, idToUse){
+  var newCardRef = draftedCardRef.child(idToUse).push();
   newCardRef.set({
       name: cardObject.name,
       type: cardObject.type,
@@ -81,6 +116,31 @@ function savePickedCardToFirebase(cardObject){
       colorIdentity: cardObject.colorIdentity,
       pickTime: Date.now()
   });
+
+  cleanOutQueuedCards(cardObject.name);
+}
+
+//TODO: Don't delete entire queue object... seems excessive
+function cleanOutQueuedCards(cardLastPicked){
+  var newQueueObject = {};
+
+  queuedCardSnapshot.forEach(function(childSnapshot) {
+      var key = childSnapshot.key;
+      var val = childSnapshot.val();
+      newQueueObject[key] = Object.values(val);
+      childSnapshot.forEach(function(cardObjectSnapshot) {
+          if (cardObjectSnapshot.val() === cardLastPicked) {
+              console.log(cardLastPicked + ' was in someones queue, I am removing it');
+              newQueueObject[key].splice($.inArray(cardLastPicked,newQueueObject[key]),1);
+          }
+      });
+  });
+
+  console.log(newQueueObject);
+
+  if(newQueueObject !== null) {
+    queuedCardRef.setValue(newQueueObject);
+  }
 }
 
 function getCardObject(card) {
@@ -185,16 +245,28 @@ function clearCardInputField() {
 }
 
 function getFirebaseData() {
-    firebase.database().ref('draftedUserCards/').on('value', function(snapshot) {
+    draftedCardRef = firebase.database().ref('draftedUserCards');
+    queuedCardRef = firebase.database().ref('queuedUserCards');
+
+    firebase.database().ref('users').on('value', function(snapshot) {
+        usersSnapshot = snapshot.val();
+    });
+
+    firebase.database().ref('draftedUserCards').on('value', function(snapshot) {
         updateDraftedCardData(snapshot);
     });
 
-    firebase.database().ref('turns/').on('value', function(snapshot){
-        updateTurnOrderData(snapshot);
+    queuedCardRef.on('value', function(snapshot){
+      queuedCardSnapshot = snapshot;
     });
 
-    firebase.database().ref('/banList').once('value').then(function(snapshot) {
+    firebase.database().ref('banList').once('value').then(function(snapshot) {
         bannedCardList = snapshot.val();
+    });
+
+    //Should be last because it attempts to autodraft
+    firebase.database().ref('turns').on('value', function(snapshot){
+        updateTurnOrderData(snapshot);
     });
 }
 
@@ -213,6 +285,7 @@ function updateTurnOrderData(snapshot){
   turnOrderObject = snapshot.val();
   //Change turnOrder to array, makes life easier
   turnOrderObject.turnOrder = Object.values(turnOrderObject.turnOrder);
+  attemptToAutoDraft();
 }
 
 function updateQueuedCardData(snapshot){
@@ -255,8 +328,6 @@ function updatePickedCardUI(){
 
 //Update references for things like draftedCards
 function updatePageData() {
-    userDraftedCardsRef = firebase.database().ref('draftedUserCards/' + userId);
-
     firebase.database().ref('queuedUserCards/' + userId + '/').on('value', function(snapshot) {
         updateQueuedCardData(snapshot);
     });
@@ -277,6 +348,7 @@ function onAuthStateChanged(user) {
         updatePageData();
         //Hit the DB -> startDatabaseQueries();
         //Display Logged In State
+        //Update autodraft button based on users status
     } else {
         userId = null;
         //Prompt Login
@@ -285,11 +357,26 @@ function onAuthStateChanged(user) {
 
 // Saves basic user data
 function writeUserData(userId, name, email, imageUrl) {
-    firebase.database().ref('users/' + userId).set({
+    firebase.database().ref('users/' + userId).update({
         username: name,
         email: email,
         profile_picture: imageUrl
     });
+}
+
+//Someone just picked a card, should the 'system' auto-draft?
+function attemptToAutoDraft(){
+  var nextDraftId = getNextDrafterId();
+  console.log('User: ' + nextDraftId + ', Autodraft: ' + usersSnapshot[nextDraftId].autoDraft);
+
+  if(usersSnapshot[nextDraftId].autoDraft){
+    //The next drafter has auto-draft enabled, lets attempt to pick a card for them
+    autoDraftCardForUser(nextDraftId);
+  }
+}
+
+function getNextDrafterId(){
+  return turnOrderObject.turnOrder[turnOrderObject.turnIndex];
 }
 
 function cardIsFree(card) {
