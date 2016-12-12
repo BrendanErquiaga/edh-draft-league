@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 var draftedCardRef,
     draftedCardsSnapshot,
@@ -6,23 +6,34 @@ var draftedCardRef,
     queuedCardSnapshot,
     usersSnapshot,
     userQueuedCards,
-    userId,
     allcardsLocal,
     allcardsLocation = "/js/json/allcards.json",
     bannedCardList,
     turnOrderObject;
 
 $(document).ready(function() {
-    getFirebaseData();
+    requirejs(['js/utils'], function(){
 
-    catchDraftPageInput();
-
-    initTypeAhead();
-
-    $.getJSON(allcardsLocation, function(data) {
-        allcardsLocal = data;
-    });
+          pageReady();
+     });
 });
+
+function pageReady(){
+  console.log('Your page is ready');
+  //console.log('B?: ' + uglyTest);
+
+  //testingFunction();
+
+  // getFirebaseData();
+  //
+  // catchDraftPageInput();
+  //
+  // initTypeAhead();
+  //
+  // $.getJSON(allcardsLocation, function(data) {
+  //     allcardsLocal = data;
+  // });
+}
 
 function pickCardForUser(card) {
     if (cardIsBanned(card)) {
