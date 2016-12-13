@@ -555,10 +555,23 @@ footer p {
   font-size: 1.2rem;
   margin: 0; }
 
-.accordion {
-  margin: 3rem 0 0 3rem; }
+.table-of-contents {
+  margin-bottom: 2.5rem;
+  margin-left: 2.5rem; }
+  .table-of-contents .active-internal {
+    color: #8c8c8c;
+    padding-left: 1rem;
+    padding-right: 1rem; }
+  .table-of-contents a {
+    padding-left: 1rem;
+    padding-right: 1rem; }
 
-.showTable {
+.accordion-toggle {
+  margin: 3rem 0 0 3rem;
+  cursor: pointer; }
+
+.accordion-content {
+  display: block;
   margin: 1rem 0 0 3rem;
   max-height: 400px;
   overflow: scroll; }
