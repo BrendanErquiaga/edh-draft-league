@@ -7,6 +7,21 @@ function simpleAccordions() {
 	});
 }
 
+// Smooth scrolling on internal (same-page) links
+function smoothScroll() {
+	$('a[href*="#"]:not([href="#"])').click(function() {
+		event.preventDefault();
+
+	        var target = 'a[name="' + this.hash.slice(1) + '"]';
+	        target = $(target).offset().top + window.scrollY;
+	    	console.log(target);
+             $('body').animate({
+                 scrollTop: target.offset().top
+            }, 1000);
+	            return false;
+	});
+}
+
 // Sticky Nav with debounce
 function stickyNav() {
 	// Hides sticky nav; if JS is disabled it will still be there
@@ -44,4 +59,5 @@ function stickyNav() {
 $(document).ready(function(){
 	simpleAccordions();
 	stickyNav();
+	smoothScroll();
 });
