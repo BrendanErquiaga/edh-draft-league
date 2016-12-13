@@ -1,11 +1,5 @@
 'use strict';
 
-var uglyTest = 'Banana';
-
-function testingFunction() {
-  console.log('Checks out captain');
-}
-
 function getNextDrafterId(){
   return turnOrderObject.turnOrder[turnOrderObject.turnIndex];
 }
@@ -119,4 +113,3 @@ function goToNextTurn() {
   saveTurnOrderObject(tempTurnOrderObject);
   //TODO: increment pick number
 }
-

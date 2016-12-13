@@ -1,6 +1,6 @@
 'use strict';
 
-
+var usersSnapshot;
 
 function getFirebaseData() {
     draftedCardRef = firebase.database().ref('draftedUserCards');
@@ -32,32 +32,13 @@ function getFirebaseData() {
 ~~~~~~~FIREBASE UPDATE~~~~~~~~~~
 */
 
-function updateReferencesWithUserId(){
-  firebase.database().ref('queuedUserCards/' + userId + '/').on('value', function(snapshot) {
-      updateQueuedCardData(snapshot);
-  });
-}
-
-function updateQueuedCardData(snapshot){
-  userQueuedCards = snapshot.val();
-  //Change turnOrder to array, makes life easier
-  if(userQueuedCards !== null){
-    userQueuedCards = Object.values(userQueuedCards);
-  } else {
-    userQueuedCards = [];
-  }
-
-  //TODO: Move UI code out
-  updateQueuedCardUI();
-}
-
 function updateTurnOrderData(snapshot){
   turnOrderObject = snapshot.val();
   //Change turnOrder to array, makes life easier
   turnOrderObject.turnOrder = Object.values(turnOrderObject.turnOrder);
 
   //TODO: Move Autodraft code out?
-  attemptToAutoDraft();
+  //attemptToAutoDraft();
 }
 
 function updateDraftedCardData(snapshot) {
@@ -99,7 +80,7 @@ function cleanOutQueuedCards(cardLastPicked){
       });
   });
 
-  console.log(newQueueObject);
+  //console.log(newQueueObject);
 
   if(newQueueObject !== null) {
     queuedCardRef.set(newQueueObject);

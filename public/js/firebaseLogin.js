@@ -1,6 +1,7 @@
 'use strict';
 
-var userId;
+var userId,
+    userQueuedCards;
 
 // Bindings on load.
 window.addEventListener('load', function() {
@@ -20,7 +21,7 @@ function onAuthStateChanged(user) {
     if (user) {
         userId = user.uid;
         saveUserData(user.uid, user.displayName, user.email, user.photoURL);
-        //updateReferencesWithUserId();
+        updateReferencesWithUserId();
         //Hit the DB -> startDatabaseQueries();
         //Display Logged In State
         //Update autodraft button based on users status
@@ -37,4 +38,23 @@ function saveUserData(userId, name, email, imageUrl) {
         email: email,
         profile_picture: imageUrl
     });
+}
+
+function updateReferencesWithUserId(){
+  firebase.database().ref('queuedUserCards/' + userId + '/').on('value', function(snapshot) {
+      updateQueuedCardData(snapshot);
+  });
+}
+
+function updateQueuedCardData(snapshot){
+  userQueuedCards = snapshot.val();
+  //Change turnOrder to array, makes life easier
+  if(userQueuedCards !== null){
+    userQueuedCards = Object.values(userQueuedCards);
+  } else {
+    userQueuedCards = [];
+  }
+
+  //TODO: Move UI code out
+  updateQueuedCardUI();
 }

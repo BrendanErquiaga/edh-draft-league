@@ -4,35 +4,27 @@ var draftedCardRef,
     draftedCardsSnapshot,
     queuedCardRef,
     queuedCardSnapshot,
-    usersSnapshot,
-    userQueuedCards,
     allcardsLocal,
     allcardsLocation = "/js/json/allcards.json",
     bannedCardList,
     turnOrderObject;
 
 $(document).ready(function() {
-    requirejs(['js/utils'], function(){
-
+    requirejs(['./utils','./firebaseUtils'], function(){
           pageReady();
      });
 });
 
 function pageReady(){
-  console.log('Your page is ready');
-  //console.log('B?: ' + uglyTest);
+  getFirebaseData();
 
-  //testingFunction();
+  catchDraftPageInput();
+  
+  initTypeAhead();
 
-  // getFirebaseData();
-  //
-  // catchDraftPageInput();
-  //
-  // initTypeAhead();
-  //
-  // $.getJSON(allcardsLocation, function(data) {
-  //     allcardsLocal = data;
-  // });
+  $.getJSON(allcardsLocation, function(data) {
+      allcardsLocal = data;
+  });
 }
 
 function pickCardForUser(card) {
