@@ -1,6 +1,15 @@
 'use strict';
 
-var usersSnapshot;
+var usersSnapshot,
+    draftMasterObject,
+    draftedCardRef,
+    draftedCardsSnapshot,
+    queuedCardRef,
+    queuedCardSnapshot,
+    allcardsLocal,
+    allcardsLocation = "/js/json/allcards.json",
+    bannedCardList,
+    turnOrderObject;
 
 function getFirebaseData() {
     draftedCardRef = firebase.database().ref('draftedUserCards');
@@ -22,6 +31,10 @@ function getFirebaseData() {
         bannedCardList = snapshot.val();
     });
 
+    firebase.database().ref('draftMaster').on('value', function(snapshot) {
+        updateDraftMasterObject(snapshot);
+    });
+
     //Should be last because it attempts to autodraft
     firebase.database().ref('turns').on('value', function(snapshot){
         updateTurnOrderData(snapshot);
@@ -37,13 +50,22 @@ function updateTurnOrderData(snapshot){
   //Change turnOrder to array, makes life easier
   turnOrderObject.turnOrder = Object.values(turnOrderObject.turnOrder);
 
-  //TODO: Move Autodraft code out?
-  //attemptToAutoDraft();
+  //TODO: Only run this code on admin page
+  attemptToAutoDraft();
+}
+
+function updateDraftMasterObject(snapshot) {
+  draftMasterObject = snapshot.val();
+
+  //TODO: Turn off any current draft masters
+  attemptToAutoDraft();
 }
 
 function updateDraftedCardData(snapshot) {
   draftedCardsSnapshot = snapshot;
-  updatePickedCardUI();
+
+  //TODO: Only run this code on draft page
+  //updatePickedCardUI();
 }
 
 /*
@@ -53,6 +75,12 @@ function updateDraftedCardData(snapshot) {
 function saveAutoDraftStatus(autoDraftEnabled){
   firebase.database().ref('users/' + userId).update({
     autoDraft: autoDraftEnabled
+  });
+}
+
+function saveMasterDrafterStatus(){
+  firebase.database().ref('draftMaster').set({
+    draftMasterId: draftMasterId
   });
 }
 

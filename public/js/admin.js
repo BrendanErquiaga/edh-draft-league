@@ -1,15 +1,59 @@
 'use strict';
 
+var draftMasterId,
+    currentlyDraftMaster = false;
+
+$(document).ready(function() {
+    requirejs(['./utils','./firebaseUtils'], function(){
+          pageReady();
+     });
+});
+
+function pageReady(){
+  getFirebaseData();
+
+  catchAdminPageInput();
+
+  $.getJSON(allcardsLocation, function(data) {
+      allcardsLocal = data;
+  });
+}
+
+function catchAdminPageInput(){
+  $('#draftMasterSwitch').change(function(){
+    updateMasterDrafterStatus(this.checked);
+  });
+}
+
+function updateMasterDrafterStatus(masterDrafterClientEnabled){
+  if(masterDrafterClientEnabled) {
+    draftMasterId = Date.now();
+    currentlyDraftMaster = true;
+    saveMasterDrafterStatus();
+  }
+  else {
+    currentlyDraftMaster = false;
+  }
+}
+
 //Someone just picked a card, should the 'system' auto-draft?
 function attemptToAutoDraft(){
+  if(!currentlyDraftMaster || draftMasterObject.draftMasterId !== draftMasterId){
+    console.log('No auto drafting from you False Prism');
+    return;
+  }
+
+  //TODO: Add Delay
   var nextDraftId = getNextDrafterId();
-  console.log('User: ' + nextDraftId + ', Autodraft: ' + usersSnapshot[nextDraftId].autoDraft);
+  console.log('User: ' + usersSnapshot[nextDraftId].username + ', Autodraft: ' + usersSnapshot[nextDraftId].autoDraft);
 
   if(usersSnapshot[nextDraftId].autoDraft){
     //The next drafter has auto-draft enabled, lets attempt to pick a card for them
     autoDraftCardForUser(nextDraftId);
   }
 }
+
+
 
 function autoDraftCardForUser(autoDraftedUserId){
   var cardToAutoDraft = getNextCardFromUsersQueue(autoDraftedUserId);
@@ -24,4 +68,3 @@ function autoDraftCardForUser(autoDraftedUserId){
 
   goToNextTurn();
 }
-

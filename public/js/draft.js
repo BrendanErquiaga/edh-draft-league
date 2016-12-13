@@ -1,14 +1,5 @@
 "use strict";
 
-var draftedCardRef,
-    draftedCardsSnapshot,
-    queuedCardRef,
-    queuedCardSnapshot,
-    allcardsLocal,
-    allcardsLocation = "/js/json/allcards.json",
-    bannedCardList,
-    turnOrderObject;
-
 $(document).ready(function() {
     requirejs(['./utils','./firebaseUtils'], function(){
           pageReady();
@@ -19,7 +10,7 @@ function pageReady(){
   getFirebaseData();
 
   catchDraftPageInput();
-  
+
   initTypeAhead();
 
   $.getJSON(allcardsLocation, function(data) {
@@ -72,7 +63,8 @@ function pickOrQueueCard(card){
   }
 }
 
-function catchDraftPageInput() {
+function
+() {
     $('#card-submit').on('click', function(e) {
         pickOrQueueCard($('#form-card').val());
         clearCardInputField();
