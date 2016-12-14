@@ -7,7 +7,7 @@ To run the site first install firebase
 
 Then run
 
-```firebase init```
+```firebase serve```
 
 If this doesn't work try
 
