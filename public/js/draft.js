@@ -82,10 +82,6 @@ function catchDraftPageInput() {
     });
 }
 
-function saveCardInInputField() {
-    pickCardForUser(userId, $('#form-card').val());
-}
-
 function clearCardInputField() {
     $('#form-card').val('');
 }
