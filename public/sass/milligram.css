@@ -515,7 +515,10 @@ a.active {
         padding: 10px 0 10px 0;
         text-transform: uppercase; }
   .container section {
-    padding: 2rem 2.5rem; }
+    padding: 1.5rem; }
+    @media (min-width: 768px) {
+      .container section {
+        padding: 2rem 2.5rem; } }
     .container section.dark {
       background: #222;
       color: #ccc; }
@@ -556,15 +559,18 @@ footer p {
   margin: 0; }
 
 .table-of-contents {
-  margin-bottom: 2.5rem;
-  margin-left: 2.5rem; }
+  list-style: none;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  margin: 0 0 2.5rem 0;
+  padding: 0;
+  border-bottom: 1px solid #d1d1d1; }
+  .table-of-contents li {
+    flex-grow: 1;
+    text-align: center; }
   .table-of-contents .active-internal {
-    color: #8c8c8c;
-    padding-left: 1rem;
-    padding-right: 1rem; }
-  .table-of-contents a {
-    padding-left: 1rem;
-    padding-right: 1rem; }
+    color: #8c8c8c; }
 
 .accordion-toggle {
   margin: 3rem 0 0 3rem;

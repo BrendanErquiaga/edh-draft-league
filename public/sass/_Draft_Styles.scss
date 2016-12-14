@@ -23,7 +23,10 @@ a.active {
 		}
 	}
 	section {
-		padding: 2rem 2.5rem;
+		padding: 1.5rem;
+		@media(min-width: 768px){
+			padding: 2rem 2.5rem;
+		}
 		&.dark {
 			background: #222;
 			color: #ccc;
@@ -76,16 +79,19 @@ footer {
 	}
 }
 .table-of-contents {
-	margin-bottom: 2.5rem;
-	margin-left: 2.5rem;
+	list-style: none;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	margin: 0 0 2.5rem 0;
+	padding: 0;
+	border-bottom: 1px solid #d1d1d1;
+	li {
+		flex-grow: 1;
+		text-align: center;
+	}
 	.active-internal {
 		color: #8c8c8c;
-		padding-left: 1rem;
-		padding-right: 1rem;
-	}
-	a {
-		padding-left: 1rem;
-		padding-right: 1rem;
 	}
 }
 // Roster Icons and SVG Classes
