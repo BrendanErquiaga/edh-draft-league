@@ -91,8 +91,14 @@ function saveAutoDraftStatus(autoDraftEnabled){
 }
 
 function saveMasterDrafterStatus(){
-  firebase.database().ref('draftMaster').set({
+  firebase.database().ref('draftMaster').update({
     draftMasterId: draftMasterId
+  });
+}
+
+function saveMasterDraftDelayTime(delayTime) {
+  firebase.database().ref('draftMaster').update({
+    delayTime: delayTime
   });
 }
 

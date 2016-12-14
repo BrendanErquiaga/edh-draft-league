@@ -48,7 +48,16 @@ function attemptToAutoDraft(){
     return;
   }
 
-  //TODO: Add Delay
+  if(draftMasterObject.delayTime !== undefined){
+    setTimeout(performAutoDraft, draftMasterObject.delayTime);
+  }
+  else {
+    setTimeout(performAutoDraft, 3000);
+  }
+}
+
+function performAutoDraft(){
+
   var nextDraftId = getNextDrafterId();
   //console.log('User: ' + usersSnapshot[nextDraftId].username + ', Autodraft: ' + usersSnapshot[nextDraftId].autoDraft);
 
@@ -71,8 +80,6 @@ function autoDraftCardForUser(autoDraftedUserId){
     //TODO: Remove card from queue
     return;
   }
-
-  console.log('Trying to draft: ' + cardToAutoDraft);
 
   savePickedCardToFirebase(getCardObject(cardToAutoDraft), autoDraftedUserId);
 
