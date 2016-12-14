@@ -56,5 +56,7 @@ function updateQueuedCardData(snapshot){
   }
 
   //TODO: Move UI code out
-  updateQueuedCardUI();
+  if($(document.body).hasClass('draft')) {
+    updateQueuedCardUI();
+  }
 }

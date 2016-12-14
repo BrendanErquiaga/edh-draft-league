@@ -16,7 +16,7 @@ function getFirebaseData() {
     queuedCardRef = firebase.database().ref('queuedUserCards');
 
     firebase.database().ref('users').on('value', function(snapshot) {
-        usersSnapshot = snapshot.val();
+        updateUsersSnapshot(snapshot);
     });
 
     firebase.database().ref('draftedUserCards').on('value', function(snapshot) {
@@ -50,22 +50,34 @@ function updateTurnOrderData(snapshot){
   //Change turnOrder to array, makes life easier
   turnOrderObject.turnOrder = Object.values(turnOrderObject.turnOrder);
 
-  //TODO: Only run this code on admin page
-  attemptToAutoDraft();
+  if($(document.body).hasClass('admin')) {
+    attemptToAutoDraft();
+  }
+}
+
+function updateUsersSnapshot(snapshot) {
+  usersSnapshot = snapshot.val();
+
+  if($(document.body).hasClass('draft')) {
+    matchAutoDraftSwitch();
+  }
 }
 
 function updateDraftMasterObject(snapshot) {
   draftMasterObject = snapshot.val();
 
   //TODO: Turn off any current draft masters
-  attemptToAutoDraft();
+  if($(document.body).hasClass('admin')) {
+    attemptToAutoDraft();
+  }
 }
 
 function updateDraftedCardData(snapshot) {
   draftedCardsSnapshot = snapshot;
 
-  //TODO: Only run this code on draft page
-  //updatePickedCardUI();
+  if($(document.body).hasClass('draft')) {
+    updatePickedCardUI();
+  }
 }
 
 /*

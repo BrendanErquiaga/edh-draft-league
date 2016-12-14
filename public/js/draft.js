@@ -63,8 +63,7 @@ function pickOrQueueCard(card){
   }
 }
 
-function
-() {
+function catchDraftPageInput() {
     $('#card-submit').on('click', function(e) {
         pickOrQueueCard($('#form-card').val());
         clearCardInputField();
@@ -115,6 +114,12 @@ function updatePickedCardUI(){
         });
       }
   });
+}
+
+function matchAutoDraftSwitch() {
+  if(usersSnapshot[userId].autoDraft === true){
+    $('#autoDraftSwitch').prop('checked', true);
+  }
 }
 
 function initTypeAhead() {

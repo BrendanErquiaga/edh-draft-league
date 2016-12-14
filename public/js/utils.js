@@ -51,10 +51,6 @@ function getNextCardFromUsersQueue(autoDraftedUserId){
       }
   });
 
-  if(cardName === undefined || cardName === null){
-    console.log('Well ' + autoDraftedUserId + ' didnt have a card in their queue, bad times');
-  }
-
   return cardName;
 }
 
