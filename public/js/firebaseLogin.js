@@ -3,11 +3,54 @@
 var userId,
     userQueuedCards;
 
+// Retrieve Firebase Messaging object.
+const messaging = firebase.messaging();
+
 // Bindings on load.
 window.addEventListener('load', function() {
     // Listen for auth state changes
     firebase.auth().onAuthStateChanged(onAuthStateChanged);
+
+    setupNotifications();
 });
+
+function setupNotifications() {
+  messaging.requestPermission()
+    .then(function() {
+      getMessagingToken();
+    })
+    .catch(function(err){
+      console.log('You didnt give me permissions for notifications =/', err);
+    });
+}
+
+function getMessagingToken(){
+  messaging.getToken()
+    .then(function(currentToken) {
+      if (currentToken) {
+        sendTokenToServer(currentToken);
+        //updateUIForPushEnabled(currentToken);
+      } else {
+        // Show permission request.
+        console.log('No Instance ID token available. Request permission to generate one.');
+        // Show permission UI.
+        //updateUIForPushPermissionRequired();
+        setTokenSentToServer(false);
+      }
+    })
+    .catch(function(err) {
+      console.log('An error occurred while retrieving token. ', err);
+      setTokenSentToServer(false);
+    });
+}
+
+function sendTokenToServer(token) {
+  console.log('Token! ', token);
+}
+
+function setTokenSentToServer(tokenSentToServer) {
+  console.log('I sent the token to the server. ',tokenSentToServer);
+}
 
 /**
  * Triggers every time there is a change in the Firebase auth state (i.e. user signed-in or user signed out).

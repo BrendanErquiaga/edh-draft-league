@@ -153,3 +153,11 @@ function saveCardToUserQueue(card){
 
   firebase.database().ref('queuedUserCards/').child(userId).set(userQueuedCards);
 }
+
+/*
+~~~~~~~FIREBASE NOTIFICATIONS~~~~~~~~~~
+*/
+
+messaging.onMessage(function(payload){
+  console.log('onMessage: ', payload);
+})
