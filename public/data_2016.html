@@ -13,8 +13,20 @@
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.js"></script>
 	</head>
 	<body>
+		<ul class="nav">
+			<li><a href="index.html">Draft</a></li>
+			<li><a href="decklists.html">Decks</a></li>
+			<li><a href="standings.html">Standings</a></li>
+			<li><a href="rules.html">Rules</a></li>
+			<li><a href="#" class="active">Seasons</a>
+				<ul>
+					<li><a href="data_2016.html" class="active">Season 1</a></li>
+					<li><a href="#">Season 2</a></li>
+				</ul>
+			</li>
+		</ul>
 		<header>
-			<section class="container">
+			<section>
 				<picture>
 					<source media="(max-width: 480px)" srcset="img/banner_small.jpg">
 					<source media="(max-width: 768px)" srcset="img/banner_medium.jpg">
@@ -24,26 +36,17 @@
 			</section>
 		</header>
 		<main class="container">
-			<div class="stickynav">
-				<ul>
-					<li><a href="#Intro">Intro</a></li>
-					<li><a href="#Draft">Draft Data</a></li>
-					<li><a href="#Tournament">Tourament Data</a></li>
-					<li><a href="#Survey">Survey Data</a></li>
-					<li><a href="#Roster">Rosters</a></li>
-				</ul>
-			</div>
-			<section>
-				<nav class="row">
-					<div class="column"><a href="index.html">Draft</a></div>
-					<div class="column"><a href="rules.html">League Rules</a></div>
-					<div class="column"><a href="data_2016.html" class="active">Season 1 Data</a></div>
-				</nav>
-			</section>
 <!-- Chapter 1: Intro -->
 			<a name="Intro"></a>
 			<section>
 				<h1>Season 1 Analytics</h1>
+				<ul class="table-of-contents">
+					<li><span class="active-internal">Intro</span></li>
+					<li><a href="#Draft">Draft</a></li>
+					<li><a href="#Tournament">Tournament</a></li>
+					<li><a href="#Survey">Survey</a></li>
+					<li><a href="#Roster">Rosters</a></li>
+				</ul>
 				<p>Concluding our first-ever EDH Draft League, this page offers insights and analytics on data that was collected during and after the season. Our draft league was directly inspired by Sheldon Menery's <a href="http://www.starcitygames.com/article/32810_The-Commander-League-Rotisserie-Draft.html" target="new">EDH Rotisserie Draft</a>. For those that didn't participate in our league we have a brief <a href="rules.html">rules page</a>, as well as a quick run-down:</p>
 				<blockquote>
 					The EDH Draft League is a running weekly event during a "season". A group of players began the league by drafting colors to form an exclusive three-color shard/wedge identity. Afterwards, players drafted a pool of three possible commanders in their identity. Following that, the actual draft began. This website was created to facilitate the asynchronous drafting of 768 cards over a two-week period. Each player drafted a pool of 96 cards from all EDH legal cards in existence; proxies were made for unowned cards. Picks were zero-sum; there was only a single copy of each card to be chosen. Once the draft was complete, we played weekly two-game nights using a points system in four-player pods. Players earned points for kills, winning the game, and for votes. Each player voted for their favorite play of the game or best player at the end of each match. Points were averaged over games played; roughly twenty-five matches over nine weeks.
@@ -68,6 +71,13 @@
 			<a name="Draft"></a>
 			<section class="dark">
 				<h1>Draft Data</h1>
+				<ul class="table-of-contents">
+					<li><a href="#Intro">Intro</a></li>
+					<li><span class="active-internal">Draft</span></li>
+					<li><a href="#Tournament">Tournament</a></li>
+					<li><a href="#Survey">Survey</a></li>
+					<li><a href="#Roster">Rosters</a></li>
+				</ul>
 				<p>768 cards drafted over two weeks, done in a snake. Below are insights we extracted from the numbers. Additionally, it would be a shame if we didn't list the first picks of the entire draft!</p>
 				<ol>
 					<li>Cyclonic Rift (Malestrom Wanderer)</li>
@@ -175,7 +185,6 @@
 						<br />
 					</div>
 				</div>
-<!-- Chapter 3: Draft Bar Charts -->
 				<div class="row">
 					<div class="column">
 					<h2>Converted Cost</h2>
@@ -325,11 +334,18 @@
 					</div>
 				</div>
 			</section>
-<!-- Chapter 4: Tournament Data -->
+<!-- Chapter 3: Tournament Data -->
 			<a name="Tournament"></a>
 			<section>
 				<h1>Tournament Data</h1>
-				<p>The tournament portion spanned roughlly twenty-five matches over a course of three months. The official kick-off was June 16th, 2016. The final showdown was September 15th, 2016. Here's are the numbers!</p>
+				<ul class="table-of-contents">
+					<li><a href="#Intro">Intro</a></li>
+					<li><a href="#Draft">Draft</a></li>
+					<li><span class="active-internal">Tournament</span></li>
+					<li><a href="#Survey">Survey</a></li>
+					<li><a href="#Roster">Rosters</a></li>
+				</ul>
+				<p>The tournament portion spanned roughly twenty-five matches over a course of three months. The official kick-off was June 16th, 2016. The final showdown was September 15th, 2016. Here's are the numbers!</p>
 				<div class="row">
 					<div class="column">
 						<h2>Trending Points</h2>
@@ -548,7 +564,6 @@
 						<br />
 					</div>
 				</div>
-<!-- Chapter 5: Tournament Bar Charts -->
 				<div class="row">
 					<div class="column">
 						<h2>Total Points</h2>
@@ -713,10 +728,17 @@
 					</div>
 				</div>
 			</section>
-<!-- Chapter 6: Survey Data Intro -->
+<!-- Chapter 4: Survey Data Intro -->
 			<a name="Survey"></a>
 			<section class="dark">
 				<h1>Survey Data</h1>
+				<ul class="table-of-contents">
+					<li><a href="#Intro">Intro</a></li>
+					<li><a href="#Draft">Draft</a></li>
+					<li><a href="#Tournament">Tournament</a></li>
+					<li><span class="active-internal">Survey</span></li>
+					<li><a href="#Roster">Rosters</a></li>
+				</ul>
 				<p>After the league ended we sent out a survey form to be filled out by players anonymously. This gave us some additional insight into how the experience was perceived by everyone. Before diving into the visualizations, here are some high-level take-aways:
 				</p>
 				<ul>
@@ -871,10 +893,17 @@
 					</div>
 				</div>
 			</section>
-<!-- Chapter 7: Roster -->
+<!-- Chapter 5: Roster -->
 			<a name="Roster"></a>
 			<section>
 				<h1>Full Roster</h1>
+				<ul class="table-of-contents">
+					<li><a href="#Intro">Intro</a></li>
+					<li><a href="#Draft">Draft</a></li>
+					<li><a href="#Tournament">Tournament</a></li>
+					<li><a href="#Survey">Survey</a></li>
+					<li><span class="active-internal">Rosters</span></li>
+				</ul>
 				<p>Complete list of every player's pool, including waiver wires (coming soon) for a nice historical perspective. Click their name to reveal.</p>
 				<div class="row">
 					<div class="column">
@@ -1022,8 +1051,8 @@
 								</div>
 							</div>
 							<div class="column-75">
-								<h3 class="accordion">Alesha</h3>
-								<div class="showTable">
+								<h3 class="accordion-toggle closed-accordion">Alesha</h3>
+								<div class="accordion-content">
 									<ol>
 										<li>Skullclamp</li>
 										<li>Wheel of Fortune</li>
@@ -1250,8 +1279,8 @@
 								</div>
 							</div>
 							<div class="column-75">
-								<h3 class="accordion">Zur</h3>
-								<div class="showTable">
+								<h3 class="accordion-toggle closed-accordion">Zur</h3>
+								<div class="accordion-content">
 									<ol>
 										<li>Mana Crypt</li>
 										<li>Fellwar Stone</li>
@@ -1501,8 +1530,8 @@
 								</div>
 							</div>
 							<div class="column-75">
-								<h3 class="accordion">Hazezon</h3>
-								<div class="showTable">
+								<h3 class="accordion-toggle closed-accordion">Hazezon</h3>
+								<div class="accordion-content">
 									<ol>
 										<li>Chromatic Lantern</li>
 										<li>Land Tax</li>
@@ -1725,8 +1754,8 @@
 								</div>
 							</div>
 							<div class="column-75">
-								<h3 class="accordion">Nekusar</h3>
-								<div class="showTable">
+								<h3 class="accordion-toggle closed-accordion">Nekusar</h3>
+								<div class="accordion-content">
 									<ol>
 										<li>Waste Not</li>
 										<li>Erebos, God of the Dead</li>
@@ -1975,8 +2004,8 @@
 								</div>
 							</div>
 							<div class="column-75">
-								<h3 class="accordion">Karador</h3>
-								<div class="showTable">
+								<h3 class="accordion-toggle closed-accordion">Karador</h3>
+								<div class="accordion-content">
 									<ol>
 										<li>Life from the Loam</li>
 										<li>Crucible of Worlds</li>
@@ -2206,8 +2235,8 @@
 								</div>
 							</div>
 							<div class="column-75">
-								<h3 class="accordion">Derevi</h3>
-								<div class="showTable">
+								<h3 class="accordion-toggle closed-accordion">Derevi</h3>
+								<div class="accordion-content">
 									<ol>
 										<li>Sol Ring</li>
 										<li>Mana Vault</li>
@@ -2433,8 +2462,8 @@
 								</div>
 							</div>
 							<div class="column-75">
-								<h3 class="accordion">Maelstrom</h3>
-								<div class="showTable">
+								<h3 class="accordion-toggle closed-accordion">Maelstrom</h3>
+								<div class="accordion-content">
 									<ol>
 										<li>Cyclonic Rift</li>
 										<li>Sylvan Library</li>
@@ -2657,8 +2686,8 @@
 								</div>
 							</div>
 							<div class="column-75">
-								<h3 class="accordion">Mimeoplasm</h3>
-								<div class="showTable">
+								<h3 class="accordion-toggle closed-accordion">Mimeoplasm</h3>
+								<div class="accordion-content">
 									<ol>
 										<li>Deadeye Navigator</li>
 										<li>Kozilek, Butcher of Truth</li>
@@ -2770,51 +2799,12 @@
 				<section>
 					<p>Magic the Gathering, FNM is TM and copyright Wizards of the Coast, Inc, a subsidiary of Hasbro, Inc. All rights reserved. This site is unaffiliated. /legalese
 					<br />
-					Site built using <a href="https://milligram.github.io/" target="new">Milligram.io</a> and <a href="http://www.chartjs.org/" target="new">Chart.js</a>
+					Site built using <a href="https://milligram.github.io/" target="new">Milligram.io</a>, <a href="http://www.chartjs.org/" target="new">Chart.js</a>, and <a href="https://www.w3.org/TR/css-flexbox-1/" target="new">Flexbox</a>.
 					</p>
 				</section>
 			</footer>
 		</main>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-	<script type="text/javascript">
-		$(document).ready(function(){
-			// Hides sticky nav; if JS is disabled it will still be there
-			$('.stickynav').hide();
-			// Accordion JS
-			var accordions = $('.accordion');
-			$('.showTable').hide();
-				$(accordions).click(function(){
-					if($(this).siblings('.showTable').css('display') == 'none') {
-						$(this).siblings('.showTable').slideDown();
-					} else {
-						$(this).siblings('.showTable').slideUp();
-					}
-				});
-			// Debounce JS for scroll events
-			function debounce(func, wait, immediate) {
-				var timeout;
-				return function() {
-					var context = this, args = arguments;
-					var later = function() {
-						timeout = null;
-						if (!immediate) func.apply(context, args);
-					};
-					var callNow = immediate && !timeout;
-					clearTimeout(timeout);
-					timeout = setTimeout(later, wait);
-					if (callNow) func.apply(context, args);
-				};
-			};
-			var myEfficientFn = debounce(function() {
-				if (($('a[name="Intro"]').offset().top) < 0){
-					$('.stickynav').fadeIn(300);
-				} else {
-					$('.stickynav').fadeOut(300);
-				}
-			}, 150);
-			// Scroll event handler, passes to debounce
-			window.addEventListener('scroll', myEfficientFn);
-		});
-	</script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+		<script src="js/frontend.js"></script>
 	</body>
 </html>

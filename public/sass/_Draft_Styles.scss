@@ -4,56 +4,84 @@ img {
 a.active {
 	font-weight: bold;
 }
-.container {
-	position: relative;
-	nav {
-		padding: 0 2.0rem;
-		//margin-bottom: 2.0rem;
-		.column {
-			text-align: center;
-			a {
-				display: block;
-				width: 100%;
-				padding: 10px 0 10px 0;
-				text-transform: uppercase; 
-				&:hover {
-					//background: #000;
+.nav {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	border-bottom: 1px solid $light-accent;
+	background: $light-bg;
+	position: fixed;
+	top: 0;
+	z-index: 99;
+	height: 6rem;
+	li {
+		flex-grow: 1;
+		text-align: center;
+		position: relative;
+		margin: 0;
+		a {
+			display: block;
+			width: 100%;
+			padding: 0;
+			margin: 0;
+		}
+		ul {
+			display: none;
+			list-style: none;
+			position: absolute;
+			top: 100%;
+			margin: 0;
+			width: 100%;
+			background: $light-bg;
+			border: 1px solid $light-accent;
+			box-shadow: 3px 3px 5px 0px hsla(0, 0%, 0%, 0.5);
+			li {
+				padding: 1rem 0 1rem 0;
+				@media(min-width: $desktop){
+					padding: 2rem 0 2rem 0;
 				}
+				margin: 0;
+			}
+		}
+		&:hover {
+			ul {
+				display: block;
 			}
 		}
 	}
+}
+header {
+	margin-top: 6rem;
+}
+.container {
+	position: relative;
 	section {
-		padding: 2rem 2.5rem;
+		padding: 1.5rem;
+		@media (min-width: $desktop){
+			padding: 2rem 2.5rem;
+		}
+		background: $light-bg;
+		color: $light-font;
+		a {
+			color: $light-link;
+			&:hover {
+				color: $light-link-hover;
+			}
+		}
 		&.dark {
-			background: #222;
-			color: #ccc;
+			background: $dark-bg;
+			color: $dark-font;
 			a {
-				color: #ffff99;
+				color: $dark-link;
 				&:hover {
-					color: #ffd700;
+					color: $dark-link-hover;
 				}
 			}
 
-		}
-	}
-	.stickynav {
-		text-align: center;
-		margin-left: auto;
-		margin-right: auto;
-		position: fixed;
-		top: 0;
-		//display: none;
-		width: 100%;
-		background: #fff;
-		border-bottom: 1px solid #222;
-		z-index: 9999999;
-		ul {
-			width: 100%;
-			margin: 0;
-			li {
-				display: inline-block;
-				padding: 1% 5% 1% 5%;
-			}
 		}
 	}
 }
@@ -68,23 +96,98 @@ canvas {
 }
 footer {
 	p {
-		border-top: 1px solid #ccc;
+		border-top: 1px solid $dark-font;
 		text-align: center;
 		padding: 5px 0 0 0;
 		font-size: 1.2rem;
 		margin: 0;
 	}
 }
-// Roster Icons and SVG Classes
-.accordion{
-	margin: 3rem 0 0 3rem;
+.table-of-contents {
+	list-style: none;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	margin: 0 0 2.5rem 0;
+	padding: 0;
+	border-bottom: 1px solid $light-accent;
+	.dark &{
+		border-bottom: 1px solid $dark-accent;
+	}
+	li {
+		flex-grow: 1;
+		text-align: center;
+	}
+	.active-internal {
+		color: $dark-accent;
+	}
 }
-.showTable {
-	margin: 1rem 0 0 3rem;
+.accordion-toggle{
+	margin: 3rem 0 0 0;
+	cursor: pointer;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+
+	&.open-accordion {
+		&:after {
+			content: '';
+			width: 0; 
+			height: 0; 
+			border-left: 7px solid transparent;
+			border-right: 7px solid transparent;
+			border-bottom: 7px solid $light-font;
+			margin-left: 10px;
+			position: absolute;
+			top: 40%;
+			@media(min-width: $desktop) {
+				top: 45%;
+			}
+		}
+	}
+	&.closed-accordion {
+		margin-bottom: 3rem;
+		&:after {
+			content: '';
+			width: 0; 
+			height: 0; 
+			border-left: 7px solid transparent;
+			border-right: 7px solid transparent;
+			border-top: 7px solid $light-font;
+			margin-left: 10px;
+			position: absolute;
+			top:45%;
+			@media(min-width: $desktop) {
+				top: 50%;
+			}
+		}
+	}
+
+	@media(min-width: $desktop) {
+		margin: 3rem 0 0 3rem;
+		text-align: left;
+	}
+}
+.accordion-content {
+	display: block;
+	margin: 1rem 0 0 0;
 	max-height: 400px;
 	overflow: scroll;
+	border: 1px solid $light-accent;
+	padding: 5px;
+	//box-shadow: inset 0 0 10px hsla(0, 0%, 0%, 0.2);
+	@media(min-width: $desktop) {
+		border-width: 0 0 0 3px;
+		padding-left: 10px;
+		margin-left: 3rem;
+		margin-top: 2rem;
+	}
 }
 .circular {
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
 	width: 150px;
 	height: 150px;
 	border-radius: 150px;
@@ -139,43 +242,3 @@ footer {
 	height: 40px;
 	width: 40px;
 }
-// .stars {
-//   background:url(http://www.script-tutorials.com/demos/360/images/stars.png) repeat top center;
-//   z-index:2;
-// }
-// .twinkling{
-//   background:transparent url(http://www.script-tutorials.com/demos/360/images/twinkling.png) repeat top center;
-//   z-index:5;
-//   -moz-animation:move-twink-back 200s linear infinite;
-//   -ms-animation:move-twink-back 200s linear infinite;
-//   -o-animation:move-twink-back 200s linear infinite;
-//   -webkit-animation:move-twink-back 200s linear infinite;
-//   animation:move-twink-back 200s linear infinite;
-// }
-
-// @keyframes move-twink-back {
-//     from {background-position:0 0;}
-//     to {background-position:-10000px 5000px;}
-// }
-// @-webkit-keyframes move-twink-back {
-//     from {background-position:0 0;}
-//     to {background-position:-10000px 5000px;}
-// }
-// @-moz-keyframes move-twink-back {
-//     from {background-position:0 0;}
-//     to {background-position:-10000px 5000px;}
-// }
-// @-ms-keyframes move-twink-back {
-//     from {background-position:0 0;}
-//     to {background-position:-10000px 5000px;}
-// }
-// .stars, .twinkling {
-//   position:absolute;
-//   top:0;
-//   left:0;
-//   right:0;
-//   bottom:0;
-//   width:100%;
-//   height:100%;
-//   display:block;
-// }

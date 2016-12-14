@@ -12,6 +12,18 @@
 		<!--<link rel="icon" href="https://milligram.github.io/img/favicon.png">-->
 	</head>
 	<body>
+		<ul class="nav">
+			<li><a href="index.html">Draft</a></li>
+			<li><a href="decklists.html">Decks</a></li>
+			<li><a href="standings.html">Standings</a></li>
+			<li><a href="rules.html">Rules</a></li>
+			<li><a href="#" class="active">Seasons</a>
+				<ul>
+					<li><a href="data_2016.html" class="active">Season 1</a></li>
+					<li><a href="#">Season 2</a></li>
+				</ul>
+			</li>
+		</ul>
 		<header>
 			<section class="container">
 				<picture>
@@ -23,25 +35,42 @@
 			</section>
 		</header>
 		<main class="container">
-			<section>
-				<nav class="row">
-					<div class="column"><a href="index.html">Draft</a></div>
-					<div class="column"><a href="rules.html" class="active">League Rules</a></div>
-					<div class="column"><a href="data_2016.html">Season 1 Data</a></div>
-				</nav>
-			</section>
 			<section> 
 				<h1>League Rules</h1>
 				<p>This page will contain the league rules. Coming soon.</p>
+				<div id="accordion">
+					<h4 class="accordion-toggle">Accordion 1</h4>
+					<div class="accordion-content default">
+						<p>Cras malesuada ultrices augue molestie risus.</p>
+					</div>
+					<h4 class="accordion-toggle">Accordion 2</h4>
+					<div class="accordion-content">
+						<p>Lorem ipsum dolor sit amet mauris eu turpis.</p>
+					</div>
+					<h4 class="accordion-toggle">Accordion 3</h4>
+					<div class="accordion-content">
+						<p>Vivamus facilisisnibh scelerisque laoreet.</p>
+					</div>
+					<h3 class="accordion-toggle">Mimeoplasm</h3>
+					<div class="accordion-content">
+						<ol>
+							<li>Deadeye Navigator</li>
+							<li>Kozilek, Butcher of Truth</li>
+						</ol>
+					</div>
+				</div>
 			</section>
 			<footer>
 				<section>
 					<p>Magic the Gathering, FNM is TM and copyright Wizards of the Coast, Inc, a subsidiary of Hasbro, Inc. All rights reserved. This site is unaffiliated. /legalese
 					<br />
-					Site built using <a href="https://milligram.github.io/" target="new">Milligram.io</a> and <a href="http://www.chartjs.org/" target="new">Chart.js</a>
+					Site built using <a href="https://milligram.github.io/" target="new">Milligram.io</a>, <a href="http://www.chartjs.org/" target="new">Chart.js</a>, and <a href="https://www.w3.org/TR/css-flexbox-1/" target="new">Flexbox</a>.
 					</p>
 				</section>
 			</footer>
 		</main>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script>window.jQuery || document.write('<script src="js/vendor/jquery.min.js"><\/script>')</script>
+		<script src="js/frontend.js"></script>
 	</body>
 </html>

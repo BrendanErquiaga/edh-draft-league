@@ -339,7 +339,7 @@ input[type='radio'] {
       flex: 0 0 90%;
       max-width: 90%; }
 
-@media (min-width: 40rem) {
+@media (min-width: 73.125rem) {
   .row {
     flex-direction: row;
     margin-left: -1rem;
@@ -503,19 +503,65 @@ img {
 a.active {
   font-weight: bold; }
 
+.nav {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-bottom: 1px solid #d1d1d1;
+  background: #fff;
+  position: fixed;
+  top: 0;
+  z-index: 99;
+  height: 6rem; }
+  .nav li {
+    flex-grow: 1;
+    text-align: center;
+    position: relative;
+    margin: 0; }
+    .nav li a {
+      display: block;
+      width: 100%;
+      padding: 0;
+      margin: 0; }
+    .nav li ul {
+      display: none;
+      list-style: none;
+      position: absolute;
+      top: 100%;
+      margin: 0;
+      width: 100%;
+      background: #fff;
+      border: 1px solid #d1d1d1;
+      box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.5); }
+      .nav li ul li {
+        padding: 1rem 0 1rem 0;
+        margin: 0; }
+        @media (min-width: 73.125rem) {
+          .nav li ul li {
+            padding: 2rem 0 2rem 0; } }
+    .nav li:hover ul {
+      display: block; }
+
+header {
+  margin-top: 6rem; }
+
 .container {
   position: relative; }
-  .container nav {
-    padding: 0 2.0rem; }
-    .container nav .column {
-      text-align: center; }
-      .container nav .column a {
-        display: block;
-        width: 100%;
-        padding: 10px 0 10px 0;
-        text-transform: uppercase; }
   .container section {
-    padding: 2rem 2.5rem; }
+    padding: 1.5rem;
+    background: #fff;
+    color: #222; }
+    @media (min-width: 73.125rem) {
+      .container section {
+        padding: 2rem 2.5rem; } }
+    .container section a {
+      color: #9b4dca; }
+      .container section a:hover {
+        color: #461e5f; }
     .container section.dark {
       background: #222;
       color: #ccc; }
@@ -523,22 +569,6 @@ a.active {
         color: #ffff99; }
         .container section.dark a:hover {
           color: #ffd700; }
-  .container .stickynav {
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    background: #fff;
-    border-bottom: 1px solid #222;
-    z-index: 9999999; }
-    .container .stickynav ul {
-      width: 100%;
-      margin: 0; }
-      .container .stickynav ul li {
-        display: inline-block;
-        padding: 1% 5% 1% 5%; }
 
 canvas {
   max-width: 100%;
@@ -555,15 +585,80 @@ footer p {
   font-size: 1.2rem;
   margin: 0; }
 
-.accordion {
-  margin: 3rem 0 0 3rem; }
+.table-of-contents {
+  list-style: none;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  margin: 0 0 2.5rem 0;
+  padding: 0;
+  border-bottom: 1px solid #d1d1d1; }
+  .dark .table-of-contents {
+    border-bottom: 1px solid #8c8c8c; }
+  .table-of-contents li {
+    flex-grow: 1;
+    text-align: center; }
+  .table-of-contents .active-internal {
+    color: #8c8c8c; }
 
-.showTable {
-  margin: 1rem 0 0 3rem;
+.accordion-toggle {
+  margin: 3rem 0 0 0;
+  cursor: pointer;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative; }
+  .accordion-toggle.open-accordion:after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid #222;
+    margin-left: 10px;
+    position: absolute;
+    top: 40%; }
+    @media (min-width: 73.125rem) {
+      .accordion-toggle.open-accordion:after {
+        top: 45%; } }
+  .accordion-toggle.closed-accordion {
+    margin-bottom: 3rem; }
+    .accordion-toggle.closed-accordion:after {
+      content: '';
+      width: 0;
+      height: 0;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-top: 7px solid #222;
+      margin-left: 10px;
+      position: absolute;
+      top: 45%; }
+      @media (min-width: 73.125rem) {
+        .accordion-toggle.closed-accordion:after {
+          top: 50%; } }
+  @media (min-width: 73.125rem) {
+    .accordion-toggle {
+      margin: 3rem 0 0 3rem;
+      text-align: left; } }
+
+.accordion-content {
+  display: block;
+  margin: 1rem 0 0 0;
   max-height: 400px;
-  overflow: scroll; }
+  overflow: scroll;
+  border: 1px solid #d1d1d1;
+  padding: 5px; }
+  @media (min-width: 73.125rem) {
+    .accordion-content {
+      border-width: 0 0 0 3px;
+      padding-left: 10px;
+      margin-left: 3rem;
+      margin-top: 2rem; } }
 
 .circular {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
   width: 150px;
   height: 150px;
   border-radius: 150px;
