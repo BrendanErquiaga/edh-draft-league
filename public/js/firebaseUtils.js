@@ -39,6 +39,10 @@ function getFirebaseData() {
     firebase.database().ref('turns').on('value', function(snapshot){
         updateTurnOrderData(snapshot);
     });
+
+    messaging.onMessage(function(payload){
+      alert('Notification Received: ' + payload.notification.title + ' : ' + payload.notification.body);
+    })
 }
 
 /*
@@ -158,6 +162,6 @@ function saveCardToUserQueue(card){
 ~~~~~~~FIREBASE NOTIFICATIONS~~~~~~~~~~
 */
 
-messaging.onMessage(function(payload){
-  console.log('onMessage: ', payload);
-})
+// messaging.onMessage(function(payload){
+//   console.log('onMessage: ', payload);
+// })
