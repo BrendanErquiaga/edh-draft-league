@@ -503,22 +503,65 @@ img {
 a.active {
   font-weight: bold; }
 
+.nav {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-bottom: 1px solid #d1d1d1;
+  background: #fff;
+  position: fixed;
+  top: 0;
+  z-index: 99;
+  height: 6rem; }
+  .nav li {
+    flex-grow: 1;
+    text-align: center;
+    position: relative;
+    margin: 0; }
+    .nav li a {
+      display: block;
+      width: 100%;
+      padding: 0;
+      margin: 0; }
+    .nav li ul {
+      display: none;
+      list-style: none;
+      position: absolute;
+      top: 100%;
+      margin: 0;
+      width: 100%;
+      background: #fff;
+      border: 1px solid #d1d1d1;
+      box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.5); }
+      .nav li ul li {
+        padding: 1rem 0 1rem 0;
+        margin: 0; }
+        @media (min-width: 73.125rem) {
+          .nav li ul li {
+            padding: 2rem 0 2rem 0; } }
+    .nav li:hover ul {
+      display: block; }
+
+header {
+  margin-top: 6rem; }
+
 .container {
   position: relative; }
-  .container nav {
-    padding: 0 2.0rem; }
-    .container nav .column {
-      text-align: center; }
-      .container nav .column a {
-        display: block;
-        width: 100%;
-        padding: 10px 0 10px 0;
-        text-transform: uppercase; }
   .container section {
-    padding: 1.5rem; }
+    padding: 1.5rem;
+    background: #fff;
+    color: #222; }
     @media (min-width: 73.125rem) {
       .container section {
         padding: 2rem 2.5rem; } }
+    .container section a {
+      color: #9b4dca; }
+      .container section a:hover {
+        color: #461e5f; }
     .container section.dark {
       background: #222;
       color: #ccc; }
@@ -526,22 +569,6 @@ a.active {
         color: #ffff99; }
         .container section.dark a:hover {
           color: #ffd700; }
-  .container .stickynav {
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    background: #fff;
-    border-bottom: 1px solid #222;
-    z-index: 9999999; }
-    .container .stickynav ul {
-      width: 100%;
-      margin: 0; }
-      .container .stickynav ul li {
-        display: inline-block;
-        padding: 1% 5% 1% 5%; }
 
 canvas {
   max-width: 100%;
@@ -566,6 +593,8 @@ footer p {
   margin: 0 0 2.5rem 0;
   padding: 0;
   border-bottom: 1px solid #d1d1d1; }
+  .dark .table-of-contents {
+    border-bottom: 1px solid #8c8c8c; }
   .table-of-contents li {
     flex-grow: 1;
     text-align: center; }
