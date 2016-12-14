@@ -10,15 +10,17 @@ function simpleAccordions() {
 // Smooth scrolling on internal (same-page) links
 function smoothScroll() {
 	$('a[href*="#"]:not([href="#"])').click(function() {
-		event.preventDefault();
-
-	        var target = 'a[name="' + this.hash.slice(1) + '"]';
-	        target = $(target).offset().top + window.scrollY;
-	    	console.log(target);
-             $('body').animate({
-                 scrollTop: target.offset().top
-            }, 1000);
-	            return false;
+		if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+			var target = $(this.hash);
+			target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+			if (target.length) {
+				target = target.offset().top + window.scrollY;
+				$('html, body').animate({
+					scrollTop: target
+				}, 1000);
+				return false;
+			}
+		}
 	});
 }
 
