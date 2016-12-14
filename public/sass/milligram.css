@@ -339,7 +339,7 @@ input[type='radio'] {
       flex: 0 0 90%;
       max-width: 90%; }
 
-@media (min-width: 40rem) {
+@media (min-width: 73.125rem) {
   .row {
     flex-direction: row;
     margin-left: -1rem;
@@ -516,7 +516,7 @@ a.active {
         text-transform: uppercase; }
   .container section {
     padding: 1.5rem; }
-    @media (min-width: 768px) {
+    @media (min-width: 73.125rem) {
       .container section {
         padding: 2rem 2.5rem; } }
     .container section.dark {
@@ -573,16 +573,63 @@ footer p {
     color: #8c8c8c; }
 
 .accordion-toggle {
-  margin: 3rem 0 0 3rem;
-  cursor: pointer; }
+  margin: 3rem 0 0 0;
+  cursor: pointer;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative; }
+  .accordion-toggle.open-accordion:after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid #222;
+    margin-left: 10px;
+    position: absolute;
+    top: 40%; }
+    @media (min-width: 73.125rem) {
+      .accordion-toggle.open-accordion:after {
+        top: 45%; } }
+  .accordion-toggle.closed-accordion {
+    margin-bottom: 3rem; }
+    .accordion-toggle.closed-accordion:after {
+      content: '';
+      width: 0;
+      height: 0;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-top: 7px solid #222;
+      margin-left: 10px;
+      position: absolute;
+      top: 45%; }
+      @media (min-width: 73.125rem) {
+        .accordion-toggle.closed-accordion:after {
+          top: 50%; } }
+  @media (min-width: 73.125rem) {
+    .accordion-toggle {
+      margin: 3rem 0 0 3rem;
+      text-align: left; } }
 
 .accordion-content {
   display: block;
-  margin: 1rem 0 0 3rem;
+  margin: 1rem 0 0 0;
   max-height: 400px;
-  overflow: scroll; }
+  overflow: scroll;
+  border: 1px solid #d1d1d1;
+  padding: 5px; }
+  @media (min-width: 73.125rem) {
+    .accordion-content {
+      border-width: 0 0 0 3px;
+      padding-left: 10px;
+      margin-left: 3rem;
+      margin-top: 2rem; } }
 
 .circular {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
   width: 150px;
   height: 150px;
   border-radius: 150px;

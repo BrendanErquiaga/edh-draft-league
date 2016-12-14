@@ -2,6 +2,7 @@
 function simpleAccordions() {
 	$('.accordion-content').hide();
 	$('body').find('.accordion-toggle').click(function(){
+	$(this).toggleClass('open-accordion closed-accordion');
 	$(this).next().slideToggle('fast');
 	//$(".accordion-content").not($(this).next()).slideUp('fast');
 	});
