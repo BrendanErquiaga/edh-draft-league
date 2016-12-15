@@ -45,7 +45,7 @@ function currentUsersTurn() {
 
 function getNextCardFromUsersQueue(autoDraftedUserId) {
     var cardName;
-    queuedCardSnapshot.forEach(function(childSnapshot) {
+    queuedCardsSnapshot.forEach(function(childSnapshot) {
         var key = childSnapshot.key;
         if (key === autoDraftedUserId) {
             cardName = childSnapshot.child("0").val();
@@ -113,27 +113,15 @@ function goToNextTurn() {
 }
 
 function sendTurnAdvancedNotification() {
-    //TODO: Send this only to the next player. Get token from firebase
-
-    var dataObject = {
-        "notification": {
-            "title": "This is a notification",
-            "body": "Someone picked a card",
-            "icon": "/img/icons/badge_c_512.png"
-        }
-    };
-
-    dataObject.to = getTokenForNextDrafter();
-    console.log('Send this: ', dataObject);
     $.ajax({
         type: 'POST',
         beforeSend: function(request) {
             request.setRequestHeader("Authorization", "key=" + senderKey);
         },
         url: 'https://fcm.googleapis.com/fcm/send',
-        data: JSON.stringify(dataObject),
+        data: JSON.stringify(getNotificationObject()),
         success: function(response) {
-            console.log('We did it', response);
+            //console.log('We did it', response);
         },
         failure: function(response) {
             console.log('Well notification post failed', response);
@@ -141,6 +129,28 @@ function sendTurnAdvancedNotification() {
         contentType: "application/json",
         dataType: 'json'
     });
+}
+
+function getNotificationObject() {
+  var notificationObject = {
+      "notification": {
+          "title": "Somone picked a card",
+          "body": "Its your turn!",
+          "icon": "/img/icons/badge_c_512.png"
+      }
+  };
+  notificationObject.notification.title = getLastCardDraftedString();
+  notificationObject.notification.body = "It's your turn to draft!";
+  notificationObject.notification.icon = usersSnapshot[getNextDrafterId()].profile_picture;
+
+  notificationObject.to = getTokenForNextDrafter();
+
+  return notificationObject;
+}
+
+function getLastCardDraftedString() {
+  var lastDraftObject = recentlyDraftCards[recentlyDraftCards.length - 1];
+  return usersSnapshot[lastDraftObject.drafterId].username + ' picked ' + lastDraftObject.name;
 }
 
 function getTokenForNextDrafter() {
