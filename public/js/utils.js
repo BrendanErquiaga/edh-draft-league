@@ -1,5 +1,7 @@
 'use strict';
 
+var senderKey = "AAAAWRkfbzA:APA91bEhDBDOSArAdhSpI_SFiWh2K-1S7m0Te2OL_Av7JKMdsBXY26rcc7KsaL-lVqN-uzIHU-Xl6wBIrpmoXCe5_O6tNtu1mye5kgX3LbvimYpZ0Ul3hhNsLPvPtoFiOVmZk6rp9SJq2T7oB15Bl_jdEyfHCyJ-dA";
+
 function getNextDrafterId() {
     return turnOrderObject.turnOrder[turnOrderObject.turnIndex];
 }
@@ -110,20 +112,19 @@ function goToNextTurn() {
     sendTurnAdvancedNotification();
 }
 
-var senderKey = "AAAAWRkfbzA:APA91bEhDBDOSArAdhSpI_SFiWh2K-1S7m0Te2OL_Av7JKMdsBXY26rcc7KsaL-lVqN-uzIHU-Xl6wBIrpmoXCe5_O6tNtu1mye5kgX3LbvimYpZ0Ul3hhNsLPvPtoFiOVmZk6rp9SJq2T7oB15Bl_jdEyfHCyJ-dA";
-
 function sendTurnAdvancedNotification() {
     //TODO: Send this only to the next player. Get token from firebase
 
     var dataObject = {
-        "to": notificationToken,
         "notification": {
             "title": "This is a notification",
             "body": "Someone picked a card",
             "icon": "/img/icons/badge_c_512.png"
         }
     };
-    console.log('Attempting a post!', dataObject);
+
+    dataObject.to = getTokenForNextDrafter();
+    console.log('Send this: ', dataObject);
     $.ajax({
         type: 'POST',
         beforeSend: function(request) {
@@ -140,4 +141,8 @@ function sendTurnAdvancedNotification() {
         contentType: "application/json",
         dataType: 'json'
     });
+}
+
+function getTokenForNextDrafter() {
+  return usersSnapshot[getNextDrafterId()].fcm_token;
 }

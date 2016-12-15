@@ -41,7 +41,11 @@ function getMessagingToken(){
 
 function sendTokenToServer(token) {
   console.log('Token! ', token);
-  notificationToken = token;
+  if(userId !== null && userId !== undefined){
+    firebase.database().ref('users/' + userId).update({
+        fcm_token: token
+    });
+  }
 }
 
 /**
@@ -67,8 +71,8 @@ function onAuthStateChanged(user) {
 }
 
 // Saves basic user data
-function saveUserData(userId, name, email, imageUrl) {
-    firebase.database().ref('users/' + userId).update({
+function saveUserData(loggedInUserId, name, email, imageUrl) {
+    firebase.database().ref('users/' + loggedInUserId).update({
         username: name,
         email: email,
         profile_picture: imageUrl
