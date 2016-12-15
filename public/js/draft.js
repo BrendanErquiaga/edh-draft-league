@@ -159,8 +159,11 @@ function initTypeAhead() {
                             matches.push(str);
                         }
                     });
-
-                    cb(matches);
+                    cb(
+                      matches.sort(function(a, b){
+                        return a.length - b.length;
+                      })
+                    );
                 };
             };
             retrievedData = localStorage.getItem("mtgjsonLocation");
@@ -168,7 +171,7 @@ function initTypeAhead() {
             $('#userInput .typeahead').typeahead({
                 hint: false,
                 highlight: true,
-                minLength: 1
+                minLength: 2
             }, {
                 name: 'cards',
                 limit: 10,
