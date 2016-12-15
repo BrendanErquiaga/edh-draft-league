@@ -43,17 +43,26 @@ function currentUsersTurn() {
     return false;
 }
 
-function getNextCardFromUsersQueue(autoDraftedUserId) {
+function getNextCardFromUsersQueue(userIdToUse) {
     var cardName;
     queuedCardsSnapshot.forEach(function(childSnapshot) {
         var key = childSnapshot.key;
-        if (key === autoDraftedUserId) {
+        if (key === userIdToUse) {
             cardName = childSnapshot.child("0").val();
             return;
         }
     });
 
     return cardName;
+}
+
+function getLastCardDraftedString() {
+  var lastDraftObject = recentlyDraftCards[recentlyDraftCards.length - 1];
+  return usersSnapshot[lastDraftObject.drafterId].username + ' picked: ' + lastDraftObject.name;
+}
+
+function getTokenForNextDrafter() {
+  return usersSnapshot[getNextDrafterId()].fcm_token;
 }
 
 function getCardObject(card) {
@@ -112,26 +121,85 @@ function goToNextTurn() {
     sendTurnAdvancedNotification();
 }
 
+/*
+~~~~~~~Notifications~~~~~~~~~~
+*/
+
 function sendTurnAdvancedNotification() {
+    //Don't double notify someone who is globablly subbed
+    if(usersSnapshot[getNextDrafterId()].globallySubscribed !== true){
+      sendTargetdTurnNotification();
+    }
+    sendGlobalTurnNotification();
+}
+
+function sendTargetdTurnNotification(){
+  $.ajax({
+      type: 'POST',
+      beforeSend: function(request) {
+          request.setRequestHeader("Authorization", "key=" + senderKey);
+      },
+      url: 'https://fcm.googleapis.com/fcm/send',
+      data: JSON.stringify(getNextTurnNotificationObject()),
+      success: function(response) {
+          //console.log('We did it', response);
+      },
+      failure: function(response) {
+          console.log('Well notification post failed', response);
+      },
+      contentType: "application/json",
+      dataType: 'json'
+  });
+}
+
+function sendGlobalTurnNotification(){
+  $.ajax({
+      type: 'POST',
+      beforeSend: function(request) {
+          request.setRequestHeader("Authorization", "key=" + senderKey);
+      },
+      url: 'https://fcm.googleapis.com/fcm/send',
+      data: JSON.stringify(getGroupTurnNotificationObject()),
+      success: function(response) {
+          //console.log('We did it', response);
+      },
+      failure: function(response) {
+          console.log('Well notification post failed', response);
+      },
+      contentType: "application/json",
+      dataType: 'json'
+  });
+}
+
+function manageGlobalSubscribe(requestType) {
+    var requestUrl = "https://iid.googleapis.com/iid/v1/" + notificationToken + "/rel/topics/draft";
+
     $.ajax({
-        type: 'POST',
+        type: requestType,
         beforeSend: function(request) {
             request.setRequestHeader("Authorization", "key=" + senderKey);
         },
-        url: 'https://fcm.googleapis.com/fcm/send',
-        data: JSON.stringify(getNotificationObject()),
+        url: requestUrl,
         success: function(response) {
-            //console.log('We did it', response);
+            //console.log('We did a thing, you wanted to be subbed: ', requestType, response);
         },
         failure: function(response) {
-            console.log('Well notification post failed', response);
+            console.log('Failed to sub/unsub you', response);
         },
         contentType: "application/json",
         dataType: 'json'
     });
 }
 
-function getNotificationObject() {
+function getGroupTurnNotificationObject() {
+  var newNotificationObject = getNextTurnNotificationObject();
+  newNotificationObject.to = "/topics/draft";
+  newNotificationObject.notification.body = usersSnapshot[getNextDrafterId()].username + ' is up next.';
+
+  return newNotificationObject;
+}
+
+function getNextTurnNotificationObject() {
   var notificationObject = {
       "notification": {
           "title": "Somone picked a card",
@@ -148,11 +216,5 @@ function getNotificationObject() {
   return notificationObject;
 }
 
-function getLastCardDraftedString() {
-  var lastDraftObject = recentlyDraftCards[recentlyDraftCards.length - 1];
-  return usersSnapshot[lastDraftObject.drafterId].username + ' picked ' + lastDraftObject.name;
-}
 
-function getTokenForNextDrafter() {
-  return usersSnapshot[getNextDrafterId()].fcm_token;
-}
+

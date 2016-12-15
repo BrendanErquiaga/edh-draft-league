@@ -83,6 +83,7 @@ function updateUsersSnapshot(snapshot) {
 
   if($(document.body).hasClass('draft')) {
     matchAutoDraftSwitch();
+    matchGlobalSubscribeSwitch();
   }
 }
 
@@ -106,6 +107,19 @@ function updateDraftedCardData(snapshot) {
 /*
 ~~~~~~~FIREBASE Save~~~~~~~~~~
 */
+
+function saveGlobalSubscribeStatus(globalSubscribeEnabled) {
+  firebase.database().ref('users/' + userId).update({
+    globallySubscribed: globalSubscribeEnabled
+  });
+
+  if(globalSubscribeEnabled){
+    manageGlobalSubscribe('POST');
+  }
+  else {
+    manageGlobalSubscribe('DELETE');
+  }
+}
 
 function saveAutoDraftStatus(autoDraftEnabled){
   firebase.database().ref('users/' + userId).update({

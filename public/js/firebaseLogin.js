@@ -40,7 +40,7 @@ function getMessagingToken(){
 }
 
 function sendTokenToServer(token) {
-  console.log('Token! ', token);
+  notificationToken = token;
   if(userId !== null && userId !== undefined){
     firebase.database().ref('users/' + userId).update({
         fcm_token: token
