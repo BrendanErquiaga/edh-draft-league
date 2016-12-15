@@ -95,6 +95,10 @@ function catchDraftPageInput() {
     $('#autoDraftSwitch').change(function(){
       saveAutoDraftStatus(this.checked);
     });
+
+    $('#globalSubscribeSwitch').change(function(){
+      saveGlobalSubscribeStatus(this.checked);
+    });
 }
 
 function clearCardInputField() {
@@ -130,6 +134,12 @@ function updatePickedCardUI(){
 function matchAutoDraftSwitch() {
   if(usersSnapshot[userId].autoDraft === true){
     $('#autoDraftSwitch').prop('checked', true);
+  }
+}
+
+function matchGlobalSubscribeSwitch() {
+  if(usersSnapshot[userId].globallySubscribed === true){
+    $('#globalSubscribeSwitch').prop('checked', true);
   }
 }
 

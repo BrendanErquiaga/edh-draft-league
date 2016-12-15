@@ -2,18 +2,21 @@
 
 var usersSnapshot,
     draftMasterObject,
-    draftedCardRef,
+    draftedCardsRef,
     draftedCardsSnapshot,
-    queuedCardRef,
-    queuedCardSnapshot,
+    queuedCardsRef,
+    queuedCardsSnapshot,
+    recentlyDraftCardsRef,
+    recentlyDraftCards,
     allcardsLocal,
     allcardsLocation = "/js/json/allcards.json",
     bannedCardList,
     turnOrderObject;
 
 function getFirebaseData() {
-    draftedCardRef = firebase.database().ref('draftedUserCards');
-    queuedCardRef = firebase.database().ref('queuedUserCards');
+    draftedCardsRef = firebase.database().ref('draftedUserCards');
+    queuedCardsRef = firebase.database().ref('queuedUserCards');
+    recentlyDraftCardsRef = firebase.database().ref('recentlyDraftedCards');
 
     firebase.database().ref('users').on('value', function(snapshot) {
         updateUsersSnapshot(snapshot);
@@ -23,8 +26,12 @@ function getFirebaseData() {
         updateDraftedCardData(snapshot);
     });
 
-    queuedCardRef.on('value', function(snapshot){
-      queuedCardSnapshot = snapshot;
+    queuedCardsRef.on('value', function(snapshot){
+      queuedCardsSnapshot = snapshot;
+    });
+
+    recentlyDraftCardsRef.on('value', function(snapshot) {
+      updateRecentlyDraftedCards(snapshot);
     });
 
     firebase.database().ref('banList').once('value').then(function(snapshot) {
@@ -39,11 +46,27 @@ function getFirebaseData() {
     firebase.database().ref('turns').on('value', function(snapshot){
         updateTurnOrderData(snapshot);
     });
+
+    messaging.onMessage(function(payload){
+      alert(payload.notification.title + ' : ' + payload.notification.body);
+    })
 }
 
 /*
 ~~~~~~~FIREBASE UPDATE~~~~~~~~~~
 */
+
+function updateRecentlyDraftedCards(snapshot){
+  recentlyDraftCards = snapshot.val();
+
+  if(recentlyDraftCards !== null){
+    recentlyDraftCards = Object.values(recentlyDraftCards);
+  } else {
+    recentlyDraftCards = [];
+  }
+
+  //TODO: Add UI elements for recently drafted cards
+}
 
 function updateTurnOrderData(snapshot){
   turnOrderObject = snapshot.val();
@@ -60,6 +83,7 @@ function updateUsersSnapshot(snapshot) {
 
   if($(document.body).hasClass('draft')) {
     matchAutoDraftSwitch();
+    matchGlobalSubscribeSwitch();
   }
 }
 
@@ -83,6 +107,19 @@ function updateDraftedCardData(snapshot) {
 /*
 ~~~~~~~FIREBASE Save~~~~~~~~~~
 */
+
+function saveGlobalSubscribeStatus(globalSubscribeEnabled) {
+  firebase.database().ref('users/' + userId).update({
+    globallySubscribed: globalSubscribeEnabled
+  });
+
+  if(globalSubscribeEnabled){
+    manageGlobalSubscribe('POST');
+  }
+  else {
+    manageGlobalSubscribe('DELETE');
+  }
+}
 
 function saveAutoDraftStatus(autoDraftEnabled){
   firebase.database().ref('users/' + userId).update({
@@ -114,7 +151,7 @@ function saveTurnOrderObject(tempTurnOrderObject){
 function cleanOutQueuedCards(cardLastPicked){
   var newQueueObject = {};
 
-  queuedCardSnapshot.forEach(function(childSnapshot) {
+  queuedCardsSnapshot.forEach(function(childSnapshot) {
       var key = childSnapshot.key;
       var val = childSnapshot.val();
       newQueueObject[key] = Object.values(val);
@@ -129,12 +166,12 @@ function cleanOutQueuedCards(cardLastPicked){
   //console.log(newQueueObject);
 
   if(newQueueObject !== null) {
-    queuedCardRef.set(newQueueObject);
+    queuedCardsRef.set(newQueueObject);
   }
 }
 
 function savePickedCardToFirebase(cardObject, idToUse){
-  var newCardRef = draftedCardRef.child(idToUse).push();
+  var newCardRef = draftedCardsRef.child(idToUse).push();
   newCardRef.set({
       name: cardObject.name,
       type: cardObject.type,
@@ -146,6 +183,15 @@ function savePickedCardToFirebase(cardObject, idToUse){
   });
 
   cleanOutQueuedCards(cardObject.name);
+  saveRecentlyPickedCards(cardObject.name, idToUse);
+}
+
+function saveRecentlyPickedCards(cardName, drafterId) {
+  var newCardRef = recentlyDraftCardsRef.push();
+  newCardRef.set({
+    name: cardName,
+    drafterId: drafterId
+  });
 }
 
 function saveCardToUserQueue(card){
@@ -153,3 +199,11 @@ function saveCardToUserQueue(card){
 
   firebase.database().ref('queuedUserCards/').child(userId).set(userQueuedCards);
 }
+
+/*
+~~~~~~~FIREBASE NOTIFICATIONS~~~~~~~~~~
+*/
+
+// messaging.onMessage(function(payload){
+//   console.log('onMessage: ', payload);
+// })
