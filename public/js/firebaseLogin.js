@@ -1,7 +1,8 @@
 'use strict';
 
 var userId,
-    userQueuedCards;
+    userQueuedCards,
+    notificationToken;
 
 // Retrieve Firebase Messaging object.
 const messaging = firebase.messaging();
@@ -29,27 +30,18 @@ function getMessagingToken(){
     .then(function(currentToken) {
       if (currentToken) {
         sendTokenToServer(currentToken);
-        //updateUIForPushEnabled(currentToken);
       } else {
-        // Show permission request.
         console.log('No Instance ID token available. Request permission to generate one.');
-        // Show permission UI.
-        //updateUIForPushPermissionRequired();
-        setTokenSentToServer(false);
       }
     })
     .catch(function(err) {
       console.log('An error occurred while retrieving token. ', err);
-      setTokenSentToServer(false);
     });
 }
 
 function sendTokenToServer(token) {
   console.log('Token! ', token);
-}
-
-function setTokenSentToServer(tokenSentToServer) {
-  console.log('I sent the token to the server. ',tokenSentToServer);
+  notificationToken = token;
 }
 
 /**

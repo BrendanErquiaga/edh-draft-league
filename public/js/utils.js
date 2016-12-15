@@ -1,7 +1,7 @@
 'use strict';
 
-function getNextDrafterId(){
-  return turnOrderObject.turnOrder[turnOrderObject.turnIndex];
+function getNextDrafterId() {
+    return turnOrderObject.turnOrder[turnOrderObject.turnIndex];
 }
 
 function cardIsFree(card) {
@@ -31,27 +31,27 @@ function cardIsBanned(card) {
 }
 
 //Checks if it is the current users turn
-function currentUsersTurn(){
-  if(turnOrderObject.turnOrder[turnOrderObject.turnIndex] === userId) {
-    console.log('Its your turn! Draft away!');
+function currentUsersTurn() {
+    if (turnOrderObject.turnOrder[turnOrderObject.turnIndex] === userId) {
+        console.log('Its your turn! Draft away!');
 
-    return true;
-  }
+        return true;
+    }
 
-  return false;
+    return false;
 }
 
-function getNextCardFromUsersQueue(autoDraftedUserId){
-  var cardName;
-  queuedCardSnapshot.forEach(function(childSnapshot) {
-      var key = childSnapshot.key;
-      if(key === autoDraftedUserId){
-        cardName = childSnapshot.child("0").val();
-        return;
-      }
-  });
+function getNextCardFromUsersQueue(autoDraftedUserId) {
+    var cardName;
+    queuedCardSnapshot.forEach(function(childSnapshot) {
+        var key = childSnapshot.key;
+        if (key === autoDraftedUserId) {
+            cardName = childSnapshot.child("0").val();
+            return;
+        }
+    });
 
-  return cardName;
+    return cardName;
 }
 
 function getCardObject(card) {
@@ -79,33 +79,65 @@ function getCardObject(card) {
 }
 
 function goToNextTurn() {
-  var tempTurnOrderObject = turnOrderObject;
+    var tempTurnOrderObject = turnOrderObject;
 
-  if(tempTurnOrderObject.ascendingTurnOrder){
-    tempTurnOrderObject.turnIndex++;
-  }
-  else {
-    tempTurnOrderObject.turnIndex--;
-  }
+    if (tempTurnOrderObject.ascendingTurnOrder) {
+        tempTurnOrderObject.turnIndex++;
+    } else {
+        tempTurnOrderObject.turnIndex--;
+    }
 
-  //If we've reached the end of the array start counting down
-  if(tempTurnOrderObject.turnIndex >= tempTurnOrderObject.turnOrder.length) {
-    tempTurnOrderObject.ascendingTurnOrder = false;
-    tempTurnOrderObject.turnIndex--;
-    //console.log(' SNAKE FOR ' + tempTurnOrderObject.turnOrder[tempTurnOrderObject.turnIndex]);
-  }//If we've reached the bottom of the array, move players & start counting up
-  else if(tempTurnOrderObject.turnIndex < 0) {
-    var firstPick = tempTurnOrderObject.turnOrder[0];
-    tempTurnOrderObject.turnOrder.splice(0,1);
-    tempTurnOrderObject.turnOrder.push(firstPick);
-    tempTurnOrderObject.ascendingTurnOrder = true;
-    tempTurnOrderObject.turnIndex = 0;
-    //dataObject.misc.roundNumber++; TODO: Store round data somewhere
-    //console.log('NEXT ROUND ' + tempTurnOrderObject.turnOrder);
-  }
+    //If we've reached the end of the array start counting down
+    if (tempTurnOrderObject.turnIndex >= tempTurnOrderObject.turnOrder.length) {
+        tempTurnOrderObject.ascendingTurnOrder = false;
+        tempTurnOrderObject.turnIndex--;
+        //console.log(' SNAKE FOR ' + tempTurnOrderObject.turnOrder[tempTurnOrderObject.turnIndex]);
+    } //If we've reached the bottom of the array, move players & start counting up
+    else if (tempTurnOrderObject.turnIndex < 0) {
+        var firstPick = tempTurnOrderObject.turnOrder[0];
+        tempTurnOrderObject.turnOrder.splice(0, 1);
+        tempTurnOrderObject.turnOrder.push(firstPick);
+        tempTurnOrderObject.ascendingTurnOrder = true;
+        tempTurnOrderObject.turnIndex = 0;
+        //dataObject.misc.roundNumber++; TODO: Store round data somewhere
+        //console.log('NEXT ROUND ' + tempTurnOrderObject.turnOrder);
+    }
 
-  //console.log(tempTurnOrderObject);
+    //console.log(tempTurnOrderObject);
 
-  saveTurnOrderObject(tempTurnOrderObject);
-  //TODO: increment pick number
+    saveTurnOrderObject(tempTurnOrderObject);
+    //TODO: increment pick number
+    sendTurnAdvancedNotification();
+}
+
+var senderKey = "AAAAWRkfbzA:APA91bEhDBDOSArAdhSpI_SFiWh2K-1S7m0Te2OL_Av7JKMdsBXY26rcc7KsaL-lVqN-uzIHU-Xl6wBIrpmoXCe5_O6tNtu1mye5kgX3LbvimYpZ0Ul3hhNsLPvPtoFiOVmZk6rp9SJq2T7oB15Bl_jdEyfHCyJ-dA";
+
+function sendTurnAdvancedNotification() {
+    //TODO: Send this only to the next player. Get token from firebase
+
+    var dataObject = {
+        "to": notificationToken,
+        "notification": {
+            "title": "This is a notification",
+            "body": "Someone picked a card",
+            "icon": "/img/icons/badge_c_512.png"
+        }
+    };
+    console.log('Attempting a post!', dataObject);
+    $.ajax({
+        type: 'POST',
+        beforeSend: function(request) {
+            request.setRequestHeader("Authorization", "key=" + senderKey);
+        },
+        url: 'https://fcm.googleapis.com/fcm/send',
+        data: JSON.stringify(dataObject),
+        success: function(response) {
+            console.log('We did it', response);
+        },
+        failure: function(response) {
+            console.log('Well notification post failed', response);
+        },
+        contentType: "application/json",
+        dataType: 'json'
+    });
 }
