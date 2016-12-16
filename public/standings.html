@@ -36,75 +36,80 @@
 			</section>
 		</header>
 		<main class="container">
-			<section> 
-				<h1>League Standings</h1>
-				<p>Current ELO rating of all players in the league.</p>
-						<div>
-							<canvas id="eloStandings"></canvas>
-						</div>
-						<script>
-						var ctx = document.getElementById("eloStandings");
-						var eloStandings = new Chart(ctx, {
-							type: 'bar',
-							data: {
-								labels: ["Player 1", "Player 2", "Player 3", "Player 4", "Player 5", "Player 6", "Player 7", "Player 8"],
-								datasets: [{
-									data: [1488,1454,1484,1435,1317,1239,1194,838],
-									backgroundColor: [
-										'rgba(255, 99, 132, 0.7)',
-										'rgba(54, 162, 235, 0.7)',
-										'rgba(151, 255, 86, 0.7)',
-										'rgba(75, 192, 192, 0.7)',
-										'rgba(153, 102, 255, 0.7)',
-										'rgba(255, 159, 64, 0.7)',
-										'rgba(111, 64, 255, 0.7)',
-										'rgba(10, 162, 43, 0.7)'
-									],
-									borderColor: "#000",
-									borderWidth: 1
-								}]
-							},
-							options: {
-								title: {
-									display: true,
-									text: 'ELO Rating',
-									fontColor: "#ccc"
-										},
-								maintainAspectRatio: true,
-								responsive: true,
-								legend: {
-									display: false,
-										},
-								tooltips: {
-									enabled: true,
-										},
-								scales: {
-									yAxes: [{
-										ticks: {
-											beginAtZero:true,
-											fontColor: "#ccc"
-										},
-										gridLines: {
-											show: true,
-											color: "rgba(80, 80, 80, 0.5)",
+			<section>
+				<div class="row">
+					<div class="column">
+						<h2>League Standings</h2>
+						<p>Current ELO rating of all players in the league.</p>
+								<div>
+									<canvas id="eloStandings"></canvas>
+								</div>
+								<script>
+								var ctx = document.getElementById("eloStandings");
+								var eloStandings = new Chart(ctx, {
+									type: 'bar',
+									data: {
+										labels: ["Player 1", "Player 2", "Player 3", "Player 4", "Player 5", "Player 6", "Player 7", "Player 8"],
+										datasets: [{
+											data: [1488,1454,1484,1435,1317,1239,1194,838],
+											backgroundColor: [
+												'rgba(255, 99, 132, 0.7)',
+												'rgba(54, 162, 235, 0.7)',
+												'rgba(151, 255, 86, 0.7)',
+												'rgba(75, 192, 192, 0.7)',
+												'rgba(153, 102, 255, 0.7)',
+												'rgba(255, 159, 64, 0.7)',
+												'rgba(111, 64, 255, 0.7)',
+												'rgba(10, 162, 43, 0.7)'
+											],
+											borderColor: "#000",
+											borderWidth: 1
+										}]
+									},
+									options: {
+										title: {
+											display: true,
+											text: 'ELO Rating',
+											fontColor: "#222"
+												},
+										maintainAspectRatio: true,
+										responsive: true,
+										legend: {
+											display: false,
+												},
+										tooltips: {
+											enabled: true,
+												},
+										scales: {
+											yAxes: [{
+												ticks: {
+													beginAtZero:true,
+													fontColor: "#222"
+												},
+												gridLines: {
+													show: true,
+													color: "rgba(80, 80, 80, 0.5)",
+												}
+											}],
+											xAxes: [{
+												ticks: {
+													beginAtZero:true,
+													fontColor: "#222"
+												},
+												gridLines: {
+													show: true,
+													color: "rgba(80, 80, 80, 0.5)",
+												}
+											}]
 										}
-									}],
-									xAxes: [{
-										ticks: {
-											beginAtZero:true,
-											fontColor: "#ccc"
-										},
-										gridLines: {
-											show: true,
-											color: "rgba(80, 80, 80, 0.5)",
-										}
-									}]
-								}
-							}
-						});
-						</script>
-						<br />
+									}
+								});
+								</script>
+								<br />
+					</div>
+					<div class="column">
 						<h2>Match Records</h2>
+						<p>Point Legend - <strong>K:</strong> Kill, <strong>V:</strong> Vote, <strong>W:</strong> Match Win</p>
 						<div class="match-table">
 							<table>
 								<tr class="data-header-fixed">
@@ -266,8 +271,163 @@
 										</table>
 									</td>
 								</tr>
+								<tr class="data-row">
+									<td class="cell-date">01/01/17</td>
+									<td class="cell-players">
+										<table>
+											<tr>
+												<td>Player 1</td>
+											</tr>
+											<tr>
+												<td>Player 2</td>
+											</tr>
+											<tr>
+												<td>Player 3</td>
+											</tr>
+											<tr>
+												<td>Player 4</td>
+											</tr>
+										</table>
+									</td>
+									<td class="cell-points">
+										<table>
+											<tr>
+												<td>K,K,W</td>
+											</tr>
+											<tr>
+												<td>V,V,V</td>
+											</tr>
+											<tr>
+												<td>K,V</td>
+											</tr>
+											<tr>
+												<td>-</td>
+											</tr>
+										</table>
+									</td>
+									<td class="cell-elo">
+										<table>
+											<tr>
+												<td>+100</td>
+											</tr>
+											<tr>
+												<td>+50</td>
+											</tr>
+											<tr>
+												<td>+25</td>
+											</tr>
+											<tr>
+												<td>-75</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr class="data-row">
+									<td class="cell-date">01/01/17</td>
+									<td class="cell-players">
+										<table>
+											<tr>
+												<td>Player 1</td>
+											</tr>
+											<tr>
+												<td>Player 2</td>
+											</tr>
+											<tr>
+												<td>Player 3</td>
+											</tr>
+											<tr>
+												<td>Player 4</td>
+											</tr>
+										</table>
+									</td>
+									<td class="cell-points">
+										<table>
+											<tr>
+												<td>K,K,W</td>
+											</tr>
+											<tr>
+												<td>V,V,V</td>
+											</tr>
+											<tr>
+												<td>K,V</td>
+											</tr>
+											<tr>
+												<td>-</td>
+											</tr>
+										</table>
+									</td>
+									<td class="cell-elo">
+										<table>
+											<tr>
+												<td>+100</td>
+											</tr>
+											<tr>
+												<td>+50</td>
+											</tr>
+											<tr>
+												<td>+25</td>
+											</tr>
+											<tr>
+												<td>-75</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr class="data-row">
+									<td class="cell-date">01/01/17</td>
+									<td class="cell-players">
+										<table>
+											<tr>
+												<td>Player 1</td>
+											</tr>
+											<tr>
+												<td>Player 2</td>
+											</tr>
+											<tr>
+												<td>Player 3</td>
+											</tr>
+											<tr>
+												<td>Player 4</td>
+											</tr>
+										</table>
+									</td>
+									<td class="cell-points">
+										<table>
+											<tr>
+												<td>K,K,W</td>
+											</tr>
+											<tr>
+												<td>V,V,V</td>
+											</tr>
+											<tr>
+												<td>K,V</td>
+											</tr>
+											<tr>
+												<td>-</td>
+											</tr>
+										</table>
+									</td>
+									<td class="cell-elo">
+										<table>
+											<tr>
+												<td>+100</td>
+											</tr>
+											<tr>
+												<td>+50</td>
+											</tr>
+											<tr>
+												<td>+25</td>
+											</tr>
+											<tr>
+												<td>-75</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
 							</table>
 						</div>
+					</div>
+				</div>
 			</section>
 			<section class="dark">
 				<h2>Player Stats</h2>
