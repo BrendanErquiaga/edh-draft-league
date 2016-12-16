@@ -1,5 +1,7 @@
 "use strict";
 
+var recentlDraftedCardArrayLimit = 10;
+
 $(document).ready(function() {
     requirejs(['./utils','./firebaseUtils'], function(){
           pageReady();
@@ -110,7 +112,20 @@ function clearCardInputField() {
 */
 
 //TODO: Right now this just clears the whole list every time, should only do that on load
-function updateQueuedCardUI(){
+function updateRecentlyDraftedCardsUI(){
+  var recentlyDraftedUL = $("#recentlyDraftedList");
+
+  recentlyDraftedUL.empty();
+
+  for(var i = 0; i < recentlyDraftCards.length; i++){
+    recentlyDraftedUL.append('<li>' +
+      usersSnapshot[recentlyDraftCards[i].drafterId].username + ' - ' +
+      recentlyDraftCards[i].name + '</li>');
+  }
+}
+
+//TODO: Right now this just clears the whole list every time, should only do that on load
+function updateQueuedCardsUI(){
   var queuedCardsUL = $("#queuedCards");
 
   queuedCardsUL.empty();
@@ -123,7 +138,7 @@ function updateQueuedCardUI(){
 }
 
 //TODO: Right now this just clears the whole list every time, should only do that on load
-function updatePickedCardUI(){
+function updatePickedCardsUI(){
   var pickedCardUL = $("#pickedCards"),
       pickedCardCount = 0;
   pickedCardUL.empty();

@@ -96,6 +96,6 @@ function updateQueuedCardData(snapshot){
 
   //TODO: Move UI code out
   if($(document.body).hasClass('draft')) {
-    updateQueuedCardUI();
+    updateQueuedCardsUI();
   }
 }

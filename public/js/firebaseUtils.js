@@ -17,7 +17,7 @@ var usersSnapshot,
 function getFirebaseData() {
     draftedCardsRef = firebase.database().ref('draftedUserCards');
     queuedCardsRef = firebase.database().ref('queuedUserCards');
-    recentlyDraftCardsRef = firebase.database().ref('recentlyDraftedCards');
+    recentlyDraftCardsRef = firebase.database().ref('recentlyDraftedCards').limitToLast(recentlDraftedCardArrayLimit);
 
     firebase.database().ref('users').on('value', function(snapshot) {
         updateUsersSnapshot(snapshot);
@@ -79,6 +79,9 @@ function updateRecentlyDraftedCards(snapshot){
   }
 
   //TODO: Add UI elements for recently drafted cards
+  if($(document.body).hasClass('draft')) {
+    updateRecentlyDraftedCardsUI();
+  }
 }
 
 function updateTurnOrderData(snapshot){
@@ -117,7 +120,7 @@ function updateDraftedCardData(snapshot) {
   draftedCardsSnapshot = snapshot;
 
   if($(document.body).hasClass('draft')) {
-    updatePickedCardUI();
+    updatePickedCardsUI();
   }
 }
 
@@ -231,7 +234,7 @@ function incrementRoundCounter(){
 }
 
 function saveRecentlyPickedCards(cardName, drafterId) {
-  var newCardRef = recentlyDraftCardsRef.push();
+  var newCardRef = firebase.database().ref('recentlyDraftedCards').push();
   newCardRef.set({
     name: cardName,
     drafterId: drafterId
