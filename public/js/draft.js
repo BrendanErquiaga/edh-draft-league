@@ -112,16 +112,20 @@ function clearCardInputField() {
 //TODO: Right now this just clears the whole list every time, should only do that on load
 function updateQueuedCardUI(){
   var queuedCardsUL = $("#queuedCards");
+
   queuedCardsUL.empty();
 
   for(var i = 0; i < userQueuedCards.length; i++){
     queuedCardsUL.append('<li>' + userQueuedCards[i] + '</li>');
   }
+
+  $('#userQueuedCardCountIndicator').html(userQueuedCards.length);
 }
 
 //TODO: Right now this just clears the whole list every time, should only do that on load
 function updatePickedCardUI(){
-  var pickedCardUL = $("#pickedCards");
+  var pickedCardUL = $("#pickedCards"),
+      pickedCardCount = 0;
   pickedCardUL.empty();
 
   draftedCardsSnapshot.forEach(function(childSnapshot) {
@@ -130,9 +134,12 @@ function updatePickedCardUI(){
       if(key === userId){
         childSnapshot.forEach(function(cardObjectSnapshot) {
             pickedCardUL.append('<li>' + cardObjectSnapshot.val().name + '</li>');
+            pickedCardCount++;
         });
       }
   });
+
+  $('#userPickedCardCountIndicator').html(pickedCardCount);
 }
 
 function matchAutoDraftSwitch() {
