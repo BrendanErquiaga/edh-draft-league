@@ -31,7 +31,7 @@ function pickCardForUser(card) {
       return; //Someone already had that card, do something about that
     }
 
-    savePickedCardToFirebase(getCardObject(card), userId);
+    savePickedCardToFirebase(getCardObject(card), currentUserId);
 
     goToNextTurn();
 }
@@ -146,7 +146,7 @@ function updatePickedCardsUI(){
   draftedCardsSnapshot.forEach(function(childSnapshot) {
       var key = childSnapshot.key;
       var val = childSnapshot.val();
-      if(key === userId){
+      if(key === currentUserId){
         childSnapshot.forEach(function(cardObjectSnapshot) {
             pickedCardUL.append('<li>' + cardObjectSnapshot.val().name + '</li>');
             pickedCardCount++;
@@ -158,13 +158,13 @@ function updatePickedCardsUI(){
 }
 
 function matchAutoDraftSwitch() {
-  if(usersSnapshot[userId].autoDraft === true){
+  if(usersSnapshot[currentUserId].autoDraft === true){
     $('#autoDraftSwitch').prop('checked', true);
   }
 }
 
 function matchGlobalSubscribeSwitch() {
-  if(usersSnapshot[userId].globallySubscribed === true){
+  if(usersSnapshot[currentUserId].globallySubscribed === true){
     $('#globalSubscribeSwitch').prop('checked', true);
   }
 }
@@ -174,9 +174,23 @@ function updateDraftInfoUI() {
     $('#roundNumberIndicator').html(draftDataObject.roundNumber);
     $('#cardsDraftedIndicator').html(draftDataObject.draftedCardCount);
   }
+}
+
+function updateTurnSpecificUI() {
   if(turnOrderObject !== null && turnOrderObject !== undefined){
     updateRoundTracker();
+    updatePickOrQueueButton();
   }
+}
+
+function updatePickOrQueueButton() {
+  var buttonString = 'Queue';
+
+  if(turnOrderObject.turnOrder[turnOrderObject.turnIndex] === currentUserId){
+    buttonString = 'Pick';
+  }
+
+  $('#card-submit').html(buttonString)
 }
 
 function updateRoundTracker() {

@@ -94,7 +94,7 @@ function updateTurnOrderData(snapshot){
   }
 
   if($(document.body).hasClass('draft')) {
-    updateRoundTracker();
+    updateTurnSpecificUI();
   }
 }
 
@@ -129,7 +129,7 @@ function updateDraftedCardData(snapshot) {
 */
 
 function saveGlobalSubscribeStatus(globalSubscribeEnabled) {
-  firebase.database().ref('users/' + userId).update({
+  firebase.database().ref('users/' + currentUserId).update({
     globallySubscribed: globalSubscribeEnabled
   });
 
@@ -142,7 +142,7 @@ function saveGlobalSubscribeStatus(globalSubscribeEnabled) {
 }
 
 function saveAutoDraftStatus(autoDraftEnabled){
-  firebase.database().ref('users/' + userId).update({
+  firebase.database().ref('users/' + currentUserId).update({
     autoDraft: autoDraftEnabled
   });
 }
@@ -244,7 +244,7 @@ function saveRecentlyPickedCards(cardName, drafterId) {
 function saveCardToUserQueue(card){
   userQueuedCards.push(card);
 
-  firebase.database().ref('queuedUserCards/').child(userId).set(userQueuedCards);
+  firebase.database().ref('queuedUserCards/').child(currentUserId).set(userQueuedCards);
 }
 
 /*

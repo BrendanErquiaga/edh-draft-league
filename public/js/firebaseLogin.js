@@ -1,6 +1,6 @@
 'use strict';
 
-var userId,
+var currentUserId,
     userQueuedCards,
     notificationToken;
 
@@ -41,8 +41,8 @@ function getMessagingToken(){
 
 function sendTokenToServer(token) {
   notificationToken = token;
-  if(userId !== null && userId !== undefined){
-    firebase.database().ref('users/' + userId).update({
+  if(currentUserId !== null && currentUserId !== undefined){
+    firebase.database().ref('users/' + currentUserId).update({
         fcm_token: token
     });
   }
@@ -53,19 +53,19 @@ function sendTokenToServer(token) {
  */
 function onAuthStateChanged(user) {
     // We ignore token refresh events.
-    if (user && userId === user.uid) {
+    if (user && currentUserId === user.uid) {
         return;
     }
 
     if (user) {
-        userId = user.uid;
+        currentUserId = user.uid;
         saveUserData(user.uid, user.displayName, user.email, user.photoURL);
         updateReferencesWithUserId();
         //Hit the DB -> startDatabaseQueries();
         //Display Logged In State
         //Update autodraft button based on users status
     } else {
-        userId = null;
+        currentUserId = null;
         //Prompt Login
     }
 }
@@ -80,7 +80,7 @@ function saveUserData(loggedInUserId, name, email, imageUrl) {
 }
 
 function updateReferencesWithUserId(){
-  firebase.database().ref('queuedUserCards/' + userId + '/').on('value', function(snapshot) {
+  firebase.database().ref('queuedUserCards/' + currentUserId + '/').on('value', function(snapshot) {
       updateQueuedCardData(snapshot);
   });
 }
