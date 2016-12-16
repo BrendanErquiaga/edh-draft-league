@@ -105,6 +105,10 @@ function clearCardInputField() {
     $('#form-card').val('');
 }
 
+/*
+~~~~~~~UI UPDATE~~~~~~~~~~
+*/
+
 //TODO: Right now this just clears the whole list every time, should only do that on load
 function updateQueuedCardUI(){
   var queuedCardsUL = $("#queuedCards");
@@ -140,6 +144,37 @@ function matchAutoDraftSwitch() {
 function matchGlobalSubscribeSwitch() {
   if(usersSnapshot[userId].globallySubscribed === true){
     $('#globalSubscribeSwitch').prop('checked', true);
+  }
+}
+
+function updateDraftInfoUI() {
+  if(draftDataObject !== null && draftDataObject !== undefined){
+    $('#roundNumberIndicator').html(draftDataObject.roundNumber);
+    $('#cardsDraftedIndicator').html(draftDataObject.draftedCardCount);
+  }
+  if(turnOrderObject !== null && turnOrderObject !== undefined){
+    updateRoundTracker();
+  }
+}
+
+function updateRoundTracker() {
+  var turnedOrderUL = $('#turnOrderList');
+  turnedOrderUL.empty();
+
+  for(var i = 0; i < turnOrderObject.turnOrder.length;i++){
+    var liClass = '';
+    if(i === turnOrderObject.turnIndex){
+      liClass = 'activePlayer';
+    }
+
+    turnedOrderUL.append('<li class="' + liClass + '">' + usersSnapshot[turnOrderObject.turnOrder[i]].username + '</li>');
+  }
+
+  if(turnOrderObject.ascendingTurnOrder){
+    $('#roundTrackerDirection').attr("src","img/icons/arrow-down.svg");
+  }
+  else {
+    $('#roundTrackerDirection').attr("src","img/icons/arrow-up.svg");
   }
 }
 

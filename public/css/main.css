@@ -1,3 +1,14 @@
+/* Turn Order List */
+
+#turnOrderList .activePlayer{
+  text-decoration: underline;
+}
+
+img#roundTrackerDirection {
+  width: 16px;
+  height: auto;
+}
+
 /* The switch - the box around the slider */
 
 .switch {

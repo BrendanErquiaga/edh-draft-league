@@ -112,6 +112,7 @@ function goToNextTurn() {
         tempTurnOrderObject.turnIndex = 0;
         //dataObject.misc.roundNumber++; TODO: Store round data somewhere
         //console.log('NEXT ROUND ' + tempTurnOrderObject.turnOrder);
+        incrementRoundCounter();
     }
 
     //console.log(tempTurnOrderObject);

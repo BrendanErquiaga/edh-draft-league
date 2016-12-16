@@ -1,6 +1,7 @@
 'use strict';
 
 var usersSnapshot,
+    draftDataObject,
     draftMasterObject,
     draftedCardsRef,
     draftedCardsSnapshot,
@@ -42,6 +43,10 @@ function getFirebaseData() {
         updateDraftMasterObject(snapshot);
     });
 
+    firebase.database().ref('draftData').on('value', function(snapshot) {
+        updateDraftDataObject(snapshot);
+    });
+
     //Should be last because it attempts to autodraft
     firebase.database().ref('turns').on('value', function(snapshot){
         updateTurnOrderData(snapshot);
@@ -55,6 +60,14 @@ function getFirebaseData() {
 /*
 ~~~~~~~FIREBASE UPDATE~~~~~~~~~~
 */
+
+function updateDraftDataObject(snapshot){
+  draftDataObject = snapshot.val();
+
+  if($(document.body).hasClass('draft')) {
+    updateDraftInfoUI();
+  }
+}
 
 function updateRecentlyDraftedCards(snapshot){
   recentlyDraftCards = snapshot.val();
@@ -75,6 +88,10 @@ function updateTurnOrderData(snapshot){
 
   if($(document.body).hasClass('admin')) {
     attemptToAutoDraft();
+  }
+
+  if($(document.body).hasClass('draft')) {
+    updateRoundTracker();
   }
 }
 
@@ -184,6 +201,33 @@ function savePickedCardToFirebase(cardObject, idToUse){
 
   cleanOutQueuedCards(cardObject.name);
   saveRecentlyPickedCards(cardObject.name, idToUse);
+  incrementCardsDraftedCounter();
+}
+
+function incrementCardsDraftedCounter() {
+  var newCount = 0;
+
+  if(draftDataObject !== undefined && draftDataObject !== null){
+    newCount = draftDataObject.draftedCardCount;
+  }
+  newCount++;
+
+  firebase.database().ref('draftData').update({
+    draftedCardCount: newCount
+  });
+}
+
+function incrementRoundCounter(){
+  var newCount = 0;
+
+  if(draftDataObject !== undefined && draftDataObject !== null){
+    newCount = draftDataObject.roundNumber;
+  }
+  newCount++;
+
+  firebase.database().ref('draftData').update({
+    roundNumber: newCount
+  });
 }
 
 function saveRecentlyPickedCards(cardName, drafterId) {
