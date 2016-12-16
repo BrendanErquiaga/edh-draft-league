@@ -190,15 +190,26 @@
 				</div>
 			</div>
 		</section>
+		<section id="draftInfoSection">
+			<p>Round#: <span id="roundNumberIndicator"></span></p>
+			<p>Turn Order: <img id="roundTrackerDirection"></img></p>
+			<ul id="turnOrderList">
+			</ul>
+			<p>Total Cards Drafted: <span id="cardsDraftedIndicator"></span></p>
+		</section>
+		<section id="recentlyDraftedSection">
+			<h4>Recently Drafted Cards:</h4>
+			<ul id="recentlyDraftedList"><li>This was already here...</li></ul>
+		</section>
 		<section id="userInput">
 			<label class="switch">
 				<input type="checkbox" id="globalSubscribeSwitch">
 				<div class="slider round"></div>
 			</label>
 			<p>Notify me for every pick</p>
-			<p>Pick a card</p>
+			<h2>Pick a card</h2>
 			<input type="text" class="form-control typeahead" id="form-card" placeholder="Enter card name">
-      <button type="submit" class="btn btn-success" id="card-submit">Submit</button>
+      <button type="submit" class="btn btn-success" id="card-submit"></button>
 		</section>
 		<section id="queueSection">
 			<label class="switch">
@@ -206,11 +217,11 @@
 				<div class="slider round"></div>
 			</label>
 			<p>Auto Draft</p>
-			<h4>Queued Cards</h4>
+			<h4>Queued Cards: <span id="userQueuedCardCountIndicator"></span></h4>
 			<ul id="queuedCards"><li>This was already here...</li></ul>
 		</section>
 		<section id="pickedSection">
-			<h4>Picked Cards</h4>
+			<h4>Picked Cards: <span id="userPickedCardCountIndicator"></span></h4>
 			<ul id="pickedCards"><li>This was already here...</li></ul>
 		</section>
 		<footer>

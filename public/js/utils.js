@@ -34,7 +34,7 @@ function cardIsBanned(card) {
 
 //Checks if it is the current users turn
 function currentUsersTurn() {
-    if (turnOrderObject.turnOrder[turnOrderObject.turnIndex] === userId) {
+    if (turnOrderObject.turnOrder[turnOrderObject.turnIndex] === currentUserId) {
         console.log('Its your turn! Draft away!');
 
         return true;
@@ -43,11 +43,11 @@ function currentUsersTurn() {
     return false;
 }
 
-function getNextCardFromUsersQueue(userIdToUse) {
+function getNextCardFromUsersQueue(currentUserIdToUse) {
     var cardName;
     queuedCardsSnapshot.forEach(function(childSnapshot) {
         var key = childSnapshot.key;
-        if (key === userIdToUse) {
+        if (key === currentUserIdToUse) {
             cardName = childSnapshot.child("0").val();
             return;
         }
@@ -112,6 +112,7 @@ function goToNextTurn() {
         tempTurnOrderObject.turnIndex = 0;
         //dataObject.misc.roundNumber++; TODO: Store round data somewhere
         //console.log('NEXT ROUND ' + tempTurnOrderObject.turnOrder);
+        incrementRoundCounter();
     }
 
     //console.log(tempTurnOrderObject);
