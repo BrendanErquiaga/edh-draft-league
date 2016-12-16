@@ -713,4 +713,31 @@ footer p {
   height: 40px;
   width: 40px; }
 
+@media (min-width: 73.125rem) {
+  #eloStandings {
+    max-width: 65%; } }
+
+.match-table {
+  font-size: 1.4rem; }
+  .match-table tr.data-row:nth-child(odd) td {
+    background: #f2f2f2; }
+  .match-table td {
+    width: auto;
+    padding: 0; }
+    .match-table td table {
+      margin-bottom: 0; }
+      .match-table td table td {
+        border: none; }
+  .match-table th, .match-table td {
+    padding: 0; }
+    .match-table th.cell-points, .match-table th.cell-elo, .match-table td.cell-points, .match-table td.cell-elo {
+      text-align: right; }
+      .match-table th.cell-points td, .match-table th.cell-elo td, .match-table td.cell-points td, .match-table td.cell-elo td {
+        text-align: right; }
+    .match-table th.cell-elo, .match-table td.cell-elo {
+      padding-right: 5px; }
+    .match-table th.cell-date, .match-table td.cell-date {
+      width: 25%;
+      padding-left: 5px; }
+
 /*# sourceMappingURL=milligram.css.map */
