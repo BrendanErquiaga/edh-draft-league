@@ -1,6 +1,6 @@
 "use strict";
 
-var recentlDraftedCardArrayLimit = 10;
+var recentlDraftedCardArrayLimit = 3;
 
 $(document).ready(function() {
     requirejs(['./utils','./firebaseUtils'], function(){
@@ -18,6 +18,14 @@ function pageReady(){
   $.getJSON(allcardsLocation, function(data) {
       allcardsLocal = data;
   });
+
+  $.getJSON(cardNamesLocation, function(data) {
+      cardNamesLocal = data;
+  });
+
+  $.getJSON(lowercaseCardNamesLocation, function(data) {
+      lowercaseCardNamesLocal = data;
+  });
 }
 
 function pickCardForUser(card) {
@@ -31,7 +39,14 @@ function pickCardForUser(card) {
       return; //Someone already had that card, do something about that
     }
 
-    savePickedCardToFirebase(getCardObject(card), currentUserId);
+    var convertedCardName = getConvertedCardName(card);
+
+    if(convertedCardName === false){
+      console.log('That wasnt a real card (Cant Draft)', card);
+      return;
+    }
+
+    savePickedCardToFirebase(getCardObject(convertedCardName), currentUserId);
 
     goToNextTurn();
 }
@@ -52,14 +67,17 @@ function queueCardForUser(card) {
     return;
   }
 
-  saveCardToUserQueue(card);
-}
+  var convertedCardName = getConvertedCardName(card);
 
-function pickOrQueueCard(card){
-  if(!cardStringIsValid()){
+  if(convertedCardName === false){
+    console.log('That wasnt a real card (Cant Queue)', card);
     return;
   }
 
+  saveCardToUserQueue(convertedCardName);
+}
+
+function pickOrQueueCard(card){
   if(currentUsersTurn()){
     pickCardForUser(card);
   }
@@ -67,17 +85,6 @@ function pickOrQueueCard(card){
     console.log('Its not your turn, so I put the card in your queue');
     queueCardForUser(card);
   }
-}
-
-function cardStringIsValid(card) {
-  // if(validCardRegEx.test(card)) {
-  //   console.log('A+');
-  //   return true;
-  // }
-
-  //TODO: DO THIS
-
-  return true;
 }
 
 function catchDraftPageInput() {

@@ -1,6 +1,13 @@
+
 'use strict';
 
-var senderKey = "AAAAWRkfbzA:APA91bEhDBDOSArAdhSpI_SFiWh2K-1S7m0Te2OL_Av7JKMdsBXY26rcc7KsaL-lVqN-uzIHU-Xl6wBIrpmoXCe5_O6tNtu1mye5kgX3LbvimYpZ0Ul3hhNsLPvPtoFiOVmZk6rp9SJq2T7oB15Bl_jdEyfHCyJ-dA";
+var senderKey = "AAAAWRkfbzA:APA91bEhDBDOSArAdhSpI_SFiWh2K-1S7m0Te2OL_Av7JKMdsBXY26rcc7KsaL-lVqN-uzIHU-Xl6wBIrpmoXCe5_O6tNtu1mye5kgX3LbvimYpZ0Ul3hhNsLPvPtoFiOVmZk6rp9SJq2T7oB15Bl_jdEyfHCyJ-dA",
+    allcardsLocal,
+    allcardsLocation = "/js/json/allcards.json",
+    lowercaseCardNamesLocal,
+    lowercaseCardNamesLocation = "/js/json/cardnames_lc.json",
+    cardNamesLocal,
+    cardNamesLocation = "/js/json/cardnames.json";
 
 function getNextDrafterId() {
     return turnOrderObject.turnOrder[turnOrderObject.turnIndex];
@@ -68,6 +75,10 @@ function getTokenForNextDrafter() {
 function getCardObject(card) {
     var tempCard = {};
 
+    if(card.includes('//')){
+      return getSplitCardObject(card);
+    }
+
     if (allcardsLocal[card] === undefined) {
         console.log('We couldnt find ' + card + ' jackass, so we made a fake entry.');
         tempCard.name = card;
@@ -87,6 +98,39 @@ function getCardObject(card) {
     tempCard.types = allcardsLocal[card].types || null;
 
     return tempCard;
+}
+
+function getSplitCardObject(splitCardName) {
+  var splitNames = splitCardName.split('//'),
+      firstHalf, secondHalf;
+
+  firstHalf = getCardObject(splitNames[0].trim());
+  secondHalf = getCardObject(splitNames[1].trim());
+
+  return combineCardObjects(firstHalf, secondHalf, splitCardName);
+}
+
+function combineCardObjects(firstHalf, secondHalf, combinedName){
+  var newCardObject = {};
+
+  newCardObject.name = combinedName;
+  newCardObject.cmc = firstHalf.cmc  + secondHalf.cmc;
+  newCardObject.manaCost = firstHalf.manaCost + " // " + secondHalf.manaCost;
+  newCardObject.colorIdentity = firstHalf.colorIdentity;
+  newCardObject.type = firstHalf.type;
+  newCardObject.types = firstHalf.types;
+
+  return newCardObject;
+}
+
+function getConvertedCardName(cardName) {
+  var cardNameIndex = $.inArray(cardName.toLowerCase(), lowercaseCardNamesLocal);
+
+  if(cardNameIndex > -1){
+    return cardNamesLocal[cardNameIndex];
+  }
+
+  return false;
 }
 
 function goToNextTurn() {

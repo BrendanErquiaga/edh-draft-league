@@ -10,7 +10,6 @@ console.log(cardNameArray);
 
 download(JSON.stringify(cardNameArray), "test", JSON);
 });
-});
 
 function download(data, filename, type) {
     var a = document.createElement("a"),
