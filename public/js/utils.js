@@ -120,8 +120,6 @@ function combineCardObjects(firstHalf, secondHalf, combinedName){
   newCardObject.type = firstHalf.type;
   newCardObject.types = firstHalf.types;
 
-  console.log('BY OUR POWERS COMBINED: ', newCardObject);
-
   return newCardObject;
 }
 
