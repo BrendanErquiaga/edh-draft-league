@@ -1,5 +1,7 @@
 "use strict";
 
+var recentlDraftedCardArrayLimit = 10;
+
 $(document).ready(function() {
     requirejs(['./utils','./firebaseUtils'], function(){
           pageReady();
@@ -29,7 +31,7 @@ function pickCardForUser(card) {
       return; //Someone already had that card, do something about that
     }
 
-    savePickedCardToFirebase(getCardObject(card), userId);
+    savePickedCardToFirebase(getCardObject(card), currentUserId);
 
     goToNextTurn();
 }
@@ -105,41 +107,110 @@ function clearCardInputField() {
     $('#form-card').val('');
 }
 
+/*
+~~~~~~~UI UPDATE~~~~~~~~~~
+*/
+
 //TODO: Right now this just clears the whole list every time, should only do that on load
-function updateQueuedCardUI(){
+function updateRecentlyDraftedCardsUI(){
+  var recentlyDraftedUL = $("#recentlyDraftedList");
+
+  recentlyDraftedUL.empty();
+
+  for(var i = 0; i < recentlyDraftCards.length; i++){
+    recentlyDraftedUL.append('<li>' +
+      usersSnapshot[recentlyDraftCards[i].drafterId].username + ' - ' +
+      recentlyDraftCards[i].name + '</li>');
+  }
+}
+
+//TODO: Right now this just clears the whole list every time, should only do that on load
+function updateQueuedCardsUI(){
   var queuedCardsUL = $("#queuedCards");
+
   queuedCardsUL.empty();
 
   for(var i = 0; i < userQueuedCards.length; i++){
     queuedCardsUL.append('<li>' + userQueuedCards[i] + '</li>');
   }
+
+  $('#userQueuedCardCountIndicator').html(userQueuedCards.length);
 }
 
 //TODO: Right now this just clears the whole list every time, should only do that on load
-function updatePickedCardUI(){
-  var pickedCardUL = $("#pickedCards");
+function updatePickedCardsUI(){
+  var pickedCardUL = $("#pickedCards"),
+      pickedCardCount = 0;
   pickedCardUL.empty();
 
   draftedCardsSnapshot.forEach(function(childSnapshot) {
       var key = childSnapshot.key;
       var val = childSnapshot.val();
-      if(key === userId){
+      if(key === currentUserId){
         childSnapshot.forEach(function(cardObjectSnapshot) {
             pickedCardUL.append('<li>' + cardObjectSnapshot.val().name + '</li>');
+            pickedCardCount++;
         });
       }
   });
+
+  $('#userPickedCardCountIndicator').html(pickedCardCount);
 }
 
 function matchAutoDraftSwitch() {
-  if(usersSnapshot[userId].autoDraft === true){
+  if(usersSnapshot[currentUserId].autoDraft === true){
     $('#autoDraftSwitch').prop('checked', true);
   }
 }
 
 function matchGlobalSubscribeSwitch() {
-  if(usersSnapshot[userId].globallySubscribed === true){
+  if(usersSnapshot[currentUserId].globallySubscribed === true){
     $('#globalSubscribeSwitch').prop('checked', true);
+  }
+}
+
+function updateDraftInfoUI() {
+  if(draftDataObject !== null && draftDataObject !== undefined){
+    $('#roundNumberIndicator').html(draftDataObject.roundNumber);
+    $('#cardsDraftedIndicator').html(draftDataObject.draftedCardCount);
+  }
+}
+
+function updateTurnSpecificUI() {
+  if(turnOrderObject !== null && turnOrderObject !== undefined){
+    updateRoundTracker();
+    updatePickOrQueueButton();
+  }
+}
+
+function updatePickOrQueueButton() {
+  var buttonString = 'Queue';
+
+  if(turnOrderObject.turnOrder[turnOrderObject.turnIndex] === currentUserId){
+    buttonString = 'Pick';
+  }
+
+  $('#card-submit').html(buttonString)
+}
+
+function updateRoundTracker() {
+  var turnedOrderUL = $('#turnOrderList');
+  turnedOrderUL.empty();
+
+  for(var i = 0; i < turnOrderObject.turnOrder.length;i++){
+    var liClass = '';
+    if(i === turnOrderObject.turnIndex){
+      liClass = 'activePlayer';
+    }
+
+    turnedOrderUL.append('<li class="' + liClass + '">' + usersSnapshot[turnOrderObject.turnOrder[i]].username + '</li>');
+  }
+
+  if(turnOrderObject.ascendingTurnOrder){
+    $('#roundTrackerDirection').attr("src","img/icons/arrow-down.svg");
+  }
+  else {
+    $('#roundTrackerDirection').attr("src","img/icons/arrow-up.svg");
   }
 }
 

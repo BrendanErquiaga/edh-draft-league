@@ -1,6 +1,7 @@
 'use strict';
 
 var usersSnapshot,
+    draftDataObject,
     draftMasterObject,
     draftedCardsRef,
     draftedCardsSnapshot,
@@ -16,7 +17,7 @@ var usersSnapshot,
 function getFirebaseData() {
     draftedCardsRef = firebase.database().ref('draftedUserCards');
     queuedCardsRef = firebase.database().ref('queuedUserCards');
-    recentlyDraftCardsRef = firebase.database().ref('recentlyDraftedCards');
+    recentlyDraftCardsRef = firebase.database().ref('recentlyDraftedCards').limitToLast(recentlDraftedCardArrayLimit);
 
     firebase.database().ref('users').on('value', function(snapshot) {
         updateUsersSnapshot(snapshot);
@@ -42,6 +43,10 @@ function getFirebaseData() {
         updateDraftMasterObject(snapshot);
     });
 
+    firebase.database().ref('draftData').on('value', function(snapshot) {
+        updateDraftDataObject(snapshot);
+    });
+
     //Should be last because it attempts to autodraft
     firebase.database().ref('turns').on('value', function(snapshot){
         updateTurnOrderData(snapshot);
@@ -56,6 +61,14 @@ function getFirebaseData() {
 ~~~~~~~FIREBASE UPDATE~~~~~~~~~~
 */
 
+function updateDraftDataObject(snapshot){
+  draftDataObject = snapshot.val();
+
+  if($(document.body).hasClass('draft')) {
+    updateDraftInfoUI();
+  }
+}
+
 function updateRecentlyDraftedCards(snapshot){
   recentlyDraftCards = snapshot.val();
 
@@ -66,6 +79,9 @@ function updateRecentlyDraftedCards(snapshot){
   }
 
   //TODO: Add UI elements for recently drafted cards
+  if($(document.body).hasClass('draft')) {
+    updateRecentlyDraftedCardsUI();
+  }
 }
 
 function updateTurnOrderData(snapshot){
@@ -75,6 +91,10 @@ function updateTurnOrderData(snapshot){
 
   if($(document.body).hasClass('admin')) {
     attemptToAutoDraft();
+  }
+
+  if($(document.body).hasClass('draft')) {
+    updateTurnSpecificUI();
   }
 }
 
@@ -100,7 +120,7 @@ function updateDraftedCardData(snapshot) {
   draftedCardsSnapshot = snapshot;
 
   if($(document.body).hasClass('draft')) {
-    updatePickedCardUI();
+    updatePickedCardsUI();
   }
 }
 
@@ -109,7 +129,7 @@ function updateDraftedCardData(snapshot) {
 */
 
 function saveGlobalSubscribeStatus(globalSubscribeEnabled) {
-  firebase.database().ref('users/' + userId).update({
+  firebase.database().ref('users/' + currentUserId).update({
     globallySubscribed: globalSubscribeEnabled
   });
 
@@ -122,7 +142,7 @@ function saveGlobalSubscribeStatus(globalSubscribeEnabled) {
 }
 
 function saveAutoDraftStatus(autoDraftEnabled){
-  firebase.database().ref('users/' + userId).update({
+  firebase.database().ref('users/' + currentUserId).update({
     autoDraft: autoDraftEnabled
   });
 }
@@ -184,10 +204,37 @@ function savePickedCardToFirebase(cardObject, idToUse){
 
   cleanOutQueuedCards(cardObject.name);
   saveRecentlyPickedCards(cardObject.name, idToUse);
+  incrementCardsDraftedCounter();
+}
+
+function incrementCardsDraftedCounter() {
+  var newCount = 0;
+
+  if(draftDataObject !== undefined && draftDataObject !== null){
+    newCount = draftDataObject.draftedCardCount;
+  }
+  newCount++;
+
+  firebase.database().ref('draftData').update({
+    draftedCardCount: newCount
+  });
+}
+
+function incrementRoundCounter(){
+  var newCount = 0;
+
+  if(draftDataObject !== undefined && draftDataObject !== null){
+    newCount = draftDataObject.roundNumber;
+  }
+  newCount++;
+
+  firebase.database().ref('draftData').update({
+    roundNumber: newCount
+  });
 }
 
 function saveRecentlyPickedCards(cardName, drafterId) {
-  var newCardRef = recentlyDraftCardsRef.push();
+  var newCardRef = firebase.database().ref('recentlyDraftedCards').push();
   newCardRef.set({
     name: cardName,
     drafterId: drafterId
@@ -197,7 +244,7 @@ function saveRecentlyPickedCards(cardName, drafterId) {
 function saveCardToUserQueue(card){
   userQueuedCards.push(card);
 
-  firebase.database().ref('queuedUserCards/').child(userId).set(userQueuedCards);
+  firebase.database().ref('queuedUserCards/').child(currentUserId).set(userQueuedCards);
 }
 
 /*
