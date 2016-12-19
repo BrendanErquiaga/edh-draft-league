@@ -51,7 +51,7 @@ function getFirebaseData() {
     });
 
     messaging.onMessage(function(payload){
-      alert(payload.notification.title + ' : ' + payload.notification.body);
+      console.log(payload.notification.title + ' : ' + payload.notification.body);
     })
 }
 

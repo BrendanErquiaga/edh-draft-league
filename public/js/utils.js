@@ -75,6 +75,10 @@ function getTokenForNextDrafter() {
 function getCardObject(card) {
     var tempCard = {};
 
+    if(card.includes('//')){
+      return getSplitCardObject(card);
+    }
+
     if (allcardsLocal[card] === undefined) {
         console.log('We couldnt find ' + card + ' jackass, so we made a fake entry.');
         tempCard.name = card;
@@ -94,6 +98,31 @@ function getCardObject(card) {
     tempCard.types = allcardsLocal[card].types || null;
 
     return tempCard;
+}
+
+function getSplitCardObject(splitCardName) {
+  var splitNames = splitCardName.split('//'),
+      firstHalf, secondHalf;
+
+  firstHalf = getCardObject(splitNames[0].trim());
+  secondHalf = getCardObject(splitNames[1].trim());
+
+  return combineCardObjects(firstHalf, secondHalf, splitCardName);
+}
+
+function combineCardObjects(firstHalf, secondHalf, combinedName){
+  var newCardObject = {};
+
+  newCardObject.name = combinedName;
+  newCardObject.cmc = firstHalf.cmc  + secondHalf.cmc;
+  newCardObject.manaCost = firstHalf.manaCost + " // " + secondHalf.manaCost;
+  newCardObject.colorIdentity = firstHalf.colorIdentity;
+  newCardObject.type = firstHalf.type;
+  newCardObject.types = firstHalf.types;
+
+  console.log('BY OUR POWERS COMBINED: ', newCardObject);
+
+  return newCardObject;
 }
 
 function getConvertedCardName(cardName) {

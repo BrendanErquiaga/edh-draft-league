@@ -1,6 +1,6 @@
 "use strict";
 
-var recentlDraftedCardArrayLimit = 10;
+var recentlDraftedCardArrayLimit = 3;
 
 $(document).ready(function() {
     requirejs(['./utils','./firebaseUtils'], function(){
