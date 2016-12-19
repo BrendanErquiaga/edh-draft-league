@@ -224,7 +224,7 @@ function incrementRoundCounter(){
   var newCount = 0;
 
   if(draftDataObject !== undefined && draftDataObject !== null){
-    newCount = draftDataObject.roundNumber;
+    newCount = draftDataObject.roundNumber || 0;
   }
   newCount++;
 

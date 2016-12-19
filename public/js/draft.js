@@ -56,10 +56,6 @@ function queueCardForUser(card) {
 }
 
 function pickOrQueueCard(card){
-  if(!cardStringIsValid()){
-    return;
-  }
-
   if(currentUsersTurn()){
     pickCardForUser(card);
   }
@@ -67,17 +63,6 @@ function pickOrQueueCard(card){
     console.log('Its not your turn, so I put the card in your queue');
     queueCardForUser(card);
   }
-}
-
-function cardStringIsValid(card) {
-  // if(validCardRegEx.test(card)) {
-  //   console.log('A+');
-  //   return true;
-  // }
-
-  //TODO: DO THIS
-
-  return true;
 }
 
 function catchDraftPageInput() {
