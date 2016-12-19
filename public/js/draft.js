@@ -18,6 +18,14 @@ function pageReady(){
   $.getJSON(allcardsLocation, function(data) {
       allcardsLocal = data;
   });
+
+  $.getJSON(cardNamesLocation, function(data) {
+      cardNamesLocal = data;
+  });
+
+  $.getJSON(lowercaseCardNamesLocation, function(data) {
+      lowercaseCardNamesLocal = data;
+  });
 }
 
 function pickCardForUser(card) {
@@ -31,7 +39,14 @@ function pickCardForUser(card) {
       return; //Someone already had that card, do something about that
     }
 
-    savePickedCardToFirebase(getCardObject(card), currentUserId);
+    var convertedCardName = getConvertedCardName(card);
+
+    if(convertedCardName === false){
+      console.log('That wasnt a real card (Cant Draft)', card);
+      return;
+    }
+
+    savePickedCardToFirebase(getCardObject(convertedCardName), currentUserId);
 
     goToNextTurn();
 }
@@ -52,7 +67,14 @@ function queueCardForUser(card) {
     return;
   }
 
-  saveCardToUserQueue(card);
+  var convertedCardName = getConvertedCardName(card);
+
+  if(convertedCardName === false){
+    console.log('That wasnt a real card (Cant Queue)', card);
+    return;
+  }
+
+  saveCardToUserQueue(convertedCardName);
 }
 
 function pickOrQueueCard(card){

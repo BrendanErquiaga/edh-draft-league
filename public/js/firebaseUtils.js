@@ -9,8 +9,6 @@ var usersSnapshot,
     queuedCardsSnapshot,
     recentlyDraftCardsRef,
     recentlyDraftCards,
-    allcardsLocal,
-    allcardsLocation = "/js/json/allcards.json",
     bannedCardList,
     turnOrderObject;
 

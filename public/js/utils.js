@@ -1,6 +1,13 @@
+
 'use strict';
 
-var senderKey = "AAAAWRkfbzA:APA91bEhDBDOSArAdhSpI_SFiWh2K-1S7m0Te2OL_Av7JKMdsBXY26rcc7KsaL-lVqN-uzIHU-Xl6wBIrpmoXCe5_O6tNtu1mye5kgX3LbvimYpZ0Ul3hhNsLPvPtoFiOVmZk6rp9SJq2T7oB15Bl_jdEyfHCyJ-dA";
+var senderKey = "AAAAWRkfbzA:APA91bEhDBDOSArAdhSpI_SFiWh2K-1S7m0Te2OL_Av7JKMdsBXY26rcc7KsaL-lVqN-uzIHU-Xl6wBIrpmoXCe5_O6tNtu1mye5kgX3LbvimYpZ0Ul3hhNsLPvPtoFiOVmZk6rp9SJq2T7oB15Bl_jdEyfHCyJ-dA",
+    allcardsLocal,
+    allcardsLocation = "/js/json/allcards.json",
+    lowercaseCardNamesLocal,
+    lowercaseCardNamesLocation = "/js/json/cardnames_lc.json",
+    cardNamesLocal,
+    cardNamesLocation = "/js/json/cardnames.json";
 
 function getNextDrafterId() {
     return turnOrderObject.turnOrder[turnOrderObject.turnIndex];
@@ -87,6 +94,16 @@ function getCardObject(card) {
     tempCard.types = allcardsLocal[card].types || null;
 
     return tempCard;
+}
+
+function getConvertedCardName(cardName) {
+  var cardNameIndex = $.inArray(cardName.toLowerCase(), lowercaseCardNamesLocal);
+
+  if(cardNameIndex > -1){
+    return cardNamesLocal[cardNameIndex];
+  }
+
+  return false;
 }
 
 function goToNextTurn() {
