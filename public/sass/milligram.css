@@ -564,7 +564,7 @@ header {
         color: #461e5f; }
     .container section.dark {
       background: #222;
-      color: #ccc; }
+      color: #d9d9d9; }
       .container section.dark a {
         color: #ffff99; }
         .container section.dark a:hover {
@@ -579,7 +579,7 @@ canvas {
   margin-right: auto; }
 
 footer p {
-  border-top: 1px solid #ccc;
+  border-top: 1px solid #d9d9d9;
   text-align: center;
   padding: 5px 0 0 0;
   font-size: 1.2rem;
@@ -713,36 +713,60 @@ footer p {
   height: 40px;
   width: 40px; }
 
-.match-table {
+.generic-table, .match-table, .standings-table {
   font-size: 1.4rem; }
   @media (min-width: 73.125rem) {
-    .match-table {
+    .generic-table, .match-table, .standings-table {
       font-size: 1.6rem;
       height: auto;
       max-height: 500px;
       overflow: scroll; } }
-  .match-table tr.data-row:nth-child(odd) td {
-    background: #f2f2f2; }
-  .match-table td {
-    width: auto;
-    padding: 0; }
-    .match-table td table {
-      margin-bottom: 0; }
-      .match-table td table td {
-        border: none; }
-  .match-table th, .match-table td {
-    padding: 0; }
-    .match-table th.cell-points, .match-table th.cell-elo, .match-table td.cell-points, .match-table td.cell-elo {
-      text-align: right; }
-      .match-table th.cell-points td, .match-table th.cell-elo td, .match-table td.cell-points td, .match-table td.cell-elo td {
-        text-align: right; }
+  .generic-table th, .match-table th, .standings-table th, .generic-table td, .match-table td, .standings-table td {
+    padding: 0;
+    width: auto; }
+  .generic-table th, .match-table th, .standings-table th {
+    padding-bottom: 5px; }
+
+.match-table tr.data-row:nth-child(odd) td {
+  background: #f2f2f2; }
+  .dark .match-table tr.data-row:nth-child(odd) td {
+    background: #333; }
+.match-table td table {
+  margin-bottom: 0; }
+  .match-table td table td {
+    border: none; }
+.match-table th.cell-points, .match-table th.cell-elo, .match-table td.cell-points, .match-table td.cell-elo {
+  text-align: right; }
+  .match-table th.cell-points td, .match-table th.cell-elo td, .match-table td.cell-points td, .match-table td.cell-elo td {
+    text-align: right; }
+.match-table th.cell-elo, .match-table td.cell-elo {
+  padding-right: 5px; }
+  @media (min-width: 73.125rem) {
     .match-table th.cell-elo, .match-table td.cell-elo {
-      padding-right: 5px; }
-      @media (min-width: 73.125rem) {
-        .match-table th.cell-elo, .match-table td.cell-elo {
-          padding-right: 15px; } }
-    .match-table th.cell-date, .match-table td.cell-date {
-      width: 25%;
-      padding-left: 5px; }
+      padding-right: 15px; } }
+.match-table th.cell-date, .match-table td.cell-date {
+  width: 25%;
+  padding-left: 5px; }
+
+.dark .standings-table tr.data-row:nth-child(odd) {
+  background: #333; }
+.dark .standings-table tr.data-row:nth-child(odd) td {
+  border-bottom: 0.1rem solid #404040;
+  border-top: 0.1rem solid #404040; }
+.standings-table th.cell-kills, .standings-table th.cell-votes, .standings-table td.cell-kills, .standings-table td.cell-votes {
+  text-align: right; }
+  .standings-table th.cell-kills td, .standings-table th.cell-votes td, .standings-table td.cell-kills td, .standings-table td.cell-votes td {
+    text-align: right; }
+.standings-table th.cell-votes, .standings-table td.cell-votes {
+  padding-right: 5px; }
+  @media (min-width: 73.125rem) {
+    .standings-table th.cell-votes, .standings-table td.cell-votes {
+      padding-right: 15px; } }
+.standings-table th.cell-players, .standings-table td.cell-players {
+  padding-left: 5px; }
+.standings-table th {
+  border-bottom: 0.1rem solid #404040; }
+.standings-table td {
+  border: none; }
 
 /*# sourceMappingURL=milligram.css.map */
