@@ -548,6 +548,8 @@ a.active {
 
 header {
   margin-top: 6rem; }
+  header section {
+    text-align: center; }
 
 .container {
   position: relative; }
