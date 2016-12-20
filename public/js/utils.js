@@ -13,6 +13,10 @@ function getNextDrafterId() {
     return turnOrderObject.turnOrder[turnOrderObject.turnIndex];
 }
 
+function getDisplayNameFromID(userId) {
+  return usersSnapshot[userId].username;
+}
+
 function cardIsFree(card) {
     var someoneHasCard = false;
     draftedCardsSnapshot.forEach(function(childSnapshot) {

@@ -1,7 +1,9 @@
 'use strict';
 
 var draftMasterId,
-    currentlyDraftMaster = false;
+    currentlyDraftMaster = false,
+    recentlyDraftedCardArrayLimit = 3,
+    adminSectionShown = false;
 
 $(document).ready(function() {
     requirejs(['./utils','./firebaseUtils'], function(){
@@ -84,4 +86,25 @@ function autoDraftCardForUser(autoDraftedUserId){
   savePickedCardToFirebase(getCardObject(cardToAutoDraft), autoDraftedUserId);
 
   goToNextTurn();
+}
+
+function displayAdminSection() {
+  $("#adminOnlySection").css('display','inline');
+  adminSectionShown = true;
+}
+
+function updateLeagueDataUI() {
+  if(!adminSectionShown){
+    return;
+  }
+
+  $("#leagueName").html(leagueDataObject[currentUserId].name);
+
+  var leagueMembersUL = $("#leagueMembers");
+
+  leagueMembersUL.empty();
+
+  for(var i = 0; i < leagueDataObject[currentUserId].members.length; i++){
+    leagueMembersUL.append('<li>' + getDisplayNameFromID(leagueDataObject[currentUserId].members[i]) + '</li>');
+  }
 }

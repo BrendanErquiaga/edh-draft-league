@@ -10,12 +10,13 @@ var usersSnapshot,
     recentlyDraftCardsRef,
     recentlyDraftCards,
     bannedCardList,
-    turnOrderObject;
+    turnOrderObject,
+    leagueDataObject;
 
 function getFirebaseData() {
     draftedCardsRef = firebase.database().ref('draftedUserCards');
     queuedCardsRef = firebase.database().ref('queuedUserCards');
-    recentlyDraftCardsRef = firebase.database().ref('recentlyDraftedCards').limitToLast(recentlDraftedCardArrayLimit);
+    recentlyDraftCardsRef = firebase.database().ref('recentlyDraftedCards').limitToLast(recentlyDraftedCardArrayLimit);
 
     firebase.database().ref('users').on('value', function(snapshot) {
         updateUsersSnapshot(snapshot);
@@ -45,6 +46,10 @@ function getFirebaseData() {
         updateDraftDataObject(snapshot);
     });
 
+    firebase.database().ref('leagueData').on('value', function(snapshot) {
+        updateLeagueDataObject(snapshot);
+    });
+
     //Should be last because it attempts to autodraft
     firebase.database().ref('turns').on('value', function(snapshot){
         updateTurnOrderData(snapshot);
@@ -58,6 +63,14 @@ function getFirebaseData() {
 /*
 ~~~~~~~FIREBASE UPDATE~~~~~~~~~~
 */
+
+function updateLeagueDataObject(snapshot){
+  leagueDataObject = snapshot.val();
+
+  if($(document.body).hasClass('admin')) {
+    updateLeagueDataUI();
+  }
+}
 
 function updateDraftDataObject(snapshot){
   draftDataObject = snapshot.val();
@@ -102,6 +115,14 @@ function updateUsersSnapshot(snapshot) {
   if($(document.body).hasClass('draft')) {
     matchAutoDraftSwitch();
     matchGlobalSubscribeSwitch();
+  }
+
+  if ($(document.body).hasClass('admin')) {
+    if (currentUserId !== null || currentUserId !== undefined) {
+        if (usersSnapshot[currentUserId].leagueAdmin) {
+            displayAdminSection();
+        }
+    }
   }
 }
 
