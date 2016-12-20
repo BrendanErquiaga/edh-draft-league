@@ -9,8 +9,6 @@ var usersSnapshot,
     queuedCardsSnapshot,
     recentlyDraftCardsRef,
     recentlyDraftCards,
-    allcardsLocal,
-    allcardsLocation = "/js/json/allcards.json",
     bannedCardList,
     turnOrderObject;
 
@@ -53,7 +51,7 @@ function getFirebaseData() {
     });
 
     messaging.onMessage(function(payload){
-      alert(payload.notification.title + ' : ' + payload.notification.body);
+      console.log(payload.notification.title + ' : ' + payload.notification.body);
     })
 }
 
@@ -224,7 +222,7 @@ function incrementRoundCounter(){
   var newCount = 0;
 
   if(draftDataObject !== undefined && draftDataObject !== null){
-    newCount = draftDataObject.roundNumber;
+    newCount = draftDataObject.roundNumber || 0;
   }
   newCount++;
 
