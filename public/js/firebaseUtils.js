@@ -16,7 +16,9 @@ var usersSnapshot,
 function getFirebaseData() {
     draftedCardsRef = firebase.database().ref('draftedUserCards');
     queuedCardsRef = firebase.database().ref('queuedUserCards');
-    recentlyDraftCardsRef = firebase.database().ref('recentlyDraftedCards').limitToLast(recentlyDraftedCardArrayLimit);
+    if(recentlyDraftedCardArrayLimit !== undefined){
+      recentlyDraftCardsRef = firebase.database().ref('recentlyDraftedCards').limitToLast(recentlyDraftedCardArrayLimit);
+    }
 
     firebase.database().ref('users').on('value', function(snapshot) {
         updateUsersSnapshot(snapshot);
@@ -38,17 +40,20 @@ function getFirebaseData() {
         bannedCardList = snapshot.val();
     });
 
-    firebase.database().ref('draftMaster').on('value', function(snapshot) {
-        updateDraftMasterObject(snapshot);
-    });
-
     firebase.database().ref('draftData').on('value', function(snapshot) {
         updateDraftDataObject(snapshot);
     });
 
-    firebase.database().ref('leagueData').on('value', function(snapshot) {
-        updateLeagueDataObject(snapshot);
-    });
+    //Admin only section
+    if($(document.body).hasClass('admin')) {
+      firebase.database().ref('leagueData').on('value', function(snapshot) {
+          updateLeagueDataObject(snapshot);
+      });
+
+      firebase.database().ref('draftMaster').on('value', function(snapshot) {
+          updateDraftMasterObject(snapshot);
+      });
+    }
 
     //Should be last because it attempts to autodraft
     firebase.database().ref('turns').on('value', function(snapshot){
