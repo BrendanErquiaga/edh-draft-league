@@ -1,5 +1,5 @@
 //This is just a reference file so we don't have to look this code up again
-
+<script>
 $.getJSON("js/json/allcards.json", function(data) {
 cardNameArray = [];
 $.each(data, function(key, val) {
@@ -30,3 +30,4 @@ function download(data, filename, type) {
         }, 0);
     }
 }
+</script>

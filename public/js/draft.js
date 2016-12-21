@@ -1,6 +1,6 @@
 "use strict";
 
-var recentlDraftedCardArrayLimit = 3;
+var recentlyDraftedCardArrayLimit = 3;
 
 $(document).ready(function() {
     requirejs(['./utils','./firebaseUtils', './slip'], function(){
@@ -51,37 +51,20 @@ function queueHandler() {
 
 
 function pickCardForUser(card) {
-    if (cardIsBanned(card)) {
-        console.log('Card is banned. (Cant Draft)');
-        return; //Don't draft a card if it's banned
-    }
+  if(card === false){
+    console.log('That isnt a valid card, Cant Draft');
+    return;
+  }
 
-    if (!cardIsFree(card)) {
-      console.log('Someone already had that card. (Cant Draft)');
-      return; //Someone already had that card, do something about that
-    }
-
-    var convertedCardName = getConvertedCardName(card);
-
-    if(convertedCardName === false){
-      console.log('That wasnt a real card (Cant Draft)', card);
-      return;
-    }
-
-    savePickedCardToFirebase(getCardObject(convertedCardName), currentUserId);
+    savePickedCardToFirebase(getCardObject(card), currentUserId);
 
     goToNextTurn();
 }
 
 function queueCardForUser(card) {
-  if (cardIsBanned(card)) {
-      console.log('Card is banned. (Cant Queue)');
-      return; //Don't draft a card if it's banned
-  }
-
-  if (!cardIsFree(card)) {
-    console.log('Someone already had that card. (Cant Queue)');
-    return; //Someone already had that card, do something about that
+  if(card === false){
+    console.log('That isnt a valid card, Cant Queue');
+    return;
   }
 
   if($.inArray(card, userQueuedCards) !== -1){
@@ -89,23 +72,37 @@ function queueCardForUser(card) {
     return;
   }
 
+  saveCardToUserQueue(card);
+}
+
+function validateCard(card) {
   var convertedCardName = getConvertedCardName(card);
 
   if(convertedCardName === false){
-    console.log('That wasnt a real card (Cant Queue)', card);
-    return;
+    console.log('That wasnt a real card ?_?', card);
+    return flase;
   }
 
-  saveCardToUserQueue(convertedCardName);
+  if (cardIsBanned(convertedCardName)) {
+      console.log('Card is banned. -_-');
+      return false; //Don't draft a card if it's banned
+  }
+
+  if (!cardIsFree(convertedCardName)) {
+    console.log('Someone already had that card. :(');
+    return false; //Someone already had that card, do something about that
+  }
+
+  return convertedCardName;
 }
 
 function pickOrQueueCard(card){
   if(currentUsersTurn()){
-    pickCardForUser(card);
+    pickCardForUser(validateCard(card));
   }
   else {
     console.log('Its not your turn, so I put the card in your queue');
-    queueCardForUser(card);
+    queueCardForUser(validateCard(card));
   }
 }
 
