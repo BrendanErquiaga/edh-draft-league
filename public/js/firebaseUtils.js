@@ -271,6 +271,10 @@ function saveCardToUserQueue(card){
   firebase.database().ref('queuedUserCards/').child(currentUserId).set(userQueuedCards);
 }
 
+function updateUserQueuedCards() {
+  firebase.database().ref('queuedUserCards/').child(currentUserId).set(userQueuedCards);
+}
+
 /*
 ~~~~~~~FIREBASE NOTIFICATIONS~~~~~~~~~~
 */
