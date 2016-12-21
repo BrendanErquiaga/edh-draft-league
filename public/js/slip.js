@@ -858,10 +858,10 @@ window['Slip'] = (function(){
     };
 
     // AMD
-    if ('function' === typeof define && define.amd) {
-        define(function(){
-            return Slip;
-        });
-    }
+    // if ('function' === typeof define && define.amd) {
+    //     define(function(){
+    //         return Slip;
+    //     });
+    // }
     return Slip;
 })();
