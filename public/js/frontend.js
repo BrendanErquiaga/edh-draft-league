@@ -26,27 +26,8 @@ function smoothScroll() {
 	});
 }
 
-// Queue Re-Ordering via slip.js
-function queueHandler() {
-	var list = $('#queuedCards')[0];
-	console.log(list);
-
-	list.addEventListener('slip:afterswipe', function(e){
-		//e.target.parentNode.appendChild(e.target);
-		e.target.remove();
-	}, false);
-
-	list.addEventListener('slip:reorder', function(e){
-		e.target.parentNode.insertBefore(e.target, e.detail.insertBefore);
-		return false;
-	}, false);
-
-	return new Slip(list);
-}
-
 // Document Ready
 $(document).ready(function(){
 	simpleAccordions();
 	smoothScroll();
-	queueHandler();
 });
