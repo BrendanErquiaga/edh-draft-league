@@ -61,7 +61,6 @@ function onAuthStateChanged(user) {
         currentUserId = user.uid;
         saveUserData(user.uid, user.displayName, user.email, user.photoURL);
         updateReferencesWithUserId();
-        updateLoggedInUserUI();
         //Hit the DB -> startDatabaseQueries();
         //Display Logged In State
         //Update autodraft button based on users status
@@ -69,10 +68,6 @@ function onAuthStateChanged(user) {
         currentUserId = null;
         //Prompt Login
     }
-}
-
-function updateLoggedInUserUI(){
-
 }
 
 // Saves basic user data
