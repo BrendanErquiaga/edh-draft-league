@@ -27,8 +27,9 @@ function smoothScroll() {
 }
 
 // Queue Re-Ordering via slip.js
-function queueHandler(list) {
+function queueHandler() {
 	var list = $('#queuedCards')[0];
+	console.log(list);
 
 	list.addEventListener('slip:afterswipe', function(e){
 		//e.target.parentNode.appendChild(e.target);

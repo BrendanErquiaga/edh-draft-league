@@ -771,4 +771,18 @@ footer p {
 .standings-table td {
   border: none; }
 
+#queuedCards {
+  width: 90%; }
+  @media (min-width: 73.125rem) {
+    #queuedCards {
+      width: 50%; } }
+  #queuedCards li {
+    border: 1px solid #d1d1d1;
+    list-style: none;
+    border-radius: 2px;
+    padding: 5px;
+    user-select: none; }
+    #queuedCards li:focus {
+      outline-color: #9b4dca; }
+
 /*# sourceMappingURL=milligram.css.map */
