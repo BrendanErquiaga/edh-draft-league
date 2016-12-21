@@ -340,3 +340,19 @@ footer {
 		border: none;
 	}
 }
+#queuedCards {
+	width: 90%;
+	@media(min-width: $desktop) {
+		width: 50%;
+	}
+	li {
+		border: 1px solid $light-accent;
+		list-style: none;
+		border-radius: 2px;
+		padding: 5px;
+		user-select: none;
+		&:focus {
+			outline-color: #9b4dca;
+		}
+	}
+}
