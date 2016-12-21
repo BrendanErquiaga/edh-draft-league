@@ -265,5 +265,31 @@ function getNextTurnNotificationObject() {
   return notificationObject;
 }
 
+function removeCardFromUserQueue(cardToRemove){
+  var index = userQueuedCards.indexOf(cardToRemove.innerHTML);    // <-- Not supported in <IE9
+  if (index !== -1) {
+      userQueuedCards.splice(index, 1);
+  }
+
+  updateUserQueuedCards();
+}
+
+//If the user moves a card in their queue, make sure firebase has the new order
+function userMovedQueuedCard() {
+  var newUserQueue = [];
+
+  $("#queuedCards li").each(function(index){
+    newUserQueue.push($(this).text());
+  });
+
+  if(newUserQueue.toString() === userQueuedCards.toString()){
+    //console.log('You didnt really move anything...');
+    return;
+  }
+
+  userQueuedCards = newUserQueue;
+
+  updateUserQueuedCards();
+}
 
 
