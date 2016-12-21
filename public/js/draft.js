@@ -80,7 +80,7 @@ function validateCard(card) {
 
   if(convertedCardName === false){
     console.log('That wasnt a real card ?_?', card);
-    return flase;
+    return false;
   }
 
   if (cardIsBanned(convertedCardName)) {
