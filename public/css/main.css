@@ -9,13 +9,18 @@ img#roundTrackerDirection {
   height: auto;
 }
 
-.playerResultsIcon {
+.playerResultsIcon, .playerSelectionIcon {
   width: 50px;
   height: auto;
 }
 
 .resultsIncrementer {
   width: 10px;
+  height: auto;
+}
+
+#resultsResetButton{
+  width: 20px;
   height: auto;
 }
 
