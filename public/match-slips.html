@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="author" content="Andrew Maul, Brendan Erquiaga">
 	<meta name="description" content="EDH Draft League 2016">
-	<title>Admin Center</title>
+	<title>Match Slips</title>
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
 	<link rel="stylesheet" href="sass/milligram.css">
@@ -162,10 +162,10 @@
 		</section>
 	</header>
 	<main class="container">
-		<section>
+		<section><!--Nav-->
 			<nav class="row">
 				<div class="column"><a href="index.html">Draft</a></div>
-				<div class="column"><a href="index.html" class="active">Admin</a></div>
+				<div class="column"><a href="match-slips.html" class="active">Match Slips</a></div>
 				<div class="column"><a href="rules.html">League Rules</a></div>
 				<div class="column"><a href="data_2016.html">Season 1 Data</a></div>
 			</nav>
@@ -183,23 +183,12 @@
 				</div>
 			</div>
 		</section>
-		<h1>Admin Center</h1>
-		<section id="adminOnlySection" style="display:none">
-			<h2 id="leagueName"></h2>
-			<section id="autoDraftSection">
-				<label class="switch">
-					<input type="checkbox" id="draftMasterSwitch">
-					<div class="slider round"></div>
-				</label>
-				<span>Master Drafter</span>
-				<br/>
-				<button class="mdl-button" id="refreshAutoDraft">Refresh Draft</button>
-			</section>
-			<section id="leagueDataSection">
-				<h4>League Members</h4>
-				<ul id="leagueMembers"><li>This was already here...</li></ul>
-			</section>
-		</section>
+		<h1>Match Slips</h1>
+    <section id="match-slip">
+      <span>Who was playing? (Choose 4)</span>
+      <section id="player-icon-selection">
+      </section>
+    </section>
 		<footer>
 			<section>
 				<p>Magic the Gathering, FNM is TM and copyright Wizards of the Coast, Inc, a subsidiary of Hasbro, Inc. All rights reserved. This site is unaffiliated. /legalese
