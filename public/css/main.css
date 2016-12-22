@@ -9,6 +9,16 @@ img#roundTrackerDirection {
   height: auto;
 }
 
+.playerResultsIcon {
+  width: 50px;
+  height: auto;
+}
+
+.resultsIncrementer {
+  width: 10px;
+  height: auto;
+}
+
 /* The switch - the box around the slider */
 
 .switch {
@@ -24,7 +34,6 @@ img#roundTrackerDirection {
 .switch input {
     display: none;
 }
-
 
 /* The slider */
 
