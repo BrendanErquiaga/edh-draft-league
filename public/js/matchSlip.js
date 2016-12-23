@@ -60,8 +60,18 @@ function getPlayerNumberFromInput(inputObject) {
 }
 
 function resetResultsData() {
-  //TODO a bunch of junk :D
-  console.log('Reset results plz?');
+  $('.killIconsContainer').each(function(i, obj) {
+    $(obj).text('');
+    //console.log(obj);
+  });
+
+  $('.voteIconsContainer').each(function(i, obj) {
+    $(obj).text('');
+  });
+
+  $('.winIconContainer').each(function(i, obj) {
+    $(obj).text('');
+  });
 }
 
 function addKillIconToPlayer(playerNumber) {
