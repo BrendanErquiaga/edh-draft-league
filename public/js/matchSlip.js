@@ -5,29 +5,29 @@ var killIconLocation = "img/icons/kill_icon.png",
     winIconLocation = "img/icons/win_icon.png";
 
 $(document).ready(function() {
-    requirejs(['./utils','./firebaseUtils', './slip'], function(){
-          pageReady();
-     });
+    requirejs(['./utils', './firebaseUtils', './slip'], function() {
+        pageReady();
+    });
 });
 
-function pageReady(){
-  //getFirebaseData();
+function pageReady() {
+    //getFirebaseData();
 
-  catchMatchSlipPageInput();
+    catchMatchSlipPageInput();
 }
 
 function catchMatchSlipPageInput() {
-      $('.killIncrement').on('click', function(e) {
-          addKillIconToPlayer(getPlayerNumberFromInput($(this)));
-      });
+    $('.killIncrement').on('click', function(e) {
+        addKillIconToPlayer(getPlayerNumberFromInput($(this)));
+    });
 
-      $('.voteIncrement').on('click', function(e) {
-          addVoteIconToPlayer(getPlayerNumberFromInput($(this)));
-      });
+    $('.voteIncrement').on('click', function(e) {
+        addVoteIconToPlayer(getPlayerNumberFromInput($(this)));
+    });
 
-      $('.winIncrement').on('click', function(e) {
-          addWinIconToPlayer(getPlayerNumberFromInput($(this)));
-      });
+    $('.winIncrement').on('click', function(e) {
+        addWinIconToPlayer(getPlayerNumberFromInput($(this)));
+    });
 
     $('#resultsResetButton').on('click', function(e) {
         resetResultsData();
@@ -60,28 +60,36 @@ function getPlayerNumberFromInput(inputObject) {
 }
 
 function resetResultsData() {
-  $('.killIconsContainer').each(function(i, obj) {
-    $(obj).text('');
-    //console.log(obj);
-  });
+    $('.killIconsContainer').each(function(i, obj) {
+        $(obj).text('');
+    });
 
-  $('.voteIconsContainer').each(function(i, obj) {
-    $(obj).text('');
-  });
+    $('.voteIconsContainer').each(function(i, obj) {
+        $(obj).text('');
+    });
 
-  $('.winIconContainer').each(function(i, obj) {
-    $(obj).text('');
-  });
+    $('.winIconContainer').each(function(i, obj) {
+        $(obj).text('');
+    });
 }
 
 function addKillIconToPlayer(playerNumber) {
-  $('#player' + playerNumber + 'ResultsDiv .killIconsContainer').prepend($('<img>',{class:'killIcon',src:killIconLocation}))
+    $('#player' + playerNumber + 'ResultsDiv .killIconsContainer').prepend($('<img>', {
+        class: 'killIcon',
+        src: killIconLocation
+    }))
 }
 
 function addVoteIconToPlayer(playerNumber) {
-  $('#player' + playerNumber + 'ResultsDiv .voteIconsContainer').prepend($('<img>',{class:'voteIcon',src:voteIconLocation}))
+    $('#player' + playerNumber + 'ResultsDiv .voteIconsContainer').prepend($('<img>', {
+        class: 'voteIcon',
+        src: voteIconLocation
+    }))
 }
 
 function addWinIconToPlayer(playerNumber) {
-  $('#player' + playerNumber + 'ResultsDiv .winIconContainer').prepend($('<img>',{class:'winIcon',src:winIconLocation}))
+    $('#player' + playerNumber + 'ResultsDiv .winIconContainer').prepend($('<img>', {
+        class: 'winIcon',
+        src: winIconLocation
+    }))
 }
