@@ -134,7 +134,7 @@
 					// [START_EXCLUDE]
 					document.getElementById('quickstart-sign-in-status').textContent = 'Signed out';
 					document.getElementById('quickstart-sign-in').textContent = 'Sign in';
-					document.getElementById('userIcon').src = 'img/alesha.jpg';
+					document.getElementById('userIcon').src = 'img/unknown.jpg';
 					// [END_EXCLUDE]
 				}
 				// [START_EXCLUDE]
@@ -150,7 +150,7 @@
 	</script>
 </head>
 
-<body class="admin">
+<body class="match-slip">
 	<header>
 		<section class="container">
 			<picture>
@@ -178,7 +178,7 @@
 
 				<!-- Container where we'll display the user details -->
 				<div class="quickstart-user-details-container">
-					<img src="img/alesha.jpg" id="userIcon" height="50px" width="50px" />
+					<img src="img/unknown.jpg" id="userIcon" height="50px" width="50px" />
 					<span id="quickstart-sign-in-status">Unknown</span>
 				</div>
 			</div>
@@ -187,20 +187,12 @@
     <section id="match-slip">
       <span>Who was playing? (Choose 4)</span>
       <section id="player-icon-selection">
-        <input type="image" src="img/icons/p1.png" class="playerSelectionIcon" id="player1SelectionIcon"/>
-        <input type="image" src="img/icons/p2.png" class="playerSelectionIcon" id="player2SelectionIcon"/>
-        <input type="image" src="img/icons/p3.png" class="playerSelectionIcon" id="player3SelectionIcon"/>
-        <input type="image" src="img/icons/p4.png" class="playerSelectionIcon" id="player4SelectionIcon"/>
-        <input type="image" src="img/icons/p1.png" class="playerSelectionIcon" id="player5SelectionIcon"/>
-        <input type="image" src="img/icons/p2.png" class="playerSelectionIcon" id="player6SelectionIcon"/>
-        <input type="image" src="img/icons/p3.png" class="playerSelectionIcon" id="player7SelectionIcon"/>
-        <input type="image" src="img/icons/p4.png" class="playerSelectionIcon" id="player8SelectionIcon"/>
       </section>
       <span>Who got what?</span>
       <input type="image" src="img/icons/loop.svg" id="resultsResetButton" />
       <section id="slip-results-selection">
         <div class="playerResultsDiv" id="player1ResultsDiv">
-          <img src="img/icons/p1.png" alt="P1" class="playerResultsIcon"></img>
+          <img src="img/icons/p1.png" alt="P1" class="playerResultsIcon inactive"></img>
           <span class="resultsInput">
             <span class="resultTypeInput">
               Kill
@@ -220,7 +212,7 @@
           </span>
         </div>
         <div class="playerResultsDiv" id="player2ResultsDiv">
-          <img src="img/icons/p2.png" alt="P2" class="playerResultsIcon"></img>
+          <img src="img/icons/p2.png" alt="P2" class="playerResultsIcon inactive"></img>
           <span class="resultsInput">
 	            <span class="resultTypeInput">
 	              Kill
@@ -240,7 +232,7 @@
           </span>
         </div>
         <div class="playerResultsDiv" id="player3ResultsDiv">
-          <img src="img/icons/p3.png" alt="P3" class="playerResultsIcon"></img>
+          <img src="img/icons/p3.png" alt="P3" class="playerResultsIcon inactive"></img>
 					<span class="resultsInput">
 	            <span class="resultTypeInput">
 	              Kill
@@ -260,7 +252,7 @@
           </span>
         </div>
         <div class="playerResultsDiv" id="player4ResultsDiv">
-          <img src="img/icons/p4.png" alt="P4" class="playerResultsIcon"></img>
+          <img src="img/icons/p4.png" alt="P4" class="playerResultsIcon inactive"></img>
 					<span class="resultsInput">
 	            <span class="resultTypeInput">
 	              Kill

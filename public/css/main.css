@@ -12,6 +12,11 @@ img#roundTrackerDirection {
 .playerResultsIcon, .playerSelectionIcon {
   width: 50px;
   height: auto;
+  margin: 0px 5px;
+}
+
+.playerResultsIcon.inactive {
+  opacity: 0.5;
 }
 
 .resultsIncrementer {

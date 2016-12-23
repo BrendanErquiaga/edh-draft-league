@@ -32,9 +32,11 @@ function getFirebaseData() {
       queuedCardsSnapshot = snapshot;
     });
 
-    recentlyDraftCardsRef.on('value', function(snapshot) {
-      updateRecentlyDraftedCards(snapshot);
-    });
+    if(recentlyDraftedCardArrayLimit !== undefined){
+      recentlyDraftCardsRef.on('value', function(snapshot) {
+        updateRecentlyDraftedCards(snapshot);
+      });
+    }
 
     firebase.database().ref('banList').once('value').then(function(snapshot) {
         bannedCardList = snapshot.val();
@@ -46,14 +48,14 @@ function getFirebaseData() {
 
     //Admin only section
     if($(document.body).hasClass('admin')) {
-      firebase.database().ref('leagueData').on('value', function(snapshot) {
-          updateLeagueDataObject(snapshot);
-      });
-
       firebase.database().ref('draftMaster').on('value', function(snapshot) {
           updateDraftMasterObject(snapshot);
       });
     }
+
+    firebase.database().ref('leagueData').on('value', function(snapshot) {
+        updateLeagueDataObject(snapshot);
+    });
 
     //Should be last because it attempts to autodraft
     firebase.database().ref('turns').on('value', function(snapshot){
@@ -74,6 +76,8 @@ function updateLeagueDataObject(snapshot){
 
   if($(document.body).hasClass('admin')) {
     updateLeagueDataUI();
+  } else if ($(document.body).hasClass('match-slip')) {
+    updateMatchSlipPlayerIcons();
   }
 }
 

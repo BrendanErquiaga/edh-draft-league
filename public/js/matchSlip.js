@@ -2,7 +2,8 @@
 
 var killIconLocation = "img/icons/kill_icon.png",
     voteIconLocation = "img/icons/vote_icon.png",
-    winIconLocation = "img/icons/win_icon.png";
+    winIconLocation = "img/icons/win_icon.png",
+    recentlyDraftedCardArrayLimit;
 
 $(document).ready(function() {
     requirejs(['./utils', './firebaseUtils', './slip'], function() {
@@ -11,7 +12,7 @@ $(document).ready(function() {
 });
 
 function pageReady() {
-    //getFirebaseData();
+    getFirebaseData();
 
     catchMatchSlipPageInput();
 }
@@ -77,19 +78,38 @@ function addKillIconToPlayer(playerNumber) {
     $('#player' + playerNumber + 'ResultsDiv .killIconsContainer').prepend($('<img>', {
         class: 'killIcon',
         src: killIconLocation
-    }))
+    }));
 }
 
 function addVoteIconToPlayer(playerNumber) {
     $('#player' + playerNumber + 'ResultsDiv .voteIconsContainer').prepend($('<img>', {
         class: 'voteIcon',
         src: voteIconLocation
-    }))
+    }));
 }
 
 function addWinIconToPlayer(playerNumber) {
     $('#player' + playerNumber + 'ResultsDiv .winIconContainer').prepend($('<img>', {
         class: 'winIcon',
         src: winIconLocation
-    }))
+    }));
+}
+
+/* ~~~~~~~~~~~~~~~ UI Updates ~~~~~~~~~~~~~~~ */
+
+//Use the leagues actual player icons
+function updateMatchSlipPlayerIcons() {
+  var leagueMembers = leagueDataObject[usersSnapshot[currentUserId].leagueId].members;
+
+  $('#player-icon-selection').empty();
+
+  //console.log(leagueMembers);
+  $.each(leagueMembers, function (key, val){
+    $('#player-icon-selection').prepend($('<input>', {
+        type: 'image',
+        src: usersSnapshot[val].profile_picture,
+        class: 'playerSelectionIcon',
+        id: 'selectionIcon_' + val
+    }));
+  });
 }
