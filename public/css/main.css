@@ -24,6 +24,11 @@ img#roundTrackerDirection {
   height: auto;
 }
 
+.killIcon, .voteIcon, .winIcon {
+  width: 32px;
+  height: auto;
+}
+
 /* The switch - the box around the slider */
 
 .switch {
