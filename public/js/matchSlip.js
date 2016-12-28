@@ -3,7 +3,11 @@
 var killIconLocation = "img/icons/kill_icon.png",
     voteIconLocation = "img/icons/vote_icon.png",
     winIconLocation = "img/icons/win_icon.png",
-    recentlyDraftedCardArrayLimit;
+    recentlyDraftedCardArrayLimit,
+    selectedPlayers = [],
+    killRecords = [],
+    voteRecords = [],
+    winnerId;
 
 $(document).ready(function() {
     requirejs(['./utils', './firebaseUtils', './slip'], function() {
@@ -28,6 +32,10 @@ function catchMatchSlipPageInput() {
 
     $('.winIncrement').on('click', function(e) {
         addWinIconToPlayer(getPlayerNumberFromInput($(this)));
+    });
+
+    $('#player-icon-selection').on('click',"input", function(e) {
+        selectPlayer($(this));
     });
 
     $('#resultsResetButton').on('click', function(e) {
@@ -60,6 +68,40 @@ function getPlayerNumberFromInput(inputObject) {
     return valueToReturn;
 }
 
+function getPlayerIdFromInput(inputObject){
+    var firstInputObject = inputObject[0],
+        objectID;
+
+    if($(firstInputObject).attr('class') !== "playerSelectionIcon"){
+        console.log('Not what I wanted?',firstInputObject.class);
+        return;
+    }
+
+    objectID = $(firstInputObject).attr('id');
+
+    return objectID.replace('selectionIcon_', "");
+}
+
+function selectPlayer(playerInputObject) {
+    if(selectedPlayers.length >= 4){
+        console.log('We already have 4 players');
+        return;
+    }
+
+    var newPlayerId = getPlayerIdFromInput(playerInputObject)
+
+    if($.inArray(newPlayerId, selectedPlayers) !== -1){
+        console.log('We already had that player');
+        return;
+    }
+
+    selectedPlayers.push(newPlayerId);
+
+    $(playerInputObject).addClass('inactive');
+
+    updatePlayerResultsIcon(selectedPlayers.length, $(playerInputObject).attr('src'));
+}
+
 function resetResultsData() {
     $('.killIconsContainer').each(function(i, obj) {
         $(obj).text('');
@@ -72,6 +114,20 @@ function resetResultsData() {
     $('.winIconContainer').each(function(i, obj) {
         $(obj).text('');
     });
+
+    $('#player-icon-selection').children('input').each(function(i, obj) {
+        $(obj).removeClass('inactive');
+    });
+
+    updatePlayerResultsIcon(1, '/img/icons/p1.png');
+    updatePlayerResultsIcon(2, '/img/icons/p2.png');
+    updatePlayerResultsIcon(3, '/img/icons/p3.png');
+    updatePlayerResultsIcon(4, '/img/icons/p4.png');
+
+    selectedPlayers = [];
+    killRecords = [];
+    voteRecords = [];
+    winnerId = '';
 }
 
 function addKillIconToPlayer(playerNumber) {
@@ -112,4 +168,11 @@ function updateMatchSlipPlayerIcons() {
         id: 'selectionIcon_' + val
     }));
   });
+}
+
+function updatePlayerResultsIcon(index, imgSource) {
+    var imageObject = $('#player' + index + 'ResultsDiv .playerResultsIcon');
+
+    $(imageObject).attr('src', imgSource);
+    $(imageObject).removeClass('inactive');
 }

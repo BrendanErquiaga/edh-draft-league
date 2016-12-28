@@ -15,7 +15,7 @@ img#roundTrackerDirection {
   margin: 0px 5px;
 }
 
-.playerResultsIcon.inactive {
+.playerResultsIcon.inactive, .playerSelectionIcon.inactive {
   opacity: 0.5;
 }
 
