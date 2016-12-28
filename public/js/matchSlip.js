@@ -7,7 +7,9 @@ var killIconLocation = "img/icons/kill_icon.png",
     selectedPlayers = [],
     killRecords = [],
     voteRecords = [],
-    winnerId;
+    winnerId = '',
+    killLimit = 3,
+    voteLimit = 4;
 
 $(document).ready(function() {
     requirejs(['./utils', './firebaseUtils', './slip'], function() {
@@ -23,15 +25,15 @@ function pageReady() {
 
 function catchMatchSlipPageInput() {
     $('.killIncrement').on('click', function(e) {
-        addKillIconToPlayer(getPlayerNumberFromInput($(this)));
+        addKillToPlayer(getPlayerNumberFromInput($(this)));
     });
 
     $('.voteIncrement').on('click', function(e) {
-        addVoteIconToPlayer(getPlayerNumberFromInput($(this)));
+        addVoteToPlayer(getPlayerNumberFromInput($(this)));
     });
 
     $('.winIncrement').on('click', function(e) {
-        addWinIconToPlayer(getPlayerNumberFromInput($(this)));
+        addWinToPlayer(getPlayerNumberFromInput($(this)));
     });
 
     $('#player-icon-selection').on('click',"input", function(e) {
@@ -40,6 +42,10 @@ function catchMatchSlipPageInput() {
 
     $('#resultsResetButton').on('click', function(e) {
         resetResultsData();
+    });
+
+    $('#match-slip-submit').on('click', function(e) {
+        submitMatchResults();
     });
 }
 
@@ -128,27 +134,69 @@ function resetResultsData() {
     killRecords = [];
     voteRecords = [];
     winnerId = '';
+
+    toggleResultsSubmittableUI(false);
 }
 
-function addKillIconToPlayer(playerNumber) {
+function addKillToPlayer(playerNumber) {
+    if(selectedPlayers.length < 4 || killRecords.length >= killLimit){
+        return;
+    }
+
     $('#player' + playerNumber + 'ResultsDiv .killIconsContainer').prepend($('<img>', {
         class: 'killIcon',
         src: killIconLocation
     }));
+
+    killRecords.push(selectedPlayers[playerNumber - 1]);
 }
 
-function addVoteIconToPlayer(playerNumber) {
+function addVoteToPlayer(playerNumber) {
+    if(selectedPlayers.length < 4 || voteRecords.length >= voteLimit){
+        return;
+    }
+
     $('#player' + playerNumber + 'ResultsDiv .voteIconsContainer').prepend($('<img>', {
         class: 'voteIcon',
         src: voteIconLocation
     }));
+
+    voteRecords.push(selectedPlayers[playerNumber - 1]);
+
+    //TODO: Make it so you can't vote the same player 4 times
 }
 
-function addWinIconToPlayer(playerNumber) {
+function addWinToPlayer(playerNumber) {
+    if(selectedPlayers.length < 4 || winnerId !== ''){
+        return;
+    }
+
     $('#player' + playerNumber + 'ResultsDiv .winIconContainer').prepend($('<img>', {
         class: 'winIcon',
         src: winIconLocation
     }));
+
+    winnerId = selectedPlayers[playerNumber - 1];
+
+    toggleResultsSubmittableUI(true);
+}
+
+function submitMatchResults() {
+    if($('#match-slip-submit').hasClass('inactive')){
+        console.log('Results not valid');
+        return;
+    }
+
+    var resultsObject = {};
+
+    resultsObject.submissionDate = Date.now();
+    resultsObject.submittingPlayerName = usersSnapshot[currentUserId].username;
+    resultsObject.players = selectedPlayers;
+    resultsObject.killRecords = killRecords;
+    resultsObject.voteRecords = voteRecords;
+    resultsObject.winnerId = winnerId;
+
+    console.log(JSON.stringify(resultsObject));
 }
 
 /* ~~~~~~~~~~~~~~~ UI Updates ~~~~~~~~~~~~~~~ */
@@ -175,4 +223,13 @@ function updatePlayerResultsIcon(index, imgSource) {
 
     $(imageObject).attr('src', imgSource);
     $(imageObject).removeClass('inactive');
+}
+
+function toggleResultsSubmittableUI(resultsCanBeSubmitted) {
+    if(resultsCanBeSubmitted){
+        $('#match-slip-submit').removeClass('inactive');
+    }
+    else {
+        $('#match-slip-submit').addClass('inactive');
+    }
 }
