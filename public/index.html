@@ -134,7 +134,7 @@
 					// [START_EXCLUDE]
 					document.getElementById('quickstart-sign-in-status').textContent = 'Signed out';
 					document.getElementById('quickstart-sign-in').textContent = 'Sign in';
-					document.getElementById('userIcon').src = 'img/alesha.jpg';
+					document.getElementById('userIcon').src = 'img/unknown.jpg';
 					// [END_EXCLUDE]
 				}
 				// [START_EXCLUDE]
@@ -176,8 +176,7 @@
 		</section>
 	</header>
 	<main class="container">
-		<section>
-			<h1>Draft Hub</h1>
+		<section class="login">
 			<!-- Container for the demo -->
 			<div class="mdl-card__supporting-text mdl-color-text--grey-600">
 				<!-- Button that handles sign-in/sign-out -->
@@ -185,11 +184,12 @@
 
 				<!-- Container where we'll display the user details -->
 				<div class="quickstart-user-details-container">
-					<img src="img/alesha.jpg" id="userIcon" height="50px" width="50px" />
+					<img src="img/unknown.jpg" id="userIcon" height="50px" width="50px" />
 					<span id="quickstart-sign-in-status">Unknown</span>
 				</div>
 			</div>
 		</section>
+		<h1>Draft Hub</h1>
 		<section id="draftInfoSection">
 			<p>Round#: <span id="roundNumberIndicator"></span></p>
 			<p>Turn Order: <img id="roundTrackerDirection"></img></p>

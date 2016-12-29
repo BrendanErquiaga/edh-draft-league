@@ -29,6 +29,28 @@ function catchAdminPageInput(){
   $('#refreshAutoDraft').on('click', function(e) {
       attemptToAutoDraft();
   });
+
+  $('#resultsToApprove').on('click',"input", function(e) {
+      approveOrDenyMatchResult($(this));
+  });
+}
+
+function approveOrDenyMatchResult(inputObject) {
+  if($(inputObject).hasClass('approveMatchResultButton')){
+    approveMatchResult($(inputObject).attr('id'));
+  }
+  else if ($(inputObject).hasClass('denyMatchResultButton')){
+    denyMatchResult($(inputObject).attr('id'));
+  }
+}
+
+function approveMatchResult(resultKey) {
+  saveApprovedMatchResult(resultsToApproveSnapshot.val()[resultKey]);
+  removeUnapprovedMatchResult(resultKey);
+}
+
+function denyMatchResult(resultKey) {
+  removeUnapprovedMatchResult(resultKey);
 }
 
 function updateMasterDrafterStatus(masterDrafterClientEnabled){
@@ -88,6 +110,8 @@ function autoDraftCardForUser(autoDraftedUserId){
   goToNextTurn();
 }
 
+/* ~~~~~~~~~~~~~~~ UI Updates ~~~~~~~~~~~~~~~ */
+
 function displayAdminSection() {
   $("#adminOnlySection").css('display','inline');
   adminSectionShown = true;
@@ -107,4 +131,38 @@ function updateLeagueDataUI() {
   for(var i = 0; i < leagueDataObject[currentUserId].members.length; i++){
     leagueMembersUL.append('<li>' + getDisplayNameFromID(leagueDataObject[currentUserId].members[i]) + '</li>');
   }
+}
+
+function updateResultsToApproveUI() {
+  if(!adminSectionShown){
+    return;
+  }
+
+  var resultsToApproveUL = $("#resultsToApprove");
+
+  resultsToApproveUL.empty();
+
+  resultsToApproveSnapshot.forEach(function(obj) {
+      resultsToApproveUL.append(getApprovableResultsRow(obj.key, obj.val()));
+  });
+}
+
+function getApprovableResultsRow(resultKey, result) {
+  var tempResultsRow = getResultsRow(resultKey, result);
+
+  $(tempResultsRow).prepend($('<input>', {
+    type: 'image',
+    src: denyMatchResultIcon,
+    class: 'denyMatchResultButton',
+    id: resultKey
+  }));
+
+  $(tempResultsRow).append($('<input>', {
+    type: 'image',
+    src: approveMatchResultIcon,
+    class: 'approveMatchResultButton',
+    id: resultKey
+  }));
+
+  return tempResultsRow;
 }

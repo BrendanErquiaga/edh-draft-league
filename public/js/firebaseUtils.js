@@ -11,7 +11,9 @@ var usersSnapshot,
     recentlyDraftCards,
     bannedCardList,
     turnOrderObject,
-    leagueDataObject;
+    leagueDataObject,
+    resultsToApproveSnapshot,
+    matchResultsObject;
 
 function getFirebaseData() {
     draftedCardsRef = firebase.database().ref('draftedUserCards');
@@ -32,9 +34,11 @@ function getFirebaseData() {
       queuedCardsSnapshot = snapshot;
     });
 
-    recentlyDraftCardsRef.on('value', function(snapshot) {
-      updateRecentlyDraftedCards(snapshot);
-    });
+    if(recentlyDraftedCardArrayLimit !== undefined){
+      recentlyDraftCardsRef.on('value', function(snapshot) {
+        updateRecentlyDraftedCards(snapshot);
+      });
+    }
 
     firebase.database().ref('banList').once('value').then(function(snapshot) {
         bannedCardList = snapshot.val();
@@ -46,14 +50,19 @@ function getFirebaseData() {
 
     //Admin only section
     if($(document.body).hasClass('admin')) {
-      firebase.database().ref('leagueData').on('value', function(snapshot) {
-          updateLeagueDataObject(snapshot);
-      });
-
       firebase.database().ref('draftMaster').on('value', function(snapshot) {
           updateDraftMasterObject(snapshot);
       });
     }
+
+    firebase.database().ref('leagueData').on('value', function(snapshot) {
+        updateLeagueDataObject(snapshot);
+    });
+
+    firebase.database().ref('resultsWaitingApproval').on('value', function(snapshot) {
+        updateApprovableResultsObject(snapshot);
+    });
+
 
     //Should be last because it attempts to autodraft
     firebase.database().ref('turns').on('value', function(snapshot){
@@ -69,11 +78,21 @@ function getFirebaseData() {
 ~~~~~~~FIREBASE UPDATE~~~~~~~~~~
 */
 
+function updateApprovableResultsObject(snapshot) {
+  resultsToApproveSnapshot = snapshot;
+
+  if($(document.body).hasClass('admin')) {
+    updateResultsToApproveUI();
+  }
+}
+
 function updateLeagueDataObject(snapshot){
   leagueDataObject = snapshot.val();
 
   if($(document.body).hasClass('admin')) {
     updateLeagueDataUI();
+  } else if ($(document.body).hasClass('match-slip')) {
+    updateMatchSlipPlayerIcons();
   }
 }
 
@@ -151,6 +170,37 @@ function updateDraftedCardData(snapshot) {
 /*
 ~~~~~~~FIREBASE Save~~~~~~~~~~
 */
+
+function saveApprovedMatchResult(approvedMatchResult) {
+  var newApprovedResult = firebase.database().ref('matchResults').push();
+
+  newApprovedResult.set({
+      submissionDate: approvedMatchResult.submissionDate,
+      submittingPlayerName: approvedMatchResult.submittingPlayerName,
+      players: approvedMatchResult.players,
+      killRecords: approvedMatchResult.killRecords,
+      voteRecords: approvedMatchResult.voteRecords,
+      winnerId: approvedMatchResult.winnerId,
+      podId: approvedMatchResult.podId
+  });
+}
+
+function removeUnapprovedMatchResult(matchResultKey) {
+  firebase.database().ref('resultsWaitingApproval').child(matchResultKey).remove();
+}
+
+function saveUnapprovedMatchResult(matchResult) {
+  var newUnapprovedResult = firebase.database().ref('resultsWaitingApproval').push();
+  newUnapprovedResult.set({
+      submissionDate: matchResult.submissionDate,
+      submittingPlayerName: matchResult.submittingPlayerName,
+      players: matchResult.players,
+      killRecords: matchResult.killRecords,
+      voteRecords: matchResult.voteRecords,
+      winnerId: matchResult.winnerId,
+      podId: matchResult.podId
+  });
+}
 
 function saveGlobalSubscribeStatus(globalSubscribeEnabled) {
   firebase.database().ref('users/' + currentUserId).update({
