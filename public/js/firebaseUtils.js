@@ -13,8 +13,8 @@ var usersSnapshot,
     turnOrderObject,
     leagueDataObject,
     resultsToApproveSnapshot,
-    matchRecordsSnapshot,
-    matchResultsObject;
+    playerStatsSnapshot,
+    matchResultsSnapshot;
 
 function getFirebaseData() {
     draftedCardsRef = firebase.database().ref('draftedUserCards');
@@ -57,7 +57,11 @@ function getFirebaseData() {
     //Standings only section
     if($(document.body).hasClass('standings')) {
       firebase.database().ref('matchResults').on('value', function(snapshot) {
-          updateMatchResultsObject(snapshot);
+          updatematchResultsSnapshot(snapshot);
+      });
+
+      firebase.database().ref('playerStats').on('value', function(snapshot) {
+          updateplayerStatsSnapshot(snapshot);
       });
     }
 
@@ -84,8 +88,17 @@ function getFirebaseData() {
 ~~~~~~~FIREBASE UPDATE~~~~~~~~~~
 */
 
-function updateMatchResultsObject(snapshot) {
-  matchResultsObject = snapshot;
+function updateplayerStatsSnapshot(snapshot){
+  playerStatsSnapshot = snapshot;
+
+  //TODO: Add UI elements for recently drafted cards
+  if($(document.body).hasClass('standings')) {
+    updatePlayerStatsTable();
+  }
+}
+
+function updatematchResultsSnapshot(snapshot) {
+  matchResultsSnapshot = snapshot;
 
   if($(document.body).hasClass('standings')) {
     updateMatchRecordsTable();
@@ -184,6 +197,10 @@ function updateDraftedCardData(snapshot) {
 /*
 ~~~~~~~FIREBASE Save~~~~~~~~~~
 */
+
+function savePlayerStats(newStatsObject) {
+  firebase.database().ref('playerStats').set(newStatsObject);
+}
 
 function saveApprovedMatchResult(approvedMatchResult) {
   var newApprovedResult = firebase.database().ref('matchResults').push();
