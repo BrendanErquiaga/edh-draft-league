@@ -171,7 +171,25 @@ function updateDraftedCardData(snapshot) {
 ~~~~~~~FIREBASE Save~~~~~~~~~~
 */
 
-function addUnapprovedMatchResult(matchResult) {
+function saveApprovedMatchResult(approvedMatchResult) {
+  var newApprovedResult = firebase.database().ref('matchResults').push();
+
+  newApprovedResult.set({
+      submissionDate: approvedMatchResult.submissionDate,
+      submittingPlayerName: approvedMatchResult.submittingPlayerName,
+      players: approvedMatchResult.players,
+      killRecords: approvedMatchResult.killRecords,
+      voteRecords: approvedMatchResult.voteRecords,
+      winnerId: approvedMatchResult.winnerId,
+      podId: approvedMatchResult.podId
+  });
+}
+
+function removeUnapprovedMatchResult(matchResultKey) {
+  firebase.database().ref('resultsWaitingApproval').child(matchResultKey).remove();
+}
+
+function saveUnapprovedMatchResult(matchResult) {
   var newUnapprovedResult = firebase.database().ref('resultsWaitingApproval').push();
   newUnapprovedResult.set({
       submissionDate: matchResult.submissionDate,

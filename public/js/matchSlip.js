@@ -209,7 +209,7 @@ function submitMatchResults() {
     resultsObject.winnerId = winnerId;
     resultsObject.podId = getCombinedStringFromArray(resultsObject.players).hashCode();
 
-    addUnapprovedMatchResult(resultsObject);
+    saveUnapprovedMatchResult(resultsObject);
 
     alert("Match Result Submitted: \n" + JSON.stringify(resultsObject));
     //TODO: Add Better Confirmation Feedback

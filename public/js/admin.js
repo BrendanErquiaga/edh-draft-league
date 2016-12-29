@@ -29,6 +29,28 @@ function catchAdminPageInput(){
   $('#refreshAutoDraft').on('click', function(e) {
       attemptToAutoDraft();
   });
+
+  $('#resultsToApprove').on('click',"input", function(e) {
+      approveOrDenyMatchResult($(this));
+  });
+}
+
+function approveOrDenyMatchResult(inputObject) {
+  if($(inputObject).hasClass('approveMatchResultButton')){
+    approveMatchResult($(inputObject).attr('id'));
+  }
+  else if ($(inputObject).hasClass('denyMatchResultButton')){
+    denyMatchResult($(inputObject).attr('id'));
+  }
+}
+
+function approveMatchResult(resultKey) {
+  saveApprovedMatchResult(resultsToApproveSnapshot.val()[resultKey]);
+  removeUnapprovedMatchResult(resultKey);
+}
+
+function denyMatchResult(resultKey) {
+  removeUnapprovedMatchResult(resultKey);
 }
 
 function updateMasterDrafterStatus(masterDrafterClientEnabled){
@@ -120,7 +142,6 @@ function updateResultsToApproveUI() {
 
   resultsToApproveUL.empty();
 
-
   resultsToApproveSnapshot.forEach(function(obj) {
       resultsToApproveUL.append(getApprovableResultsRow(obj.key, obj.val()));
   });
@@ -132,13 +153,15 @@ function getApprovableResultsRow(resultKey, result) {
   $(tempResultsRow).prepend($('<input>', {
     type: 'image',
     src: denyMatchResultIcon,
-    class: 'denyMatchResultButton'
+    class: 'denyMatchResultButton',
+    id: resultKey
   }));
 
   $(tempResultsRow).append($('<input>', {
     type: 'image',
     src: approveMatchResultIcon,
-    class: 'approveMatchResultButton'
+    class: 'approveMatchResultButton',
+    id: resultKey
   }));
 
   return tempResultsRow;

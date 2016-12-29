@@ -35,6 +35,15 @@ img#roundTrackerDirection {
   background-color: #630213;
 }
 
+.playerResultRow {
+  display: flex;
+  flex-direction: row;
+}
+
+.playerResultRow * {
+  align-self: center;
+}
+
 .resultsIncrementer {
   width: 10px;
   height: auto;
