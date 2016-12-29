@@ -1,9 +1,6 @@
 "use strict";
 
-var killIconLocation = "img/icons/kill_icon.png",
-    voteIconLocation = "img/icons/vote_icon.png",
-    winIconLocation = "img/icons/win_icon.png",
-    recentlyDraftedCardArrayLimit,
+var recentlyDraftedCardArrayLimit,
     selectedPlayers = [],
     killRecords = [],
     voteRecords = [],
@@ -79,7 +76,6 @@ function getPlayerIdFromInput(inputObject){
         objectID;
 
     if($(firstInputObject).attr('class') !== "playerSelectionIcon"){
-        console.log('Not what I wanted?',firstInputObject.class);
         return false;
     }
 
@@ -97,7 +93,6 @@ function selectPlayer(playerInputObject) {
     var newPlayerId = getPlayerIdFromInput(playerInputObject)
 
     if(newPlayerId === false){
-        console.log('Something bad happened, abort');
         return;
     }
     else if($.inArray(newPlayerId, selectedPlayers) !== -1){

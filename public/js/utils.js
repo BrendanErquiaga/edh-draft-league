@@ -7,7 +7,10 @@ var senderKey = "AAAAWRkfbzA:APA91bEhDBDOSArAdhSpI_SFiWh2K-1S7m0Te2OL_Av7JKMdsBX
     lowercaseCardNamesLocal,
     lowercaseCardNamesLocation = "/js/json/cardnames_lc.json",
     cardNamesLocal,
-    cardNamesLocation = "/js/json/cardnames.json";
+    cardNamesLocation = "/js/json/cardnames.json",
+    killIconLocation = "img/icons/kill_icon.png",
+    voteIconLocation = "img/icons/vote_icon.png",
+    winIconLocation = "img/icons/win_icon.png";
 
 function getNextDrafterId() {
     return turnOrderObject.turnOrder[turnOrderObject.turnIndex];
