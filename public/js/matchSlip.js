@@ -160,6 +160,19 @@ function addVoteToPlayer(playerNumber) {
         return;
     }
 
+    if(voteRecords.length >= 2){
+        var voteCount = { };
+        for (var i = 0, j = voteRecords.length; i < j; i++) {
+           voteCount[voteRecords[i]] = (voteCount[voteRecords[i]] || 0) + 1;
+        }
+        
+        if(voteCount[selectedPlayers[playerNumber - 1]] === voteLimit - 1){
+            console.log('You cant vote for the same player more than allowed times');
+            return;
+        }
+    }
+
+
     $('#player' + playerNumber + 'ResultsDiv .voteIconsContainer').prepend($('<img>', {
         class: 'voteIcon',
         src: voteIconLocation
