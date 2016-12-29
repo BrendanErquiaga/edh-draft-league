@@ -91,7 +91,6 @@ function getFirebaseData() {
 function updateplayerStatsSnapshot(snapshot){
   playerStatsSnapshot = snapshot;
 
-  //TODO: Add UI elements for recently drafted cards
   if($(document.body).hasClass('standings')) {
     updatePlayerStatsTable();
   }
@@ -140,7 +139,6 @@ function updateRecentlyDraftedCards(snapshot){
     recentlyDraftCards = [];
   }
 
-  //TODO: Add UI elements for recently drafted cards
   if($(document.body).hasClass('draft')) {
     updateRecentlyDraftedCardsUI();
   }

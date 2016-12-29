@@ -34,8 +34,24 @@ function recalculatePlayerStats() {
     }
   });
 
-  console.log(newStatsObject);
-  savePlayerStats(newStatsObject);
+  savePlayerStats(getSortedStatsObject(newStatsObject));
+}
+
+function getSortedStatsObject(newStatsObject) {
+    var keys = Object.keys(newStatsObject),
+        tempObject = {};
+
+    keys.sort();
+
+    for (var i = 0; i < keys.length; i++) {
+      var k = keys[i];
+
+      if($.inArray(k, Object.keys(usersSnapshot)) !== -1){
+        tempObject[k] = newStatsObject[k];
+      }
+    }
+
+    return tempObject;
 }
 
 function getBasePlayerStatsObject() {
@@ -43,8 +59,8 @@ function getBasePlayerStatsObject() {
 
   tempStatsObject.gamesPlayed = 0;
   tempStatsObject.gamesWon = 0;
-  tempStatsObject.votesEarned = 0;
   tempStatsObject.kills = 0;
+  tempStatsObject.votesEarned = 0;
 
   return tempStatsObject;
 }

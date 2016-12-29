@@ -20,6 +20,8 @@ function updatePlayerStatsTable() {
   playerStatsSnapshot.forEach(function(obj) {
     statsTable.append(getPlayerStatsTableRow(obj.key, obj.val()));
   });
+
+  $(statsTable).prepend('<tr class="data-header-fixed"><th class="cell-players">Players</th><th class="cell-games">Games</th><th class="cell-wins">Wins</th><th class="cell-kills">Kills</th><th class="cell-votes">Votes</th></tr>');
 }
 
 function updateMatchRecordsTable() {
@@ -35,8 +37,26 @@ function updateMatchRecordsTable() {
 }
 
 function getPlayerStatsTableRow(playerId, playerStatObject) {
-  console.log('Player id:', playerId);
-  console.log('Player stat object:', playerStatObject);
+    var baseRowObject = $('<tr>', {class: 'data-row'}),
+        playerNameCell = $('<td>', {class: 'cell-players'}),
+        playerGameCountCell = $('<td>', {class: 'cell-games'}),
+        playerWinCountCell = $('<td>', {class: 'cell-wins'}),
+        playerKillCountCell = $('<td>', {class: 'cell-kills'}),
+        playerVoteCountCell = $('<td>', {class: 'cell-votes'});
+
+    playerNameCell.html(usersSnapshot[playerId].username);
+    playerGameCountCell.html(playerStatObject.gamesPlayed);
+    playerWinCountCell.html(playerStatObject.gamesWon);
+    playerKillCountCell.html(playerStatObject.kills);
+    playerVoteCountCell.html(playerStatObject.votesEarned);
+
+    baseRowObject.append(playerNameCell);
+    baseRowObject.append(playerGameCountCell);
+    baseRowObject.append(playerWinCountCell);
+    baseRowObject.append(playerKillCountCell);
+    baseRowObject.append(playerVoteCountCell);
+
+    return baseRowObject;
 }
 
 function getTableResultsRow(resultKey, result) {
