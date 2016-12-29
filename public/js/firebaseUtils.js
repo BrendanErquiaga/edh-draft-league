@@ -52,6 +52,10 @@ function getFirebaseData() {
       firebase.database().ref('draftMaster').on('value', function(snapshot) {
           updateDraftMasterObject(snapshot);
       });
+
+      firebase.database().ref('playerStats').on('value', function(snapshot) {
+          updatePlayerStatsSnapshot(snapshot);
+      });
     }
 
     //Standings only section
@@ -61,7 +65,7 @@ function getFirebaseData() {
       });
 
       firebase.database().ref('playerStats').on('value', function(snapshot) {
-          updateplayerStatsSnapshot(snapshot);
+          updatePlayerStatsSnapshot(snapshot);
       });
     }
 
@@ -88,7 +92,7 @@ function getFirebaseData() {
 ~~~~~~~FIREBASE UPDATE~~~~~~~~~~
 */
 
-function updateplayerStatsSnapshot(snapshot){
+function updatePlayerStatsSnapshot(snapshot){
   playerStatsSnapshot = snapshot;
 
   if($(document.body).hasClass('standings')) {

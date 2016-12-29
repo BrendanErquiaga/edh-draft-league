@@ -6,7 +6,7 @@ var draftMasterId,
     adminSectionShown = false;
 
 $(document).ready(function() {
-    requirejs(['./utils','./firebaseUtils'], function(){
+    requirejs(['./utils','./firebaseUtils', './calculations'], function(){
           pageReady();
      });
 });
@@ -46,6 +46,7 @@ function approveOrDenyMatchResult(inputObject) {
 
 function approveMatchResult(resultKey) {
   saveApprovedMatchResult(resultsToApproveSnapshot.val()[resultKey]);
+  savePlayerStats(calulateNewPlayerStats(playerStatsSnapshot.val(),resultsToApproveSnapshot.val()[resultKey]));
   removeUnapprovedMatchResult(resultKey);
 }
 
