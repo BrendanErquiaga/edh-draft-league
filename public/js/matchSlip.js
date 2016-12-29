@@ -165,7 +165,7 @@ function addVoteToPlayer(playerNumber) {
         for (var i = 0, j = voteRecords.length; i < j; i++) {
            voteCount[voteRecords[i]] = (voteCount[voteRecords[i]] || 0) + 1;
         }
-        
+
         if(voteCount[selectedPlayers[playerNumber - 1]] === voteLimit - 1){
             console.log('You cant vote for the same player more than allowed times');
             return;
@@ -208,10 +208,11 @@ function submitMatchResults() {
 
     resultsObject.submissionDate = Date.now();
     resultsObject.submittingPlayerName = usersSnapshot[currentUserId].username;
-    resultsObject.players = selectedPlayers;
-    resultsObject.killRecords = killRecords;
-    resultsObject.voteRecords = voteRecords;
+    resultsObject.players = selectedPlayers.sort();
+    resultsObject.killRecords = killRecords.sort();
+    resultsObject.voteRecords = voteRecords.sort();
     resultsObject.winnerId = winnerId;
+    resultsObject.podId = getCombinedStringFromArray(resultsObject.players).hashCode();
 
     addUnapprovedMatchResult(resultsObject);
 

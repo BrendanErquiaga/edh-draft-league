@@ -11,7 +11,9 @@ var usersSnapshot,
     recentlyDraftCards,
     bannedCardList,
     turnOrderObject,
-    leagueDataObject;
+    leagueDataObject,
+    resultsToApproveList,
+    matchResultsObject;
 
 function getFirebaseData() {
     draftedCardsRef = firebase.database().ref('draftedUserCards');
@@ -57,6 +59,11 @@ function getFirebaseData() {
         updateLeagueDataObject(snapshot);
     });
 
+    firebase.database().ref('resultsWaitingApproval').on('value', function(snapshot) {
+        updateApprovableResultsObject(snapshot);
+    });
+
+
     //Should be last because it attempts to autodraft
     firebase.database().ref('turns').on('value', function(snapshot){
         updateTurnOrderData(snapshot);
@@ -70,6 +77,20 @@ function getFirebaseData() {
 /*
 ~~~~~~~FIREBASE UPDATE~~~~~~~~~~
 */
+
+function updateApprovableResultsObject(snapshot) {
+  resultsToApproveList = snapshot.val();
+
+  if(resultsToApproveList !== null){
+    resultsToApproveList = Object.values(resultsToApproveList);
+  } else {
+    resultsToApproveList = [];
+  }
+
+  if($(document.body).hasClass('admin')) {
+    updateResultsToApproveUI();
+  }
+}
 
 function updateLeagueDataObject(snapshot){
   leagueDataObject = snapshot.val();
@@ -164,7 +185,8 @@ function addUnapprovedMatchResult(matchResult) {
       players: matchResult.players,
       killRecords: matchResult.killRecords,
       voteRecords: matchResult.voteRecords,
-      winnerId: matchResult.winnerId
+      winnerId: matchResult.winnerId,
+      podId: matchResult.podId
   });
 }
 

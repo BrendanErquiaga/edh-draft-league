@@ -88,6 +88,8 @@ function autoDraftCardForUser(autoDraftedUserId){
   goToNextTurn();
 }
 
+/* ~~~~~~~~~~~~~~~ UI Updates ~~~~~~~~~~~~~~~ */
+
 function displayAdminSection() {
   $("#adminOnlySection").css('display','inline');
   adminSectionShown = true;
@@ -106,5 +108,19 @@ function updateLeagueDataUI() {
 
   for(var i = 0; i < leagueDataObject[currentUserId].members.length; i++){
     leagueMembersUL.append('<li>' + getDisplayNameFromID(leagueDataObject[currentUserId].members[i]) + '</li>');
+  }
+}
+
+function updateResultsToApproveUI() {
+  if(!adminSectionShown){
+    return;
+  }
+
+  var resultsToApproveUL = $("#resultsToApprove");
+
+  resultsToApproveUL.empty();
+
+  for(var i = 0; i < resultsToApproveList.length; i++){
+    resultsToApproveUL.append('<li>' + resultsToApproveList[i].podId + '</li>');
   }
 }
