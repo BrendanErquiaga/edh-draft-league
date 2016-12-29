@@ -148,7 +148,7 @@ function updateResultsToApproveUI() {
 }
 
 function getApprovableResultsRow(resultKey, result) {
-  var tempResultsRow = getResultsRow(resultKey, result);
+  var tempResultsRow = getVisualResultsRow(resultKey, result);
 
   $(tempResultsRow).prepend($('<input>', {
     type: 'image',

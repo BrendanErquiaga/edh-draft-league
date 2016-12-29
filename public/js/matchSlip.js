@@ -4,9 +4,7 @@ var recentlyDraftedCardArrayLimit,
     selectedPlayers = [],
     killRecords = [],
     voteRecords = [],
-    winnerId = '',
-    killLimit = 3,
-    voteLimit = 4;
+    winnerId = '';
 
 $(document).ready(function() {
     requirejs(['./utils', './firebaseUtils', './slip'], function() {

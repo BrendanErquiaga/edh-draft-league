@@ -9,10 +9,42 @@
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
 		<link rel="stylesheet" href="sass/milligram.css">
-		<!--<link rel="icon" href="https://milligram.github.io/img/favicon.png">-->
+		<link rel="apple-touch-icon-precomposed" sizes="57x57" href="favicons/apple-touch-icon-57x57.png" />
+		<link rel="apple-touch-icon-precomposed" sizes="114x114" href="favicons/apple-touch-icon-114x114.png" />
+		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="favicons/apple-touch-icon-72x72.png" />
+		<link rel="apple-touch-icon-precomposed" sizes="144x144" href="favicons/apple-touch-icon-144x144.png" />
+		<link rel="apple-touch-icon-precomposed" sizes="60x60" href="favicons/apple-touch-icon-60x60.png" />
+		<link rel="apple-touch-icon-precomposed" sizes="120x120" href="favicons/apple-touch-icon-120x120.png" />
+		<link rel="apple-touch-icon-precomposed" sizes="76x76" href="favicons/apple-touch-icon-76x76.png" />
+		<link rel="apple-touch-icon-precomposed" sizes="152x152" href="favicons/apple-touch-icon-152x152.png" />
+		<link rel="icon" type="image/png" href="favicons/favicon-196x196.png" sizes="196x196" />
+		<link rel="icon" type="image/png" href="favicons/favicon-96x96.png" sizes="96x96" />
+		<link rel="icon" type="image/png" href="favicons/favicon-32x32.png" sizes="32x32" />
+		<link rel="icon" type="image/png" href="favicons/favicon-16x16.png" sizes="16x16" />
+		<link rel="icon" type="image/png" href="favicons/favicon-128.png" sizes="128x128" />
+		<meta name="msapplication-TileColor" content="#FFFFFF" />
+		<meta name="msapplication-TileImage" content="favicons/mstile-144x144.png" />
+		<meta name="msapplication-square70x70logo" content="favicons/mstile-70x70.png" />
+		<meta name="msapplication-square150x150logo" content="favicons/mstile-150x150.png" />
+		<meta name="msapplication-wide310x150logo" content="favicons/mstile-310x150.png" />
+		<meta name="msapplication-square310x310logo" content="favicons/mstile-310x310.png" />
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.js"></script>
+		<link rel="manifest" href="/manifest.json">
+
+		<script src="https://www.gstatic.com/firebasejs/3.6.2/firebase.js"></script>
+		<script>
+			// Initialize Firebase
+			var config = {
+				apiKey: "AIzaSyAlRO_7_sv1BhgJ6xT1MRscondyLoh70vo",
+				authDomain: "draftleague2017.firebaseapp.com",
+				databaseURL: "https://draftleague2017.firebaseio.com",
+				storageBucket: "draftleague2017.appspot.com",
+				messagingSenderId: "382673579824"
+			};
+			firebase.initializeApp(config);
+		</script>
 	</head>
-	<body>
+	<body class="standings">
 		<ul class="nav">
 			<li><a href="index.html">Draft</a></li>
 			<li><a href="decklists.html">Decks</a></li>
@@ -111,320 +143,7 @@
 						<h2>Match Records</h2>
 						<p>Point Legend - <strong>K:</strong> Kill, <strong>V:</strong> Vote, <strong>W:</strong> Match Win</p>
 						<div class="match-table">
-							<table>
-								<tr class="data-header-fixed">
-									<th class="cell-date">Date</th>
-									<th class="cell-players">Players</th>
-									<th class="cell-points">Points</th>
-									<th class="cell-elo">ELO Delta</th>
-								</tr>
-								<tr class="data-row">
-									<td class="cell-date">01/01/17</td>
-									<td class="cell-players">
-										<table>
-											<tr>
-												<td>Player 1</td>
-											</tr>
-											<tr>
-												<td>Player 2</td>
-											</tr>
-											<tr>
-												<td>Player 3</td>
-											</tr>
-											<tr>
-												<td>Player 4</td>
-											</tr>
-										</table>
-									</td>
-									<td class="cell-points">
-										<table>
-											<tr>
-												<td>K,K,W</td>
-											</tr>
-											<tr>
-												<td>V,V,V</td>
-											</tr>
-											<tr>
-												<td>K,V</td>
-											</tr>
-											<tr>
-												<td>-</td>
-											</tr>
-										</table>
-									</td>
-									<td class="cell-elo">
-										<table>
-											<tr>
-												<td>+100</td>
-											</tr>
-											<tr>
-												<td>+50</td>
-											</tr>
-											<tr>
-												<td>+25</td>
-											</tr>
-											<tr>
-												<td>-75</td>
-											</tr>
-										</table>
-									</td>
-								</tr>
-								<tr class="data-row">
-									<td class="cell-date">01/01/17</td>
-									<td class="cell-players">
-										<table>
-											<tr>
-												<td>Player 1</td>
-											</tr>
-											<tr>
-												<td>Player 2</td>
-											</tr>
-											<tr>
-												<td>Player 3</td>
-											</tr>
-											<tr>
-												<td>Player 4</td>
-											</tr>
-										</table>
-									</td>
-									<td class="cell-points">
-										<table>
-											<tr>
-												<td>K,K,W</td>
-											</tr>
-											<tr>
-												<td>V,V,V</td>
-											</tr>
-											<tr>
-												<td>K,V</td>
-											</tr>
-											<tr>
-												<td>-</td>
-											</tr>
-										</table>
-									</td>
-									<td class="cell-elo">
-										<table>
-											<tr>
-												<td>+100</td>
-											</tr>
-											<tr>
-												<td>+50</td>
-											</tr>
-											<tr>
-												<td>+25</td>
-											</tr>
-											<tr>
-												<td>-75</td>
-											</tr>
-										</table>
-									</td>
-								</tr>
-								<tr class="data-row">
-									<td class="cell-date">01/01/17</td>
-									<td class="cell-players">
-										<table>
-											<tr>
-												<td>Player 1</td>
-											</tr>
-											<tr>
-												<td>Player 2</td>
-											</tr>
-											<tr>
-												<td>Player 3</td>
-											</tr>
-											<tr>
-												<td>Player 4</td>
-											</tr>
-										</table>
-									</td>
-									<td class="cell-points">
-										<table>
-											<tr>
-												<td>K,K,W</td>
-											</tr>
-											<tr>
-												<td>V,V,V</td>
-											</tr>
-											<tr>
-												<td>K,V</td>
-											</tr>
-											<tr>
-												<td>-</td>
-											</tr>
-										</table>
-									</td>
-									<td class="cell-elo">
-										<table>
-											<tr>
-												<td>+100</td>
-											</tr>
-											<tr>
-												<td>+50</td>
-											</tr>
-											<tr>
-												<td>+25</td>
-											</tr>
-											<tr>
-												<td>-75</td>
-											</tr>
-										</table>
-									</td>
-								</tr>
-								<tr class="data-row">
-									<td class="cell-date">01/01/17</td>
-									<td class="cell-players">
-										<table>
-											<tr>
-												<td>Player 1</td>
-											</tr>
-											<tr>
-												<td>Player 2</td>
-											</tr>
-											<tr>
-												<td>Player 3</td>
-											</tr>
-											<tr>
-												<td>Player 4</td>
-											</tr>
-										</table>
-									</td>
-									<td class="cell-points">
-										<table>
-											<tr>
-												<td>K,K,W</td>
-											</tr>
-											<tr>
-												<td>V,V,V</td>
-											</tr>
-											<tr>
-												<td>K,V</td>
-											</tr>
-											<tr>
-												<td>-</td>
-											</tr>
-										</table>
-									</td>
-									<td class="cell-elo">
-										<table>
-											<tr>
-												<td>+100</td>
-											</tr>
-											<tr>
-												<td>+50</td>
-											</tr>
-											<tr>
-												<td>+25</td>
-											</tr>
-											<tr>
-												<td>-75</td>
-											</tr>
-										</table>
-									</td>
-								</tr>
-								<tr class="data-row">
-									<td class="cell-date">01/01/17</td>
-									<td class="cell-players">
-										<table>
-											<tr>
-												<td>Player 1</td>
-											</tr>
-											<tr>
-												<td>Player 2</td>
-											</tr>
-											<tr>
-												<td>Player 3</td>
-											</tr>
-											<tr>
-												<td>Player 4</td>
-											</tr>
-										</table>
-									</td>
-									<td class="cell-points">
-										<table>
-											<tr>
-												<td>K,K,W</td>
-											</tr>
-											<tr>
-												<td>V,V,V</td>
-											</tr>
-											<tr>
-												<td>K,V</td>
-											</tr>
-											<tr>
-												<td>-</td>
-											</tr>
-										</table>
-									</td>
-									<td class="cell-elo">
-										<table>
-											<tr>
-												<td>+100</td>
-											</tr>
-											<tr>
-												<td>+50</td>
-											</tr>
-											<tr>
-												<td>+25</td>
-											</tr>
-											<tr>
-												<td>-75</td>
-											</tr>
-										</table>
-									</td>
-								</tr>
-								<tr class="data-row">
-									<td class="cell-date">01/01/17</td>
-									<td class="cell-players">
-										<table>
-											<tr>
-												<td>Player 1</td>
-											</tr>
-											<tr>
-												<td>Player 2</td>
-											</tr>
-											<tr>
-												<td>Player 3</td>
-											</tr>
-											<tr>
-												<td>Player 4</td>
-											</tr>
-										</table>
-									</td>
-									<td class="cell-points">
-										<table>
-											<tr>
-												<td>K,K,W</td>
-											</tr>
-											<tr>
-												<td>V,V,V</td>
-											</tr>
-											<tr>
-												<td>K,V</td>
-											</tr>
-											<tr>
-												<td>-</td>
-											</tr>
-										</table>
-									</td>
-									<td class="cell-elo">
-										<table>
-											<tr>
-												<td>+100</td>
-											</tr>
-											<tr>
-												<td>+50</td>
-											</tr>
-											<tr>
-												<td>+25</td>
-											</tr>
-											<tr>
-												<td>-75</td>
-											</tr>
-										</table>
-									</td>
-								</tr>
-							</table>
+							<table></table>
 						</div>
 					</div>
 				</div>
@@ -507,6 +226,8 @@
 		</main>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<script>window.jQuery || document.write('<script src="js/vendor/jquery.min.js"><\/script>')</script>
+		<script data-main="js/standings" src="require.js"></script>
+		<script src="js/firebaseLogin.js"></script>
 		<script src="js/frontend.js"></script>
 	</body>
 </html>

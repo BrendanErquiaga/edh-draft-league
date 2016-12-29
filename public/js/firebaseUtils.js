@@ -13,13 +13,18 @@ var usersSnapshot,
     turnOrderObject,
     leagueDataObject,
     resultsToApproveSnapshot,
+    matchRecordsSnapshot,
     matchResultsObject;
 
 function getFirebaseData() {
     draftedCardsRef = firebase.database().ref('draftedUserCards');
     queuedCardsRef = firebase.database().ref('queuedUserCards');
-    if(recentlyDraftedCardArrayLimit !== undefined){
+    if(recentlyDraftedCardArrayLimit !== undefined && recentlyDraftedCardArrayLimit > 0){
       recentlyDraftCardsRef = firebase.database().ref('recentlyDraftedCards').limitToLast(recentlyDraftedCardArrayLimit);
+
+      recentlyDraftCardsRef.on('value', function(snapshot) {
+        updateRecentlyDraftedCards(snapshot);
+      });
     }
 
     firebase.database().ref('users').on('value', function(snapshot) {
@@ -34,12 +39,6 @@ function getFirebaseData() {
       queuedCardsSnapshot = snapshot;
     });
 
-    if(recentlyDraftedCardArrayLimit !== undefined){
-      recentlyDraftCardsRef.on('value', function(snapshot) {
-        updateRecentlyDraftedCards(snapshot);
-      });
-    }
-
     firebase.database().ref('banList').once('value').then(function(snapshot) {
         bannedCardList = snapshot.val();
     });
@@ -52,6 +51,13 @@ function getFirebaseData() {
     if($(document.body).hasClass('admin')) {
       firebase.database().ref('draftMaster').on('value', function(snapshot) {
           updateDraftMasterObject(snapshot);
+      });
+    }
+
+    //Standings only section
+    if($(document.body).hasClass('standings')) {
+      firebase.database().ref('matchResults').on('value', function(snapshot) {
+          updateMatchResultsObject(snapshot);
       });
     }
 
@@ -77,6 +83,14 @@ function getFirebaseData() {
 /*
 ~~~~~~~FIREBASE UPDATE~~~~~~~~~~
 */
+
+function updateMatchResultsObject(snapshot) {
+  matchResultsObject = snapshot;
+
+  if($(document.body).hasClass('standings')) {
+    updateMatchRecordsTable();
+  }
+}
 
 function updateApprovableResultsObject(snapshot) {
   resultsToApproveSnapshot = snapshot;

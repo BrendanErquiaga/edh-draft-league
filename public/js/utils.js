@@ -12,7 +12,9 @@ var senderKey = "AAAAWRkfbzA:APA91bEhDBDOSArAdhSpI_SFiWh2K-1S7m0Te2OL_Av7JKMdsBX
     voteIconLocation = "img/icons/vote_icon.png",
     winIconLocation = "img/icons/win_icon.png",
     denyMatchResultIcon = "img/icons/cross.png",
-    approveMatchResultIcon = "img/icons/checkmark.png";
+    approveMatchResultIcon = "img/icons/checkmark.png",
+    killLimit = 3,
+    voteLimit = 4;
 
 function getNextDrafterId() {
     return turnOrderObject.turnOrder[turnOrderObject.turnIndex];
@@ -318,7 +320,7 @@ String.prototype.hashCode = function() {
   return hash;
 };
 
-function getResultsRow(resultKey, result) {
+function getVisualResultsRow(resultKey, result) {
   var baseListItem = $('<li>', { class: 'playerResultRow', id: resultKey});
 
   for(var playerIndex = 0; playerIndex < result.players.length; playerIndex++){
@@ -382,4 +384,103 @@ function getResultsRow(resultKey, result) {
   }
 
   return baseListItem;
+}
+
+function getDateString(timeStampString) {
+  return new Date(timeStampString).toDateString();
+}
+
+function getTableResultsRow(resultKey, result) {
+  var baseTableItem = $('<tr>', { class: 'data-row', id: resultKey}),
+      dateCell = $('<td>', { class: 'cell-date'}),
+      playersCell = $('<td>', {class: 'cell-players'}),
+      playerCellTable = $('<table>', {});
+
+  dateCell.html(getDateString(result.submissionDate));
+
+  baseTableItem.append(dateCell);
+
+  for(var playerIndex = 0; playerIndex < result.players.length; playerIndex++){
+    var playerId = result.players[playerIndex],
+        playerRow = $('<tr>', {}),
+        playerNameCell = $('<td>', {});
+
+    if(result.winnerId === playerId){
+      $(playerNameCell).addClass('winner');
+    }
+
+    playerNameCell.html(usersSnapshot[playerId].username);
+
+    playerRow.append(playerNameCell);
+    playerCellTable.append(playerRow);
+  }
+
+  playersCell.append(playerCellTable);
+  baseTableItem.append(playersCell);
+
+  var pointsCell = $('<td>', { class: 'cell-points'}),
+      pointsCellTable = $('<table>', {}),
+      killCount = 0,
+      voteCount = 0;
+
+  for(var playerIndex = 0; playerIndex < result.players.length; playerIndex++){
+    var playerId = result.players[playerIndex],
+        pointRow = $('<tr>', {}),
+        pointStringCell = $('<td>', {}),
+        cellString = '';
+
+    if(killCount < killLimit){
+      for(var killerIdIndex = 0; killerIdIndex < result.killRecords.length; killerIdIndex++){
+        if(result.killRecords[killerIdIndex] === playerId){
+          cellString += "K,";
+          killCount++;
+        }
+      }
+    }
+
+    if(voteCount < voteLimit){
+      for(var voterIdIndex = 0; voterIdIndex < result.voteRecords.length; voterIdIndex++){
+        if(result.voteRecords[voterIdIndex] === playerId){
+          cellString += "V,";
+          voteCount++;
+        }
+      }
+    }
+
+    if(result.winnerId === playerId){
+      cellString += "W,";
+    }
+
+    if(cellString === ''){
+      cellString = '-';
+    }
+    else {
+      cellString = cellString.slice(0, -1);//trim the trailing comma
+    }
+
+    pointStringCell.html(cellString);
+    pointRow.append(pointStringCell);
+    pointsCellTable.append(pointRow);
+  }
+
+  pointsCell.append(pointsCellTable);
+  baseTableItem.append(pointsCell);
+
+  var eloCell = $('<td>', { class: 'cell-elo'}),
+      eloCellTable = $('<table>', {});
+
+  for(var playerIndex = 0; playerIndex < result.players.length; playerIndex++){
+    var playerId = result.players[playerIndex],
+        eloRow = $('<tr>', {}),
+        eloDeltaCell = $('<td>', {});
+
+    eloDeltaCell.html('+50');
+    eloRow.append(eloDeltaCell);
+    eloCellTable.append(eloRow);
+  }
+
+  eloCell.append(eloCellTable);
+  baseTableItem.append(eloCell);
+
+  return baseTableItem;
 }
