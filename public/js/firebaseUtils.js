@@ -13,13 +13,18 @@ var usersSnapshot,
     turnOrderObject,
     leagueDataObject,
     resultsToApproveSnapshot,
-    matchResultsObject;
+    playerStatsSnapshot,
+    matchResultsSnapshot;
 
 function getFirebaseData() {
     draftedCardsRef = firebase.database().ref('draftedUserCards');
     queuedCardsRef = firebase.database().ref('queuedUserCards');
-    if(recentlyDraftedCardArrayLimit !== undefined){
+    if(recentlyDraftedCardArrayLimit !== undefined && recentlyDraftedCardArrayLimit > 0){
       recentlyDraftCardsRef = firebase.database().ref('recentlyDraftedCards').limitToLast(recentlyDraftedCardArrayLimit);
+
+      recentlyDraftCardsRef.on('value', function(snapshot) {
+        updateRecentlyDraftedCards(snapshot);
+      });
     }
 
     firebase.database().ref('users').on('value', function(snapshot) {
@@ -34,12 +39,6 @@ function getFirebaseData() {
       queuedCardsSnapshot = snapshot;
     });
 
-    if(recentlyDraftedCardArrayLimit !== undefined){
-      recentlyDraftCardsRef.on('value', function(snapshot) {
-        updateRecentlyDraftedCards(snapshot);
-      });
-    }
-
     firebase.database().ref('banList').once('value').then(function(snapshot) {
         bannedCardList = snapshot.val();
     });
@@ -52,6 +51,21 @@ function getFirebaseData() {
     if($(document.body).hasClass('admin')) {
       firebase.database().ref('draftMaster').on('value', function(snapshot) {
           updateDraftMasterObject(snapshot);
+      });
+
+      firebase.database().ref('playerStats').on('value', function(snapshot) {
+          updatePlayerStatsSnapshot(snapshot);
+      });
+    }
+
+    //Standings only section
+    if($(document.body).hasClass('standings')) {
+      firebase.database().ref('matchResults').on('value', function(snapshot) {
+          updatematchResultsSnapshot(snapshot);
+      });
+
+      firebase.database().ref('playerStats').on('value', function(snapshot) {
+          updatePlayerStatsSnapshot(snapshot);
       });
     }
 
@@ -77,6 +91,22 @@ function getFirebaseData() {
 /*
 ~~~~~~~FIREBASE UPDATE~~~~~~~~~~
 */
+
+function updatePlayerStatsSnapshot(snapshot){
+  playerStatsSnapshot = snapshot;
+
+  if($(document.body).hasClass('standings')) {
+    updatePlayerStatsTable();
+  }
+}
+
+function updatematchResultsSnapshot(snapshot) {
+  matchResultsSnapshot = snapshot;
+
+  if($(document.body).hasClass('standings')) {
+    updateMatchRecordsTable();
+  }
+}
 
 function updateApprovableResultsObject(snapshot) {
   resultsToApproveSnapshot = snapshot;
@@ -113,7 +143,6 @@ function updateRecentlyDraftedCards(snapshot){
     recentlyDraftCards = [];
   }
 
-  //TODO: Add UI elements for recently drafted cards
   if($(document.body).hasClass('draft')) {
     updateRecentlyDraftedCardsUI();
   }
@@ -170,6 +199,10 @@ function updateDraftedCardData(snapshot) {
 /*
 ~~~~~~~FIREBASE Save~~~~~~~~~~
 */
+
+function savePlayerStats(newStatsObject) {
+  firebase.database().ref('playerStats').set(newStatsObject);
+}
 
 function saveApprovedMatchResult(approvedMatchResult) {
   var newApprovedResult = firebase.database().ref('matchResults').push();

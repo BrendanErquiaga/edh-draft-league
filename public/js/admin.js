@@ -6,7 +6,7 @@ var draftMasterId,
     adminSectionShown = false;
 
 $(document).ready(function() {
-    requirejs(['./utils','./firebaseUtils'], function(){
+    requirejs(['./utils','./firebaseUtils', './calculations'], function(){
           pageReady();
      });
 });
@@ -46,6 +46,7 @@ function approveOrDenyMatchResult(inputObject) {
 
 function approveMatchResult(resultKey) {
   saveApprovedMatchResult(resultsToApproveSnapshot.val()[resultKey]);
+  savePlayerStats(calulateNewPlayerStats(playerStatsSnapshot.val(),resultsToApproveSnapshot.val()[resultKey]));
   removeUnapprovedMatchResult(resultKey);
 }
 
@@ -148,7 +149,7 @@ function updateResultsToApproveUI() {
 }
 
 function getApprovableResultsRow(resultKey, result) {
-  var tempResultsRow = getResultsRow(resultKey, result);
+  var tempResultsRow = getVisualResultsRow(resultKey, result);
 
   $(tempResultsRow).prepend($('<input>', {
     type: 'image',
@@ -165,4 +166,70 @@ function getApprovableResultsRow(resultKey, result) {
   }));
 
   return tempResultsRow;
+}
+
+function getVisualResultsRow(resultKey, result) {
+  var baseListItem = $('<li>', { class: 'playerResultRow', id: resultKey});
+
+  for(var playerIndex = 0; playerIndex < result.players.length; playerIndex++){
+    var playerId = result.players[playerIndex],
+        killCount = 0,
+        voteCount = 0,
+        playerImage = $('<img>', {
+            src: usersSnapshot[playerId].profile_picture,
+            class: 'playerResultsIcon',
+        });
+
+    if(result.winnerId === playerId){
+      $(playerImage).addClass('winner');
+    }
+
+    baseListItem.append(playerImage);
+
+    for(var killerIdIndex = 0; killerIdIndex < result.killRecords.length; killerIdIndex++){
+      if(result.killRecords[killerIdIndex] === playerId){
+        killCount++;
+      }
+    }
+
+    if(killCount > 0){
+      baseListItem.append($('<img>', {
+            class: 'killIcon',
+            src: killIconLocation
+      }));
+
+      if(killCount > 1){
+        baseListItem.append('x' + killCount);
+      }
+    }
+
+    for(var voterIdIndex = 0; voterIdIndex < result.voteRecords.length; voterIdIndex++){
+      if(result.voteRecords[voterIdIndex] === playerId){
+        voteCount++;
+      }
+    }
+
+    if(voteCount > 0){
+      baseListItem.append($('<img>', {
+            class: 'voteIcon',
+            src: voteIconLocation
+      }));
+
+      if(voteCount > 1){
+        baseListItem.append('x' + voteCount);
+      }
+    }
+
+    if(result.winnerId === playerId){
+      baseListItem.append($('<img>', {
+            class: 'winIcon',
+            src: winIconLocation
+      }));
+    }
+    else if(killCount === 0 && voteCount === 0) {
+      baseListItem.append('---');
+    }
+  }
+
+  return baseListItem;
 }
