@@ -120,75 +120,26 @@ function updateResultsToApproveUI() {
 
   resultsToApproveUL.empty();
 
-  for(var i = 0; i < resultsToApproveList.length; i++){
-    //resultsToApproveUL.append('<li>' + getResultsRow(resultsToApproveList[i]) + '</li>');
-    resultsToApproveUL.append(getResultsRow(resultsToApproveList[i]));
-  }
+
+  resultsToApproveSnapshot.forEach(function(obj) {
+      resultsToApproveUL.append(getApprovableResultsRow(obj.key, obj.val()));
+  });
 }
 
-function getResultsRow(result) {
-  var baseListItem = $('<li>', { class: 'playerResultRow'});
+function getApprovableResultsRow(resultKey, result) {
+  var tempResultsRow = getResultsRow(resultKey, result);
 
-  for(var playerIndex = 0; playerIndex < result.players.length; playerIndex++){
-    var playerId = result.players[playerIndex],
-        killCount = 0,
-        voteCount = 0,
-        playerImage = $('<img>', {
-            src: usersSnapshot[playerId].profile_picture,
-            class: 'playerResultsIcon',
-        });
+  $(tempResultsRow).prepend($('<input>', {
+    type: 'image',
+    src: denyMatchResultIcon,
+    class: 'denyMatchResultButton'
+  }));
 
-    if(result.winnerId === playerId){
-      $(playerImage).addClass('winner');
-    }
+  $(tempResultsRow).append($('<input>', {
+    type: 'image',
+    src: approveMatchResultIcon,
+    class: 'approveMatchResultButton'
+  }));
 
-    baseListItem.append(playerImage);
-
-    for(var killerIdIndex = 0; killerIdIndex < result.killRecords.length; killerIdIndex++){
-      if(result.killRecords[killerIdIndex] === playerId){
-        killCount++;
-      }
-    }
-
-    if(killCount > 0){
-      baseListItem.append($('<img>', {
-            class: 'killIcon',
-            src: killIconLocation
-      }));
-
-      if(killCount > 1){
-        baseListItem.append('x' + killCount);
-      }
-    }
-
-    for(var voterIdIndex = 0; voterIdIndex < result.voteRecords.length; voterIdIndex++){
-      if(result.voteRecords[voterIdIndex] === playerId){
-        voteCount++;
-
-      }
-    }
-
-    if(voteCount > 0){
-      baseListItem.append($('<img>', {
-            class: 'voteIcon',
-            src: voteIconLocation
-      }));
-
-      if(voteCount > 1){
-        baseListItem.append('x' + voteCount);
-      }
-    }
-
-    if(result.winnerId === playerId){
-      baseListItem.append($('<img>', {
-            class: 'winIcon',
-            src: winIconLocation
-      }));
-    }
-    else if(killCount === 0 && voteCount === 0) {
-      baseListItem.append('---');
-    }
-  }
-
-  return baseListItem;
+  return tempResultsRow;
 }

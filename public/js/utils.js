@@ -10,7 +10,9 @@ var senderKey = "AAAAWRkfbzA:APA91bEhDBDOSArAdhSpI_SFiWh2K-1S7m0Te2OL_Av7JKMdsBX
     cardNamesLocation = "/js/json/cardnames.json",
     killIconLocation = "img/icons/kill_icon.png",
     voteIconLocation = "img/icons/vote_icon.png",
-    winIconLocation = "img/icons/win_icon.png";
+    winIconLocation = "img/icons/win_icon.png",
+    denyMatchResultIcon = "img/icons/cross.png",
+    approveMatchResultIcon = "img/icons/checkmark.png";
 
 function getNextDrafterId() {
     return turnOrderObject.turnOrder[turnOrderObject.turnIndex];
@@ -315,3 +317,69 @@ String.prototype.hashCode = function() {
   }
   return hash;
 };
+
+function getResultsRow(resultKey, result) {
+  var baseListItem = $('<li>', { class: 'playerResultRow', id: resultKey});
+
+  for(var playerIndex = 0; playerIndex < result.players.length; playerIndex++){
+    var playerId = result.players[playerIndex],
+        killCount = 0,
+        voteCount = 0,
+        playerImage = $('<img>', {
+            src: usersSnapshot[playerId].profile_picture,
+            class: 'playerResultsIcon',
+        });
+
+    if(result.winnerId === playerId){
+      $(playerImage).addClass('winner');
+    }
+
+    baseListItem.append(playerImage);
+
+    for(var killerIdIndex = 0; killerIdIndex < result.killRecords.length; killerIdIndex++){
+      if(result.killRecords[killerIdIndex] === playerId){
+        killCount++;
+      }
+    }
+
+    if(killCount > 0){
+      baseListItem.append($('<img>', {
+            class: 'killIcon',
+            src: killIconLocation
+      }));
+
+      if(killCount > 1){
+        baseListItem.append('x' + killCount);
+      }
+    }
+
+    for(var voterIdIndex = 0; voterIdIndex < result.voteRecords.length; voterIdIndex++){
+      if(result.voteRecords[voterIdIndex] === playerId){
+        voteCount++;
+      }
+    }
+
+    if(voteCount > 0){
+      baseListItem.append($('<img>', {
+            class: 'voteIcon',
+            src: voteIconLocation
+      }));
+
+      if(voteCount > 1){
+        baseListItem.append('x' + voteCount);
+      }
+    }
+
+    if(result.winnerId === playerId){
+      baseListItem.append($('<img>', {
+            class: 'winIcon',
+            src: winIconLocation
+      }));
+    }
+    else if(killCount === 0 && voteCount === 0) {
+      baseListItem.append('---');
+    }
+  }
+
+  return baseListItem;
+}

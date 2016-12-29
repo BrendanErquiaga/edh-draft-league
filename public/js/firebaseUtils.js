@@ -12,7 +12,7 @@ var usersSnapshot,
     bannedCardList,
     turnOrderObject,
     leagueDataObject,
-    resultsToApproveList,
+    resultsToApproveSnapshot,
     matchResultsObject;
 
 function getFirebaseData() {
@@ -79,13 +79,7 @@ function getFirebaseData() {
 */
 
 function updateApprovableResultsObject(snapshot) {
-  resultsToApproveList = snapshot.val();
-
-  if(resultsToApproveList !== null){
-    resultsToApproveList = Object.values(resultsToApproveList);
-  } else {
-    resultsToApproveList = [];
-  }
+  resultsToApproveSnapshot = snapshot;
 
   if($(document.body).hasClass('admin')) {
     updateResultsToApproveUI();
