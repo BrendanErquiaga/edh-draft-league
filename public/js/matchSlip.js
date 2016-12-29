@@ -80,7 +80,7 @@ function getPlayerIdFromInput(inputObject){
 
     if($(firstInputObject).attr('class') !== "playerSelectionIcon"){
         console.log('Not what I wanted?',firstInputObject.class);
-        return;
+        return false;
     }
 
     objectID = $(firstInputObject).attr('id');
@@ -96,7 +96,11 @@ function selectPlayer(playerInputObject) {
 
     var newPlayerId = getPlayerIdFromInput(playerInputObject)
 
-    if($.inArray(newPlayerId, selectedPlayers) !== -1){
+    if(newPlayerId === false){
+        console.log('Something bad happened, abort');
+        return;
+    }
+    else if($.inArray(newPlayerId, selectedPlayers) !== -1){
         console.log('We already had that player');
         return;
     }
@@ -196,7 +200,11 @@ function submitMatchResults() {
     resultsObject.voteRecords = voteRecords;
     resultsObject.winnerId = winnerId;
 
-    console.log(JSON.stringify(resultsObject));
+    addUnapprovedMatchResult(resultsObject);
+
+    alert("Match Result Submitted: \n" + JSON.stringify(resultsObject));
+    //TODO: Add Better Confirmation Feedback
+    resetResultsData();
 }
 
 /* ~~~~~~~~~~~~~~~ UI Updates ~~~~~~~~~~~~~~~ */

@@ -156,6 +156,18 @@ function updateDraftedCardData(snapshot) {
 ~~~~~~~FIREBASE Save~~~~~~~~~~
 */
 
+function addUnapprovedMatchResult(matchResult) {
+  var newUnapprovedResult = firebase.database().ref('resultsWaitingApproval').push();
+  newUnapprovedResult.set({
+      submissionDate: matchResult.submissionDate,
+      submittingPlayerName: matchResult.submittingPlayerName,
+      players: matchResult.players,
+      killRecords: matchResult.killRecords,
+      voteRecords: matchResult.voteRecords,
+      winnerId: matchResult.winnerId
+  });
+}
+
 function saveGlobalSubscribeStatus(globalSubscribeEnabled) {
   firebase.database().ref('users/' + currentUserId).update({
     globallySubscribed: globalSubscribeEnabled
