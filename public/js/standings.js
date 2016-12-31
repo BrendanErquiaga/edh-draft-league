@@ -1,6 +1,16 @@
 "use strict";
 
-var recentlyDraftedCardArrayLimit = 0;
+var recentlyDraftedCardArrayLimit = 0,
+    chartBarBackgroundColors = [
+      'rgba(255, 99, 132, 0.7)',
+      'rgba(54, 162, 235, 0.7)',
+      'rgba(151, 255, 86, 0.7)',
+      'rgba(75, 192, 192, 0.7)',
+      'rgba(153, 102, 255, 0.7)',
+      'rgba(255, 159, 64, 0.7)',
+      'rgba(111, 64, 255, 0.7)',
+      'rgba(10, 162, 43, 0.7)'
+    ];
 
 $(document).ready(function() {
     requirejs(['./utils', './firebaseUtils', './calculations'], function() {
@@ -10,6 +20,69 @@ $(document).ready(function() {
 
 function pageReady() {
     getFirebaseData();
+}
+
+function updateEloStandingsChart() {
+    var eloData = [],
+        chartLabels = [];
+
+    $('#eloStandings').replaceWith('<canvas id="eloStandings"></canvas>');//Delete the old chart
+
+    playerEloSnapshot.forEach(function(obj) {
+        eloData.push(obj.val().currentElo);
+        chartLabels.push(usersSnapshot[obj.key].username.substr(0, usersSnapshot[obj.key].username.indexOf(' ')));
+    });
+
+    var ctx = $("#eloStandings");
+    var eloStandingsChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: chartLabels,
+            datasets: [{
+                data: eloData,
+                backgroundColor: chartBarBackgroundColors,
+                borderColor: "#000",
+                borderWidth: 1
+            }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'ELO Rating',
+                fontColor: "#222"
+            },
+            maintainAspectRatio: true,
+            responsive: true,
+            legend: {
+                display: false,
+            },
+            tooltips: {
+                enabled: true,
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        fontColor: "#222"
+                    },
+                    gridLines: {
+                        show: true,
+                        color: "rgba(80, 80, 80, 0.5)",
+                    }
+                }],
+                xAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        fontColor: "#222"
+                    },
+                    gridLines: {
+                        show: true,
+                        color: "rgba(80, 80, 80, 0.5)",
+                    }
+                }]
+            }
+        }
+    });
 }
 
 function updatePlayerStatsTable() {

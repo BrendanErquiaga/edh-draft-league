@@ -104,7 +104,7 @@ function updatePlayerEloSnapshot(snapshot) {
   playerEloSnapshot = snapshot;
 
   if($(document.body).hasClass('standings')) {
-    //TODO: Update Elo Object
+    updateEloStandingsChart();
   }
 }
 
@@ -198,7 +198,6 @@ function updateUsersSnapshot(snapshot) {
 function updateDraftMasterObject(snapshot) {
   draftMasterObject = snapshot.val();
 
-  //TODO: Turn off any current draft masters
   if($(document.body).hasClass('admin')) {
     attemptToAutoDraft();
   }

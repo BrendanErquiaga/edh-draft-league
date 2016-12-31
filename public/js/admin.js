@@ -49,6 +49,7 @@ function approveMatchResult(resultKey) {
   var newEloObject = calculateNewPlayerElo(playerEloSnapshot.val(),resultsToApproveSnapshot.val()[resultKey]);
   var newResultObject = getEloUpdatedMatchResult(newEloObject, resultsToApproveSnapshot.val()[resultKey]);
   saveApprovedMatchResult(newResultObject);
+  savePlayerElo(newEloObject);
   removeUnapprovedMatchResult(resultKey);
 }
 
