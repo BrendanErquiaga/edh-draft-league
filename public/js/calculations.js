@@ -24,7 +24,7 @@ function recalculatePlayerElo(){
     //TODO Save out Elo Delta
   });
 
-  savePlayerElo(newEloObject)
+  savePlayerElo(newEloObject);
 }
 
 function calculateNewPlayerElo(eloObjectToEdit, matchResult) {

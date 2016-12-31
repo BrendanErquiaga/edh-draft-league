@@ -141,9 +141,20 @@ function getTableResultsRow(resultKey, result) {
   for(var playerIndex = 0; playerIndex < result.players.length; playerIndex++){
     var playerId = result.players[playerIndex],
         eloRow = $('<tr>', {}),
-        eloDeltaCell = $('<td>', {});
+        eloDeltaCell = $('<td>', {}),
+        eloDeltaValue = 0;
 
-    eloDeltaCell.html('+50');
+    if(result.playerEloDelta !== undefined){
+      eloDeltaValue = result.playerEloDelta[playerId];
+      if(eloDeltaValue > 0){
+        $(eloDeltaCell).addClass('positiveEloValue');
+      }
+      else if(eloDeltaValue < 0) {
+        $(eloDeltaCell).addClass('negativeEloValue');
+      }
+    }
+
+    eloDeltaCell.html(eloDeltaValue);
     eloRow.append(eloDeltaCell);
     eloCellTable.append(eloRow);
   }

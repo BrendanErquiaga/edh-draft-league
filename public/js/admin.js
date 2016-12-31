@@ -45,9 +45,25 @@ function approveOrDenyMatchResult(inputObject) {
 }
 
 function approveMatchResult(resultKey) {
-  saveApprovedMatchResult(resultsToApproveSnapshot.val()[resultKey]);
   savePlayerStats(calculateNewPlayerStats(playerStatsSnapshot.val(),resultsToApproveSnapshot.val()[resultKey]));
+  var newEloObject = calculateNewPlayerElo(playerEloSnapshot.val(),resultsToApproveSnapshot.val()[resultKey]);
+  var newResultObject = getEloUpdatedMatchResult(newEloObject, resultsToApproveSnapshot.val()[resultKey]);
+  saveApprovedMatchResult(newResultObject);
   removeUnapprovedMatchResult(resultKey);
+}
+
+function getEloUpdatedMatchResult(eloObject, matchResult) {
+  var tempResultObject = matchResult;
+
+  tempResultObject.playerEloDelta = {};
+
+  for(var playerIndex = 0; playerIndex < tempResultObject.players.length; playerIndex++){
+    var playerId = tempResultObject.players[playerIndex];
+
+    tempResultObject.playerEloDelta[playerId] = eloObject[playerId].eloDelta || 0;
+  }
+
+  return tempResultObject;
 }
 
 function denyMatchResult(resultKey) {

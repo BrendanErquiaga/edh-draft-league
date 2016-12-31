@@ -14,6 +14,7 @@ var usersSnapshot,
     leagueDataObject,
     resultsToApproveSnapshot,
     playerStatsSnapshot,
+    playerEloSnapshot,
     matchResultsSnapshot;
 
 function getFirebaseData() {
@@ -56,6 +57,10 @@ function getFirebaseData() {
       firebase.database().ref('playerStats').on('value', function(snapshot) {
           updatePlayerStatsSnapshot(snapshot);
       });
+
+      firebase.database().ref('playerElo').on('value', function(snapshot) {
+          updatePlayerEloSnapshot(snapshot);
+      });
     }
 
     //Standings only section
@@ -67,6 +72,10 @@ function getFirebaseData() {
       firebase.database().ref('playerStats').on('value', function(snapshot) {
           updatePlayerStatsSnapshot(snapshot);
       });
+
+      firebase.database().ref('playerElo').on('value', function(snapshot) {
+          updatePlayerEloSnapshot(snapshot);
+      });
     }
 
     firebase.database().ref('leagueData').on('value', function(snapshot) {
@@ -76,7 +85,6 @@ function getFirebaseData() {
     firebase.database().ref('resultsWaitingApproval').on('value', function(snapshot) {
         updateApprovableResultsObject(snapshot);
     });
-
 
     //Should be last because it attempts to autodraft
     firebase.database().ref('turns').on('value', function(snapshot){
@@ -91,6 +99,14 @@ function getFirebaseData() {
 /*
 ~~~~~~~FIREBASE UPDATE~~~~~~~~~~
 */
+
+function updatePlayerEloSnapshot(snapshot) {
+  playerEloSnapshot = snapshot;
+
+  if($(document.body).hasClass('standings')) {
+    //TODO: Update Elo Object
+  }
+}
 
 function updatePlayerStatsSnapshot(snapshot){
   playerStatsSnapshot = snapshot;
@@ -218,7 +234,8 @@ function saveApprovedMatchResult(approvedMatchResult) {
       killRecords: approvedMatchResult.killRecords,
       voteRecords: approvedMatchResult.voteRecords,
       winnerId: approvedMatchResult.winnerId,
-      podId: approvedMatchResult.podId
+      podId: approvedMatchResult.podId,
+      playerEloDelta: approvedMatchResult.playerEloDelta
   });
 }
 
