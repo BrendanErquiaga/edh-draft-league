@@ -46,7 +46,7 @@ function approveOrDenyMatchResult(inputObject) {
 
 function approveMatchResult(resultKey) {
   saveApprovedMatchResult(resultsToApproveSnapshot.val()[resultKey]);
-  savePlayerStats(calulateNewPlayerStats(playerStatsSnapshot.val(),resultsToApproveSnapshot.val()[resultKey]));
+  savePlayerStats(calculateNewPlayerStats(playerStatsSnapshot.val(),resultsToApproveSnapshot.val()[resultKey]));
   removeUnapprovedMatchResult(resultKey);
 }
 
