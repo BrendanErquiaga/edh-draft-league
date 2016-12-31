@@ -14,6 +14,7 @@ var usersSnapshot,
     leagueDataObject,
     resultsToApproveSnapshot,
     playerStatsSnapshot,
+    playerEloSnapshot,
     matchResultsSnapshot;
 
 function getFirebaseData() {
@@ -56,6 +57,10 @@ function getFirebaseData() {
       firebase.database().ref('playerStats').on('value', function(snapshot) {
           updatePlayerStatsSnapshot(snapshot);
       });
+
+      firebase.database().ref('playerElo').on('value', function(snapshot) {
+          updatePlayerEloSnapshot(snapshot);
+      });
     }
 
     //Standings only section
@@ -67,6 +72,10 @@ function getFirebaseData() {
       firebase.database().ref('playerStats').on('value', function(snapshot) {
           updatePlayerStatsSnapshot(snapshot);
       });
+
+      firebase.database().ref('playerElo').on('value', function(snapshot) {
+          updatePlayerEloSnapshot(snapshot);
+      });
     }
 
     firebase.database().ref('leagueData').on('value', function(snapshot) {
@@ -76,7 +85,6 @@ function getFirebaseData() {
     firebase.database().ref('resultsWaitingApproval').on('value', function(snapshot) {
         updateApprovableResultsObject(snapshot);
     });
-
 
     //Should be last because it attempts to autodraft
     firebase.database().ref('turns').on('value', function(snapshot){
@@ -91,6 +99,14 @@ function getFirebaseData() {
 /*
 ~~~~~~~FIREBASE UPDATE~~~~~~~~~~
 */
+
+function updatePlayerEloSnapshot(snapshot) {
+  playerEloSnapshot = snapshot;
+
+  if($(document.body).hasClass('standings')) {
+    updateEloStandingsChart();
+  }
+}
 
 function updatePlayerStatsSnapshot(snapshot){
   playerStatsSnapshot = snapshot;
@@ -182,7 +198,6 @@ function updateUsersSnapshot(snapshot) {
 function updateDraftMasterObject(snapshot) {
   draftMasterObject = snapshot.val();
 
-  //TODO: Turn off any current draft masters
   if($(document.body).hasClass('admin')) {
     attemptToAutoDraft();
   }
@@ -200,6 +215,10 @@ function updateDraftedCardData(snapshot) {
 ~~~~~~~FIREBASE Save~~~~~~~~~~
 */
 
+function savePlayerElo(newEloObject) {
+  firebase.database().ref('playerElo').set(newEloObject);
+}
+
 function savePlayerStats(newStatsObject) {
   firebase.database().ref('playerStats').set(newStatsObject);
 }
@@ -214,7 +233,8 @@ function saveApprovedMatchResult(approvedMatchResult) {
       killRecords: approvedMatchResult.killRecords,
       voteRecords: approvedMatchResult.voteRecords,
       winnerId: approvedMatchResult.winnerId,
-      podId: approvedMatchResult.podId
+      podId: approvedMatchResult.podId,
+      playerEloDelta: approvedMatchResult.playerEloDelta
   });
 }
 
