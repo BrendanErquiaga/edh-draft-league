@@ -20,9 +20,11 @@ function recalculatePlayerElo(){
     var matchResult = obj.val();
 
     newEloObject = calculateNewPlayerElo(newEloObject, matchResult);
+
+    //TODO Save out Elo Delta
   });
 
-  console.log(newEloObject);
+  savePlayerElo(newEloObject)
 }
 
 function calculateNewPlayerElo(eloObjectToEdit, matchResult) {
@@ -48,9 +50,9 @@ function calculateNewPlayerElo(eloObjectToEdit, matchResult) {
         sValue = getSValue(playerId, matchResult),
         newEloRating = 0;
 
-    newEloRating = playerEloObject.currentElo + kValue * (sValue - expectedScore);
+    newEloRating = Math.floor(playerEloObject.currentElo + kValue * (sValue - expectedScore));
 
-    playerEloObject.eloDelta = newEloRating - playerEloObject.currentElo;
+    playerEloObject.eloDelta = Math.floor(newEloRating - playerEloObject.currentElo);
 
     playerEloObject.currentElo = newEloRating;
 

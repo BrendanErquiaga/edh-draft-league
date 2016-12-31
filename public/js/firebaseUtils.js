@@ -200,6 +200,10 @@ function updateDraftedCardData(snapshot) {
 ~~~~~~~FIREBASE Save~~~~~~~~~~
 */
 
+function savePlayerElo(newEloObject) {
+  firebase.database().ref('playerElo').set(newEloObject);
+}
+
 function savePlayerStats(newStatsObject) {
   firebase.database().ref('playerStats').set(newStatsObject);
 }
