@@ -163,6 +163,82 @@ input[type='submit'] {
     input[type='submit'].button-clear[disabled]:hover,
     input[type='submit'].button-clear[disabled]:focus {
       color: #9b4dca; }
+  .button.button-danger,
+  button.button-danger,
+  input[type='button'].button-danger,
+  input[type='reset'].button-danger,
+  input[type='submit'].button-danger {
+    color: #fff;
+    background-color: #d9534f;
+    border-color: #d43f3a; }
+    .button.button-danger:hover, .button.button-danger:focus,
+    button.button-danger:hover,
+    button.button-danger:focus,
+    input[type='button'].button-danger:hover,
+    input[type='button'].button-danger:focus,
+    input[type='reset'].button-danger:hover,
+    input[type='reset'].button-danger:focus,
+    input[type='submit'].button-danger:hover,
+    input[type='submit'].button-danger:focus {
+      color: #fff;
+      background-color: #c9302c;
+      border-color: #ac2925; }
+    .button.button-danger.button-disabled:hover, .button.button-danger.button-disabled:focus, .button.button-danger[disabled]:hover, .button.button-danger[disabled]:focus,
+    button.button-danger.button-disabled:hover,
+    button.button-danger.button-disabled:focus,
+    button.button-danger[disabled]:hover,
+    button.button-danger[disabled]:focus,
+    input[type='button'].button-danger.button-disabled:hover,
+    input[type='button'].button-danger.button-disabled:focus,
+    input[type='button'].button-danger[disabled]:hover,
+    input[type='button'].button-danger[disabled]:focus,
+    input[type='reset'].button-danger.button-disabled:hover,
+    input[type='reset'].button-danger.button-disabled:focus,
+    input[type='reset'].button-danger[disabled]:hover,
+    input[type='reset'].button-danger[disabled]:focus,
+    input[type='submit'].button-danger.button-disabled:hover,
+    input[type='submit'].button-danger.button-disabled:focus,
+    input[type='submit'].button-danger[disabled]:hover,
+    input[type='submit'].button-danger[disabled]:focus {
+      color: #fff; }
+  .button.button-add,
+  button.button-add,
+  input[type='button'].button-add,
+  input[type='reset'].button-add,
+  input[type='submit'].button-add {
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #4cae4c; }
+    .button.button-add:hover, .button.button-add:focus,
+    button.button-add:hover,
+    button.button-add:focus,
+    input[type='button'].button-add:hover,
+    input[type='button'].button-add:focus,
+    input[type='reset'].button-add:hover,
+    input[type='reset'].button-add:focus,
+    input[type='submit'].button-add:hover,
+    input[type='submit'].button-add:focus {
+      color: #fff;
+      background-color: #449d44;
+      border-color: #398439; }
+    .button.button-add.button-disabled:hover, .button.button-add.button-disabled:focus, .button.button-add[disabled]:hover, .button.button-add[disabled]:focus,
+    button.button-add.button-disabled:hover,
+    button.button-add.button-disabled:focus,
+    button.button-add[disabled]:hover,
+    button.button-add[disabled]:focus,
+    input[type='button'].button-add.button-disabled:hover,
+    input[type='button'].button-add.button-disabled:focus,
+    input[type='button'].button-add[disabled]:hover,
+    input[type='button'].button-add[disabled]:focus,
+    input[type='reset'].button-add.button-disabled:hover,
+    input[type='reset'].button-add.button-disabled:focus,
+    input[type='reset'].button-add[disabled]:hover,
+    input[type='reset'].button-add[disabled]:focus,
+    input[type='submit'].button-add.button-disabled:hover,
+    input[type='submit'].button-add.button-disabled:focus,
+    input[type='submit'].button-add[disabled]:hover,
+    input[type='submit'].button-add[disabled]:focus {
+      color: #fff; }
 
 code {
   background: #f4f5f6;
@@ -784,5 +860,56 @@ footer p {
     user-select: none; }
     #queuedCards li:focus {
       outline-color: #9b4dca; }
+
+#match-slip {
+  width: 90%;
+  border-radius: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid #222; }
+  @media (min-width: 73.125rem) {
+    #match-slip {
+      margin-left: 2.5rem;
+      width: 75%; } }
+  #match-slip .inactive {
+    opacity: 0.5; }
+
+#player-icon-selection {
+  margin-bottom: 2rem; }
+
+#slip-results-selection .playerResultsDiv {
+  display: table;
+  margin-bottom: 1rem; }
+  #slip-results-selection .playerResultsDiv img, #slip-results-selection .playerResultsDiv .resultsInput {
+    display: table-cell;
+    vertical-align: middle; }
+  #slip-results-selection .playerResultsDiv .resultTypeInput {
+    display: inline-block;
+    margin-right: 1.25rem;
+    vertical-align: top; }
+    #slip-results-selection .playerResultsDiv .resultTypeInput .button-add {
+      min-width: 70px;
+      width: auto;
+      padding: 0 15px;
+      margin: 0;
+      vertical-align: middle; }
+    #slip-results-selection .playerResultsDiv .resultTypeInput .killIconsContainer, #slip-results-selection .playerResultsDiv .resultTypeInput .voteIconsContainer, #slip-results-selection .playerResultsDiv .resultTypeInput .winIconContainer {
+      height: 25px;
+      display: block; }
+      #slip-results-selection .playerResultsDiv .resultTypeInput .killIconsContainer img, #slip-results-selection .playerResultsDiv .resultTypeInput .voteIconsContainer img, #slip-results-selection .playerResultsDiv .resultTypeInput .winIconContainer img {
+        display: inline-block;
+        width: 25px; }
+
+.playerResultsIcon, .playerSelectionIcon {
+  border-radius: 50%;
+  border: 1px solid #222;
+  width: 50px;
+  height: auto;
+  margin-right: 1rem; }
+  .playerResultsIcon.winner, .playerSelectionIcon.winner {
+    border: 3px solid #f4bf42; }
+
+#match-slip-submit {
+  margin-top: 1rem; }
 
 /*# sourceMappingURL=milligram.css.map */

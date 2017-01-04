@@ -192,29 +192,26 @@
 			<p>Use the form below to submit a match record for approval.</p>
 		</section>
 		<section id="match-slip">
-			<p>Who was playing? (Choose 4)</p>
+			<h3>Who was playing? (Choose 4)</h3>
 			<div id="player-icon-selection"></div>
-			<p>Who got what?</p>
-			<input type="image" src="img/icons/loop.svg" id="resultsResetButton" />
+			<h3>Who got what?</h3>
+			<input type="button" class="button-danger" id="resultsResetButton" value="Reset" />
 			<div id="slip-results-selection">
 				<div class="playerResultsDiv" id="player1ResultsDiv">
 					<img src="img/icons/p1.png" alt="P1" class="playerResultsIcon inactive">
 					<div class="resultsInput">
 						<div class="resultTypeInput">
-							Kill
-							<input type="image" src="img/icons/plus.svg" class="resultsIncrementer killIncrement"/>
+							<input type="button" class="resultsIncrementer killIncrement button-add" value="Kill +" />
 							<div class="killIconsContainer"></div>
 						</div>
 						<div class="resultTypeInput">
-							Vote
-							<input type="image" src="img/icons/plus.svg" class="resultsIncrementer voteIncrement"/>
+							<input type="button" class="resultsIncrementer voteIncrement button-add" value="Vote +" />
 							<div class="voteIconsContainer"></div>
 						</div>
 						<div class="resultTypeInput">
-							Win
-							<input type="image" src="img/icons/plus.svg" class="resultsIncrementer winIncrement"/>
+							<input type="button" class="resultsIncrementer winIncrement button-add" value="Win +" />
+							<div class="winIconContainer"></div>
 						</div>
-						<div class="winIconContainer"></div>
 					</div>
 				</div>
 				<div class="playerResultsDiv" id="player2ResultsDiv">
@@ -233,8 +230,8 @@
 						<div class="resultTypeInput">
 							Win
 							<input type="image" src="img/icons/plus.svg" class="resultsIncrementer winIncrement"/>
+							<div class="winIconContainer"></div>
 						</div>
-						<div class="winIconContainer"></div>
 					</div>
 				</div>
 				<div class="playerResultsDiv" id="player3ResultsDiv">
@@ -253,8 +250,8 @@
 						<div class="resultTypeInput">
 							Win
 							<input type="image" src="img/icons/plus.svg" class="resultsIncrementer winIncrement"/>
+							<div class="winIconContainer"></div>
 						</div>
-						<div class="winIconContainer"></div>
 				</div>
 				</div>
 				<div class="playerResultsDiv" id="player4ResultsDiv">

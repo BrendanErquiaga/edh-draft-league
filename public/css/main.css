@@ -9,20 +9,6 @@ img#roundTrackerDirection {
   height: auto;
 }
 
-.playerResultsIcon, .playerSelectionIcon {
-  width: 50px;
-  height: auto;
-  margin: 0px 5px;
-}
-
-.playerResultsIcon.inactive, .playerSelectionIcon.inactive, .btn.inactive {
-  opacity: 0.5;
-}
-
-.playerResultsIcon.winner {
-  border: 3px solid #f4bf42;
-}
-
 .approveMatchResultButton, .denyMatchResultButton {
   margin: 0px 15px;
 }
@@ -44,20 +30,16 @@ img#roundTrackerDirection {
   align-self: center;
 }
 
-.resultsIncrementer {
+/*.resultsIncrementer {
   width: 20px;
   height: auto;
-}
+}*/
 
-#resultsResetButton{
-  width: 20px;
-  height: auto;
-}
 
-.killIcon, .voteIcon, .winIcon {
+/*.killIcon, .voteIcon, .winIcon {
   width: 32px;
   height: auto;
-}
+}*/
 
 /* The switch - the box around the slider */
 
