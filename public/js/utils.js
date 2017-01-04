@@ -144,6 +144,21 @@ function getConvertedCardName(cardName) {
   return false;
 }
 
+function getAPIValidCardName(cardName) {
+  var tempName = cardName.toLowerCase();
+
+  tempName = tempName.split(' ').join('-');
+  tempName = tempName.split(',').join('');
+
+  return tempName;
+}
+
+function getImageURLFromAPIData(cardAPIData) {
+  var multiverse_id = cardAPIData.editions[cardAPIData.editions.length - 1].multiverse_id;
+
+  return "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=" + multiverse_id + "&type=card";
+}
+
 function goToNextTurn() {
     var tempTurnOrderObject = turnOrderObject;
 

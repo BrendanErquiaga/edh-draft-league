@@ -97,6 +97,19 @@ function validateCard(card) {
   return convertedCardName;
 }
 
+function viewCard(card) {
+  //Fetch card image, put into my silly image slot
+
+  var requestURL = "https://api.deckbrew.com/mtg/cards/";
+
+  requestURL += getAPIValidCardName(card);
+  //console.log(cardObject);
+
+  $.get(requestURL, function(data, status){
+    $("#cardToView").attr('src', getImageURLFromAPIData(data));
+  });
+}
+
 function pickOrQueueCard(card){
   if(currentUsersTurn()){
     pickCardForUser(validateCard(card));
@@ -119,6 +132,11 @@ function catchDraftPageInput() {
             pickOrQueueCard($('#form-card').val());
             clearCardInputField();
         }
+    });
+
+    $('#card-viewer').on('click', function(e) {
+        viewCard($('#form-card').val());
+        clearCardInputField();
     });
 
     $('#autoDraftSwitch').change(function(){
