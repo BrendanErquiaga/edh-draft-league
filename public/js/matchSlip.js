@@ -183,7 +183,7 @@ function addVoteToPlayer(playerNumber) {
     var voteCount = 0;
 
 
-    for (var i = 0; i < killRecords.length; i++) {
+    for (var i = 0; i < voteRecords.length; i++) {
        if(voteRecords[i] == selectedPlayers[playerNumber - 1]){
          voteCount++;
        }
