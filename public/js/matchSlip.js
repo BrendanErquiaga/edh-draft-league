@@ -118,6 +118,10 @@ function resetResultsData() {
         $(obj).text('');
     });
 
+    $('.resultsIncrementer').each(function(i, obj) {
+        $(obj).addClass('inactive');
+    });
+
     $('#player-icon-selection').children('input').each(function(i, obj) {
         $(obj).removeClass('inactive');
     });
@@ -140,12 +144,21 @@ function addKillToPlayer(playerNumber) {
         return;
     }
 
-    $('#player' + playerNumber + 'ResultsDiv .killIconsContainer').prepend($('<img>', {
-        class: 'killIcon',
-        src: killIconLocation
-    }));
+    var killCount = 0;
 
     killRecords.push(selectedPlayers[playerNumber - 1]);
+
+    for (var i = 0; i < killRecords.length; i++) {
+       if(killRecords[i] == selectedPlayers[playerNumber - 1]){
+         killCount++;
+       }
+    }
+
+    $('#player' + playerNumber + 'ResultsDiv .killCount').html('x ' + killCount);
+
+    if(killCount > 0){
+        $('#player' + playerNumber + 'ResultsDiv .killIncrement').removeClass('inactive');
+    }
 }
 
 function addVoteToPlayer(playerNumber) {
@@ -165,15 +178,22 @@ function addVoteToPlayer(playerNumber) {
         }
     }
 
-
-    $('#player' + playerNumber + 'ResultsDiv .voteIconsContainer').prepend($('<img>', {
-        class: 'voteIcon',
-        src: voteIconLocation
-    }));
-
     voteRecords.push(selectedPlayers[playerNumber - 1]);
 
-    //TODO: Make it so you can't vote the same player 4 times
+    var voteCount = 0;
+
+
+    for (var i = 0; i < voteRecords.length; i++) {
+       if(voteRecords[i] == selectedPlayers[playerNumber - 1]){
+         voteCount++;
+       }
+    }
+
+    $('#player' + playerNumber + 'ResultsDiv .voteCount').html('x ' + voteCount);
+
+    if(voteCount > 0){
+        $('#player' + playerNumber + 'ResultsDiv .voteIncrement').removeClass('inactive');
+    }
 }
 
 function addWinToPlayer(playerNumber) {
@@ -181,12 +201,9 @@ function addWinToPlayer(playerNumber) {
         return;
     }
 
-    $('#player' + playerNumber + 'ResultsDiv .winIconContainer').prepend($('<img>', {
-        class: 'winIcon',
-        src: winIconLocation
-    }));
-
     winnerId = selectedPlayers[playerNumber - 1];
+
+    $('#player' + playerNumber + 'ResultsDiv .winIncrement').removeClass('inactive');
 
     toggleResultsSubmittableUI(true);
 }
