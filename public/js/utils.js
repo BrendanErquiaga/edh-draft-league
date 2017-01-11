@@ -154,7 +154,12 @@ function getAPIValidCardName(cardName) {
 }
 
 function getImageURLFromAPIData(cardAPIData) {
-  var multiverse_id = cardAPIData.editions[cardAPIData.editions.length - 1].multiverse_id;
+  var editionID = 0;
+
+  if(cardAPIData.editions.length > 2){
+    editionID = Math.floor(cardAPIData.editions.length/2);
+  }
+  var multiverse_id = cardAPIData.editions[editionID].multiverse_id;
 
   return "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=" + multiverse_id + "&type=card";
 }
