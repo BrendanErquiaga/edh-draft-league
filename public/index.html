@@ -83,48 +83,54 @@
 				</div>
 			</div>
 		</section>
-		<h1>Draft Hub</h1>
-		<section id="draftInfoSection">
-			<p>Round#: <span id="roundNumberIndicator"></span></p>
-			<p>Turn Order: <img id="roundTrackerDirection"></img></p>
-			<ul id="turnOrderList">
-			</ul>
-			<p>Total Cards Drafted: <span id="cardsDraftedIndicator"></span></p>
-		</section>
-		<section id="recentlyDraftedSection">
-			<h4>Recently Drafted Cards:</h4>
-			<ul id="recentlyDraftedList"><li>This was already here...</li></ul>
-		</section>
-		<section id="userInput">
-			<label class="switch">
+		<section class="authenticatedUserSection">
+			<h1>Draft Hub</h1>
+			<section id="draftInfoSection">
+				<p>Round#: <span id="roundNumberIndicator"></span></p>
+				<p>Turn Order: <img id="roundTrackerDirection"></img>
+				</p>
+				<ul id="turnOrderList">
+				</ul>
+				<p>Total Cards Drafted: <span id="cardsDraftedIndicator"></span></p>
+			</section>
+			<section id="recentlyDraftedSection">
+				<h4>Recently Drafted Cards:</h4>
+				<ul id="recentlyDraftedList">
+					<li>This was already here...</li>
+				</ul>
+			</section>
+			<section id="userInput">
+				<label class="switch">
 				<input type="checkbox" id="globalSubscribeSwitch">
 				<div class="slider round"></div>
 			</label>
-			<p>Notify me for every pick</p>
-			<h2>Pick a card</h2>
-			<input type="text" class="form-control typeahead" id="form-card" placeholder="Enter card name">
-      <button type="submit" class="btn btn-success" id="card-submit"></button>
-		</section>
-		<section id="queueSection">
-			<label class="switch">
+				<p>Notify me for every pick</p>
+				<h2>Pick a card</h2>
+				<input type="text" class="form-control typeahead" id="form-card" placeholder="Enter card name">
+				<button type="submit" class="btn btn-success" id="card-submit"></button>
+			</section>
+			<section id="queueSection">
+				<label class="switch">
 				<input type="checkbox" id="autoDraftSwitch">
 				<div class="slider round"></div>
 			</label>
-			<p>Auto Draft</p>
-			<h4>Queued Cards: <span id="userQueuedCardCountIndicator"></span></h4>
-			<ul id="queuedCards">
-				<li>This was already here...</li>
-			</ul>
-		</section>
-		<section id="pickedSection">
-			<h4>Picked Cards: <span id="userPickedCardCountIndicator"></span></h4>
-			<ul id="pickedCards"><li>This was already here...</li></ul>
+				<p>Auto Draft</p>
+				<h4>Queued Cards: <span id="userQueuedCardCountIndicator"></span></h4>
+				<ul id="queuedCards">
+					<li>This was already here...</li>
+				</ul>
+			</section>
+			<section id="pickedSection">
+				<h4>Picked Cards: <span id="userPickedCardCountIndicator"></span></h4>
+				<ul id="pickedCards">
+					<li>This was already here...</li>
+				</ul>
+			</section>
 		</section>
 		<footer>
 			<section>
 				<p>Magic the Gathering, FNM is TM and copyright Wizards of the Coast, Inc, a subsidiary of Hasbro, Inc. All rights reserved. This site is unaffiliated. /legalese
-				<br />
-				Site built using <a href="https://milligram.github.io/" target="new">Milligram.io</a>, <a href="http://www.chartjs.org/" target="new">Chart.js</a>, and <a href="https://www.w3.org/TR/css-flexbox-1/" target="new">Flexbox</a>.
+					<br /> Site built using <a href="https://milligram.github.io/" target="new">Milligram.io</a>, <a href="http://www.chartjs.org/" target="new">Chart.js</a>, and <a href="https://www.w3.org/TR/css-flexbox-1/" target="new">Flexbox</a>.
 				</p>
 			</section>
 		</footer>
@@ -132,9 +138,12 @@
 </body>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="js/vendor/jquery.min.js"><\/script>')</script>
+<script>
+	window.jQuery || document.write('<script src="js/vendor/jquery.min.js"><\/script>')
+</script>
 <script src="js/typeahead.js"></script>
 <script data-main="js/draft" src="require.js"></script>
 
 <script src="js/firebaseLogin.js"></script>
+
 </html>

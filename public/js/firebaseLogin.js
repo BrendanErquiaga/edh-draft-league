@@ -107,12 +107,16 @@ function handleLoggedInUserUI(user) {
   document.getElementById('quickstart-sign-in-status').textContent = user.displayName;
   document.getElementById('userIcon').src = user.photoURL;
   document.getElementById('quickstart-sign-in').textContent = 'Sign out';
+
+  $('.authenticatedUserSection').show();
 }
 
 function handleNoUserUI() {
   document.getElementById('quickstart-sign-in-status').textContent = 'Signed out';
   document.getElementById('quickstart-sign-in').textContent = 'Sign in';
   document.getElementById('userIcon').src = 'img/unknown.jpg';
+
+  $('.authenticatedUserSection').hide();
 }
 
 // Saves basic user data

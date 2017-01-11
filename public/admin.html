@@ -80,24 +80,30 @@
 			</div>
 		</section>
 		<h1>Admin Center</h1>
-		<section id="adminOnlySection" style="display:none">
-			<h2 id="leagueName"></h2>
-			<section id="autoDraftSection">
-				<label class="switch">
+		<section class="authenticatedUserSection">
+			<section id="adminOnlySection" style="display:none">
+				<h2 id="leagueName"></h2>
+				<section id="autoDraftSection">
+					<label class="switch">
 					<input type="checkbox" id="draftMasterSwitch">
 					<div class="slider round"></div>
 				</label>
-				<span>Master Drafter</span>
-				<br/>
-				<button class="mdl-button" id="refreshAutoDraft">Refresh Draft</button>
-			</section>
-			<section id="leagueDataSection">
-				<h4>League Members</h4>
-				<ul id="leagueMembers"><li>This was already here...</li></ul>
-			</section>
-			<section id="resultsToApproveSection">
-				<h4>Match Results To Approve</h4>
-				<ul id="resultsToApprove"><li>This was already here...</li></ul>
+					<span>Master Drafter</span>
+					<br/>
+					<button class="mdl-button" id="refreshAutoDraft">Refresh Draft</button>
+				</section>
+				<section id="leagueDataSection">
+					<h4>League Members</h4>
+					<ul id="leagueMembers">
+						<li>This was already here...</li>
+					</ul>
+				</section>
+				<section id="resultsToApproveSection">
+					<h4>Match Results To Approve</h4>
+					<ul id="resultsToApprove">
+						<li>This was already here...</li>
+					</ul>
+				</section>
 			</section>
 		</section>
 		<footer>
@@ -111,7 +117,10 @@
 </body>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="js/vendor/jquery.min.js"><\/script>')</script>
+<script>
+	window.jQuery || document.write('<script src="js/vendor/jquery.min.js"><\/script>')
+</script>
 <script data-main="js/admin" src="require.js"></script>
 <script src="js/firebaseLogin.js"></script>
+
 </html>
