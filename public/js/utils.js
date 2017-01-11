@@ -149,17 +149,18 @@ function getAPIValidCardName(cardName) {
 
   tempName = tempName.split(' ').join('-');
   tempName = tempName.split(',').join('');
+  tempName = tempName.split("'").join('');
 
   return tempName;
 }
 
 function getImageURLFromAPIData(cardAPIData) {
-  var editionID = 0;
+  var editionIndex = 0;
 
-  if(cardAPIData.editions.length > 2){
-    editionID = Math.floor(cardAPIData.editions.length/2);
+  while(cardAPIData.editions[editionIndex].multiverse_id == 0){
+    editionIndex++;
   }
-  var multiverse_id = cardAPIData.editions[editionID].multiverse_id;
+  var multiverse_id = cardAPIData.editions[editionIndex].multiverse_id;
 
   return "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=" + multiverse_id + "&type=card";
 }
