@@ -12,6 +12,12 @@ window.addEventListener('load', function() {
     // Listen for auth state changes
     firebase.auth().onAuthStateChanged(onAuthStateChanged);
 
+    firebase.auth().getRedirectResult().then(function(result) {
+    }).catch(function(error) {
+        console.error(error);
+    });
+    document.getElementById('quickstart-sign-in').addEventListener('click', toggleSignIn, false);
+
     setupNotifications();
 });
 
@@ -49,6 +55,32 @@ function sendTokenToServer(token) {
 }
 
 /**
+ * Function called when clicking the Login/Logout button.
+ */
+// [START buttoncallback]
+function toggleSignIn() {
+  if (!firebase.auth().currentUser) {
+    // [START createprovider]
+    var provider = new firebase.auth.GoogleAuthProvider();
+    // [END createprovider]
+    // [START addscopes]
+    provider.addScope('https://www.googleapis.com/auth/plus.login');
+    // [END addscopes]
+    // [START signin]
+    firebase.auth().signInWithRedirect(provider);
+    // [END signin]
+  } else {
+    // [START signout]
+    firebase.auth().signOut();
+    // [END signout]
+  }
+  // [START_EXCLUDE]
+  document.getElementById('quickstart-sign-in').disabled = true;
+  // [END_EXCLUDE]
+}
+// [END buttoncallback]
+
+/**
  * Triggers every time there is a change in the Firebase auth state (i.e. user signed-in or user signed out).
  */
 function onAuthStateChanged(user) {
@@ -62,12 +94,25 @@ function onAuthStateChanged(user) {
         saveUserData(user.uid, user.displayName, user.email, user.photoURL);
         updateReferencesWithUserId();
         //Hit the DB -> startDatabaseQueries();
-        //Display Logged In State
-        //Update autodraft button based on users status
+        handleLoggedInUserUI(user);
     } else {
         currentUserId = null;
-        //Prompt Login
+        handleNoUserUI();
     }
+
+    document.getElementById('quickstart-sign-in').disabled = false;
+}
+
+function handleLoggedInUserUI(user) {
+  document.getElementById('quickstart-sign-in-status').textContent = user.displayName;
+  document.getElementById('userIcon').src = user.photoURL;
+  document.getElementById('quickstart-sign-in').textContent = 'Sign out';
+}
+
+function handleNoUserUI() {
+  document.getElementById('quickstart-sign-in-status').textContent = 'Signed out';
+  document.getElementById('quickstart-sign-in').textContent = 'Sign in';
+  document.getElementById('userIcon').src = 'img/unknown.jpg';
 }
 
 // Saves basic user data
