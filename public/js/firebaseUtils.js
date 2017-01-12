@@ -18,6 +18,11 @@ var usersSnapshot,
     matchResultsSnapshot;
 
 function getFirebaseData() {
+    if(!dataScriptLoaded && !userScriptLoaded){
+      dataScriptLoaded = true;
+      return;
+    }
+
     draftedCardsRef = firebase.database().ref('draftedUserCards');
     queuedCardsRef = firebase.database().ref('queuedUserCards');
     if(recentlyDraftedCardArrayLimit !== undefined && recentlyDraftedCardArrayLimit > 0){

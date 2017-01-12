@@ -44,121 +44,15 @@
 		};
 		firebase.initializeApp(config);
 	</script>
-
-	<script type="text/javascript">
-		/**
-		 * Function called when clicking the Login/Logout button.
-		 */
-		// [START buttoncallback]
-		function toggleSignIn() {
-			if (!firebase.auth().currentUser) {
-				// [START createprovider]
-				var provider = new firebase.auth.GoogleAuthProvider();
-				// [END createprovider]
-				// [START addscopes]
-				provider.addScope('https://www.googleapis.com/auth/plus.login');
-				// [END addscopes]
-				// [START signin]
-				firebase.auth().signInWithRedirect(provider);
-				// [END signin]
-			} else {
-				// [START signout]
-				firebase.auth().signOut();
-				// [END signout]
-			}
-			// [START_EXCLUDE]
-			document.getElementById('quickstart-sign-in').disabled = true;
-			// [END_EXCLUDE]
-		}
-		// [END buttoncallback]
-		/**
-		 * initApp handles setting up UI event listeners and registering Firebase auth listeners:
-		 *  - firebase.auth().onAuthStateChanged: This listener is called when the user is signed in or
-		 *    out, and that is where we update the UI.
-		 *  - firebase.auth().getRedirectResult(): This promise completes when the user gets back from
-		 *    the auth redirect flow. It is where you can get the OAuth access token from the IDP.
-		 */
-		function initApp() {
-			// Result from Redirect auth flow.
-			// [START getidptoken]
-			firebase.auth().getRedirectResult().then(function(result) {
-				if (result.credential) {
-					// This gives you a Google Access Token. You can use it to access the Google API.
-					var token = result.credential.accessToken;
-					// [START_EXCLUDE]
-					//document.getElementById('quickstart-oauthtoken').textContent = token;
-				} else {
-					//document.getElementById('quickstart-oauthtoken').textContent = 'null';
-					// [END_EXCLUDE]
-				}
-				// The signed-in user info.
-				var user = result.user;
-			}).catch(function(error) {
-				// Handle Errors here.
-				var errorCode = error.code;
-				var errorMessage = error.message;
-				// The email of the user's account used.
-				var email = error.email;
-				// The firebase.auth.AuthCredential type that was used.
-				var credential = error.credential;
-				// [START_EXCLUDE]
-				if (errorCode === 'auth/account-exists-with-different-credential') {
-					alert('You have already signed up with a different auth provider for that email.');
-					// If you are using multiple auth providers on your app you should handle linking
-					// the user's accounts here.
-				} else {
-					console.error(error);
-				}
-				// [END_EXCLUDE]
-			});
-			// [END getidptoken]
-			// Listening for auth state changes.
-			// [START authstatelistener]
-			firebase.auth().onAuthStateChanged(function(user) {
-				if (user) {
-					// User is signed in.
-					var displayName = user.displayName;
-					var email = user.email;
-					var emailVerified = user.emailVerified;
-					var photoURL = user.photoURL;
-					var isAnonymous = user.isAnonymous;
-					var uid = user.uid;
-					var providerData = user.providerData;
-					// [START_EXCLUDE]
-					document.getElementById('quickstart-sign-in-status').textContent = displayName;
-					document.getElementById('userIcon').src = photoURL;
-					document.getElementById('quickstart-sign-in').textContent = 'Sign out';
-					// [END_EXCLUDE]
-				} else {
-					// User is signed out.
-					// [START_EXCLUDE]
-					document.getElementById('quickstart-sign-in-status').textContent = 'Signed out';
-					document.getElementById('quickstart-sign-in').textContent = 'Sign in';
-					document.getElementById('userIcon').src = 'img/unknown.jpg';
-					// [END_EXCLUDE]
-				}
-				// [START_EXCLUDE]
-				document.getElementById('quickstart-sign-in').disabled = false;
-				// [END_EXCLUDE]
-			});
-			// [END authstatelistener]
-			document.getElementById('quickstart-sign-in').addEventListener('click', toggleSignIn, false);
-		}
-		window.onload = function() {
-			initApp();
-		};
-	</script>
-
-
 </head>
 
 <body class="draft">
 	<ul class="nav">
-		<li><a href="index.html">Draft</a></li>
+		<li><a href="index.html" class="active">Draft</a></li>
 		<li><a href="decklists.html">Decks</a></li>
 		<li><a href="standings.html">Standings</a></li>
 		<li><a href="rules.html">Rules</a></li>
-		<li><a href="#" class="active">Seasons</a>
+		<li><a href="#">Seasons</a>
 			<ul>
 				<li><a href="data_2016.html" class="active">Season 1</a></li>
 				<li><a href="#">Season 2</a></li>
@@ -180,7 +74,7 @@
 			<!-- Container for the demo -->
 			<div class="mdl-card__supporting-text mdl-color-text--grey-600">
 				<!-- Button that handles sign-in/sign-out -->
-				<button disabled class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-in">Sign in with Google</button>
+				<button disabled class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-in">Sign in</button>
 
 				<!-- Container where we'll display the user details -->
 				<div class="quickstart-user-details-container">
@@ -189,48 +83,54 @@
 				</div>
 			</div>
 		</section>
-		<h1>Draft Hub</h1>
-		<section id="draftInfoSection">
-			<p>Round#: <span id="roundNumberIndicator"></span></p>
-			<p>Turn Order: <img id="roundTrackerDirection"></img></p>
-			<ul id="turnOrderList">
-			</ul>
-			<p>Total Cards Drafted: <span id="cardsDraftedIndicator"></span></p>
-		</section>
-		<section id="recentlyDraftedSection">
-			<h4>Recently Drafted Cards:</h4>
-			<ul id="recentlyDraftedList"><li>This was already here...</li></ul>
-		</section>
-		<section id="userInput">
-			<label class="switch">
+		<section class="authenticatedUserSection">
+			<h1>Draft Hub</h1>
+			<section id="draftInfoSection">
+				<p>Round#: <span id="roundNumberIndicator"></span></p>
+				<p>Turn Order: <img id="roundTrackerDirection"></img>
+				</p>
+				<ul id="turnOrderList">
+				</ul>
+				<p>Total Cards Drafted: <span id="cardsDraftedIndicator"></span></p>
+			</section>
+			<section id="recentlyDraftedSection">
+				<h4>Recently Drafted Cards:</h4>
+				<ul id="recentlyDraftedList">
+					<li>This was already here...</li>
+				</ul>
+			</section>
+			<section id="userInput">
+				<label class="switch">
 				<input type="checkbox" id="globalSubscribeSwitch">
 				<div class="slider round"></div>
 			</label>
-			<p>Notify me for every pick</p>
-			<h2>Pick a card</h2>
-			<input type="text" class="form-control typeahead" id="form-card" placeholder="Enter card name">
-      <button type="submit" class="btn btn-success" id="card-submit"></button>
-		</section>
-		<section id="queueSection">
-			<label class="switch">
+				<p>Notify me for every pick</p>
+				<h2>Pick a card</h2>
+				<input type="text" class="form-control typeahead" id="form-card" placeholder="Enter card name">
+				<button type="submit" class="btn btn-success" id="card-submit"></button>
+			</section>
+			<section id="queueSection">
+				<label class="switch">
 				<input type="checkbox" id="autoDraftSwitch">
 				<div class="slider round"></div>
 			</label>
-			<p>Auto Draft</p>
-			<h4>Queued Cards: <span id="userQueuedCardCountIndicator"></span></h4>
-			<ul id="queuedCards">
-				<li>This was already here...</li>
-			</ul>
-		</section>
-		<section id="pickedSection">
-			<h4>Picked Cards: <span id="userPickedCardCountIndicator"></span></h4>
-			<ul id="pickedCards"><li>This was already here...</li></ul>
+				<p>Auto Draft</p>
+				<h4>Queued Cards: <span id="userQueuedCardCountIndicator"></span></h4>
+				<ul id="queuedCards">
+					<li>This was already here...</li>
+				</ul>
+			</section>
+			<section id="pickedSection">
+				<h4>Picked Cards: <span id="userPickedCardCountIndicator"></span></h4>
+				<ul id="pickedCards">
+					<li>This was already here...</li>
+				</ul>
+			</section>
 		</section>
 		<footer>
 			<section>
 				<p>Magic the Gathering, FNM is TM and copyright Wizards of the Coast, Inc, a subsidiary of Hasbro, Inc. All rights reserved. This site is unaffiliated. /legalese
-				<br />
-				Site built using <a href="https://milligram.github.io/" target="new">Milligram.io</a>, <a href="http://www.chartjs.org/" target="new">Chart.js</a>, and <a href="https://www.w3.org/TR/css-flexbox-1/" target="new">Flexbox</a>.
+					<br /> Site built using <a href="https://milligram.github.io/" target="new">Milligram.io</a>, <a href="http://www.chartjs.org/" target="new">Chart.js</a>, and <a href="https://www.w3.org/TR/css-flexbox-1/" target="new">Flexbox</a>.
 				</p>
 			</section>
 		</footer>
@@ -238,9 +138,10 @@
 </body>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="js/vendor/jquery.min.js"><\/script>')</script>
+<script>
+	window.jQuery || document.write('<script src="js/vendor/jquery.min.js"><\/script>')
+</script>
 <script src="js/typeahead.js"></script>
 <script data-main="js/draft" src="require.js"></script>
-
 <script src="js/firebaseLogin.js"></script>
 </html>
