@@ -2,7 +2,9 @@
 
 var currentUserId,
     userQueuedCards,
-    notificationToken;
+    notificationToken,
+    dataScriptLoaded = false,
+    userScriptLoaded = false;
 
 // Retrieve Firebase Messaging object.
 const messaging = firebase.messaging();
@@ -57,28 +59,16 @@ function sendTokenToServer(token) {
 /**
  * Function called when clicking the Login/Logout button.
  */
-// [START buttoncallback]
 function toggleSignIn() {
   if (!firebase.auth().currentUser) {
-    // [START createprovider]
     var provider = new firebase.auth.GoogleAuthProvider();
-    // [END createprovider]
-    // [START addscopes]
     provider.addScope('https://www.googleapis.com/auth/plus.login');
-    // [END addscopes]
-    // [START signin]
     firebase.auth().signInWithRedirect(provider);
-    // [END signin]
   } else {
-    // [START signout]
     firebase.auth().signOut();
-    // [END signout]
   }
-  // [START_EXCLUDE]
   document.getElementById('quickstart-sign-in').disabled = true;
-  // [END_EXCLUDE]
 }
-// [END buttoncallback]
 
 /**
  * Triggers every time there is a change in the Firebase auth state (i.e. user signed-in or user signed out).
@@ -95,6 +85,12 @@ function onAuthStateChanged(user) {
         updateReferencesWithUserId();
         //Hit the DB -> startDatabaseQueries();
         handleLoggedInUserUI(user);
+
+        if(dataScriptLoaded){
+          getFirebaseData();
+        } else {
+          userScriptLoaded = true;
+        }
     } else {
         currentUserId = null;
         handleNoUserUI();
