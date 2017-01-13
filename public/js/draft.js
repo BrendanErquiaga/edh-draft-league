@@ -1,6 +1,9 @@
 "use strict";
 
-var recentlyDraftedCardArrayLimit = 3;
+var recentlyDraftedCardArrayLimit = 3,
+    slipOptionsObject = {
+      minimumSwipeVelocity: 0.4
+    };
 
 $(document).ready(function() {
     requirejs(['./utils','./firebaseUtils', './slip'], function(){
@@ -48,7 +51,7 @@ function queueHandler() {
 		return false;
 	}, false);
 
-	return new Slip(list);
+	return new Slip(list, slipOptionsObject);
 }
 
 function pickCardForUser(card) {
@@ -187,12 +190,16 @@ function updatePickedCardsUI(){
 function matchAutoDraftSwitch() {
   if(usersSnapshot[currentUserId].autoDraft === true){
     $('#autoDraftSwitch').prop('checked', true);
+  } else {
+    $('#autoDraftSwitch').prop('checked', false);
   }
 }
 
 function matchGlobalSubscribeSwitch() {
   if(usersSnapshot[currentUserId].globallySubscribed === true){
     $('#globalSubscribeSwitch').prop('checked', true);
+  } else {
+    $('#globalSubscribeSwitch').prop('checked', false);
   }
 }
 
