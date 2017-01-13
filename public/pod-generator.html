@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="author" content="Andrew Maul, Brendan Erquiaga">
+	<meta name="description" content="EDH Draft League 2016">
+	<title>Match Slip</title>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+	<link rel="stylesheet" href="sass/milligram.css">
+	<link rel="stylesheet" href="css/main.css">
+	<link rel="apple-touch-icon-precomposed" sizes="57x57" href="favicons/apple-touch-icon-57x57.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="favicons/apple-touch-icon-114x114.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="favicons/apple-touch-icon-72x72.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="favicons/apple-touch-icon-144x144.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="60x60" href="favicons/apple-touch-icon-60x60.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="120x120" href="favicons/apple-touch-icon-120x120.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="76x76" href="favicons/apple-touch-icon-76x76.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="152x152" href="favicons/apple-touch-icon-152x152.png" />
+	<link rel="icon" type="image/png" href="favicons/favicon-196x196.png" sizes="196x196" />
+	<link rel="icon" type="image/png" href="favicons/favicon-96x96.png" sizes="96x96" />
+	<link rel="icon" type="image/png" href="favicons/favicon-32x32.png" sizes="32x32" />
+	<link rel="icon" type="image/png" href="favicons/favicon-16x16.png" sizes="16x16" />
+	<link rel="icon" type="image/png" href="favicons/favicon-128.png" sizes="128x128" />
+	<meta name="msapplication-TileColor" content="#FFFFFF" />
+	<meta name="msapplication-TileImage" content="favicons/mstile-144x144.png" />
+	<meta name="msapplication-square70x70logo" content="favicons/mstile-70x70.png" />
+	<meta name="msapplication-square150x150logo" content="favicons/mstile-150x150.png" />
+	<meta name="msapplication-wide310x150logo" content="favicons/mstile-310x150.png" />
+	<meta name="msapplication-square310x310logo" content="favicons/mstile-310x310.png" />
+	<link rel="manifest" href="/manifest.json">
+
+	<script src="https://www.gstatic.com/firebasejs/3.6.2/firebase.js"></script>
+	<script>
+		// Initialize Firebase
+		var config = {
+			apiKey: "AIzaSyAlRO_7_sv1BhgJ6xT1MRscondyLoh70vo",
+			authDomain: "draftleague2017.firebaseapp.com",
+			databaseURL: "https://draftleague2017.firebaseio.com",
+			storageBucket: "draftleague2017.appspot.com",
+			messagingSenderId: "382673579824"
+		};
+		firebase.initializeApp(config);
+	</script>
+</head>
+
+<body class="pod-generator">
+	<ul class="nav">
+		<li><a href="index.html">Draft</a></li>
+		<li><a href="pod-generator.html" class="active">Pod Generator</a></li>
+		<li><a href="decklists.html">Decks</a></li>
+		<li><a href="standings.html">Standings</a></li>
+		<li><a href="rules.html">Rules</a></li>
+		<li><a href="#" class="active">Seasons</a>
+			<ul>
+				<li><a href="data_2016.html" class="active">Season 1</a></li>
+				<li><a href="#">Season 2</a></li>
+			</ul>
+		</li>
+	</ul>
+	<header>
+		<section class="container">
+			<picture>
+				<source media="(max-width: 480px)" srcset="img/banner_small.jpg">
+				<source media="(max-width: 768px)" srcset="img/banner_medium.jpg">
+				<source media="(max-width: 1280px)" srcset="img/banner_large.jpg">
+				<img src="img/banner_largest.jpg" alt="EDH Draft League Banner">
+			</picture>
+		</section>
+	</header>
+	<main class="container">
+		<section class="login">
+			<!-- Container for the demo -->
+			<div class="mdl-card__supporting-text mdl-color-text--grey-600">
+				<!-- Button that handles sign-in/sign-out -->
+				<button disabled class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-in">Sign in with Google</button>
+
+				<!-- Container where we'll display the user details -->
+				<div class="quickstart-user-details-container">
+					<img src="img/unknown.jpg" id="userIcon" height="50px" width="50px" />
+					<span id="quickstart-sign-in-status">Unknown</span>
+				</div>
+			</div>
+		</section>
+		<section class="loadingSection">
+			<h3>Building the thing...</h3>
+		</section>
+		<section class="unauthenticatedUserSection" style="display:none;">
+			<h2>You have to sign in to use this page</h2>
+		</section>
+		<section class="nonLeagueSection" style="display:none;">
+			<h2>You are not in an active league. =/</h2>
+			<p>Please contact an admin to be placed into a league. If you don't know an admin, fear not the site will be public one day!</p>
+		</section>
+		<section class="authenticatedUserSection" style="display:none;">
+			<h1>Pod Generator</h1>
+			<section id="pod-generation">
+				<span>Who is present?</span>
+				<section id="player-icon-selection">
+				</section>
+				<button class="mdl-button" id="podRequestButton">Generate Pods</button>
+				<button class="mdl-button" id="podResetButton">Reset</button>
+			</section>
+			<div id="generatedPodSection">
+				<ul>
+				</ul>
+			</div>
+		</section>
+		<footer>
+			<section>
+				<p>Magic the Gathering, FNM is TM and copyright Wizards of the Coast, Inc, a subsidiary of Hasbro, Inc. All rights reserved. This site is unaffiliated. /legalese
+					<br /> Site built using <a href="https://milligram.github.io/" target="new">Milligram.io</a> and <a href="http://www.chartjs.org/" target="new">Chart.js</a>
+				</p>
+			</section>
+		</footer>
+	</main>
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>
+	window.jQuery || document.write('<script src="js/vendor/jquery.min.js"><\/script>')
+</script>
+<script data-main="js/podGenerator" src="require.js"></script>
+<script src="js/firebaseLogin.js"></script>
+
+</html>

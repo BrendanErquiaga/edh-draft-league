@@ -70,10 +70,6 @@ function getFirebaseData() {
 
     //Standings only section
     if($(document.body).hasClass('standings')) {
-      firebase.database().ref('matchResults').on('value', function(snapshot) {
-          updatematchResultsSnapshot(snapshot);
-      });
-
       firebase.database().ref('playerStats').on('value', function(snapshot) {
           updatePlayerStatsSnapshot(snapshot);
       });
@@ -82,6 +78,10 @@ function getFirebaseData() {
           updatePlayerEloSnapshot(snapshot);
       });
     }
+
+    firebase.database().ref('matchResults').on('value', function(snapshot) {
+        updatematchResultsSnapshot(snapshot);
+    });
 
     firebase.database().ref('leagueData').on('value', function(snapshot) {
         updateLeagueDataObject(snapshot);
@@ -144,7 +144,7 @@ function updateLeagueDataObject(snapshot){
 
   if($(document.body).hasClass('admin')) {
     updateLeagueDataUI();
-  } else if ($(document.body).hasClass('match-slip')) {
+  } else if ($(document.body).hasClass('match-slip') || $(document.body).hasClass('pod-generator')) {
     updateMatchSlipPlayerIcons();
   }
 }
@@ -201,7 +201,7 @@ function updateUsersSnapshot(snapshot) {
 
   if (usersSnapshot[currentUserId].leagueId !== null && usersSnapshot[currentUserId].leagueId !== undefined) {
     $('.authenticatedUserSection').show();
-    $('.nonLeagueSection').hide();    
+    $('.nonLeagueSection').hide();
   } else {
     $('.nonLeagueSection').show();
     $('.authenticatedUserSection').hide();
