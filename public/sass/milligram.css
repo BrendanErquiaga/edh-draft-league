@@ -415,7 +415,7 @@ input[type='radio'] {
       flex: 0 0 90%;
       max-width: 90%; }
 
-@media (min-width: 73.125rem) {
+@media (min-width: 1170px) {
   .row {
     flex-direction: row;
     margin-left: -1rem;
@@ -616,7 +616,7 @@ a.active {
       .nav li ul li {
         padding: 1rem 0 1rem 0;
         margin: 0; }
-        @media (min-width: 73.125rem) {
+        @media (min-width: 1170px) {
           .nav li ul li {
             padding: 2rem 0 2rem 0; } }
     .nav li:hover ul {
@@ -633,7 +633,7 @@ header {
     padding: 1.5rem;
     background: #fff;
     color: #222; }
-    @media (min-width: 73.125rem) {
+    @media (min-width: 1170px) {
       .container section {
         padding: 2rem 2.5rem; } }
     .container section a {
@@ -696,7 +696,7 @@ footer p {
     margin-left: 10px;
     position: absolute;
     top: 40%; }
-    @media (min-width: 73.125rem) {
+    @media (min-width: 1170px) {
       .accordion-toggle.open-accordion:after {
         top: 45%; } }
   .accordion-toggle.closed-accordion {
@@ -711,10 +711,10 @@ footer p {
       margin-left: 10px;
       position: absolute;
       top: 45%; }
-      @media (min-width: 73.125rem) {
+      @media (min-width: 1170px) {
         .accordion-toggle.closed-accordion:after {
           top: 50%; } }
-  @media (min-width: 73.125rem) {
+  @media (min-width: 1170px) {
     .accordion-toggle {
       margin: 3rem 0 0 3rem;
       text-align: left; } }
@@ -726,7 +726,7 @@ footer p {
   overflow: scroll;
   border: 1px solid #d1d1d1;
   padding: 5px; }
-  @media (min-width: 73.125rem) {
+  @media (min-width: 1170px) {
     .accordion-content {
       border-width: 0 0 0 3px;
       padding-left: 10px;
@@ -793,7 +793,7 @@ footer p {
 
 .generic-table, .match-table, .standings-table {
   font-size: 1.4rem; }
-  @media (min-width: 73.125rem) {
+  @media (min-width: 1170px) {
     .generic-table, .match-table, .standings-table {
       font-size: 1.6rem;
       height: auto;
@@ -819,7 +819,7 @@ footer p {
     text-align: right; }
 .match-table th.cell-elo, .match-table td.cell-elo {
   padding-right: 5px; }
-  @media (min-width: 73.125rem) {
+  @media (min-width: 1170px) {
     .match-table th.cell-elo, .match-table td.cell-elo {
       padding-right: 15px; } }
 .match-table th.cell-date, .match-table td.cell-date {
@@ -837,7 +837,7 @@ footer p {
     text-align: right; }
 .standings-table th.cell-votes, .standings-table td.cell-votes {
   padding-right: 5px; }
-  @media (min-width: 73.125rem) {
+  @media (min-width: 1170px) {
     .standings-table th.cell-votes, .standings-table td.cell-votes {
       padding-right: 15px; } }
 .standings-table th.cell-players, .standings-table td.cell-players {
@@ -849,7 +849,7 @@ footer p {
 
 #queuedCards {
   width: 90%; }
-  @media (min-width: 73.125rem) {
+  @media (min-width: 1170px) {
     #queuedCards {
       width: 50%; } }
   #queuedCards li {
@@ -867,7 +867,9 @@ footer p {
   margin-left: auto;
   margin-right: auto;
   border: 1px solid #222; }
-  @media (min-width: 73.125rem) {
+  #match-slip h3 {
+    margin-bottom: 1rem; }
+  @media (min-width: 500px) {
     #match-slip {
       margin-left: 2.5rem;
       width: 75%; } }
@@ -875,30 +877,47 @@ footer p {
     opacity: 0.5; }
 
 #player-icon-selection {
-  margin-bottom: 2rem; }
+  margin-bottom: 0; }
+  #player-icon-selection input {
+    margin-bottom: 0.5rem; }
+  @media (min-width: 500px) {
+    #player-icon-selection {
+      margin-bottom: 2rem; } }
 
 #slip-results-selection {
-  margin-top: 2rem; }
+  margin-top: 0; }
 
 .playerResultsDiv {
-  margin-bottom: 2rem;
+  margin-bottom: 0.5rem;
   width: 100%;
   display: table;
   vertical-align: top; }
+  @media (min-width: 500px) {
+    .playerResultsDiv {
+      margin-bottom: 2rem; } }
 
 .selectedPlayer {
-  width: 25%;
+  width: 20%;
   display: table-cell;
   vertical-align: top; }
+  @media (min-width: 500px) {
+    .selectedPlayer {
+      width: 15%; } }
 
 .resultsInput {
-  width: 75%;
+  width: 80%;
   display: table-cell; }
 
 .resultTypeInput {
   display: inline-block;
   vertical-align: top;
-  width: 30%; }
+  text-align: right;
+  width: 35%; }
+  .resultTypeInput:last-child {
+    width: 25%; }
+  @media (min-width: 500px) {
+    .resultTypeInput {
+      width: 20%; } }
   .resultTypeInput .killIncrement, .resultTypeInput .voteIncrement, .resultTypeInput .winIncrement {
     margin-bottom: 0;
     float: left;
@@ -908,7 +927,10 @@ footer p {
     float: left;
     display: inline-block;
     font-size: 2rem;
-    padding: 1rem 0 0 .5rem; }
+    padding: 1rem 0 0 1rem; }
+    @media (min-width: 500px) {
+      .resultTypeInput .killCount, .resultTypeInput .voteCount {
+        padding: 1rem 0 0 1.5rem; } }
 
 .playerResultsIcon {
   border-radius: 50%;
