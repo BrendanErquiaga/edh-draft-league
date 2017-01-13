@@ -2,7 +2,6 @@
 
 var recentlyDraftedCardArrayLimit,
     podSize = 4,
-    maxNumPods = 10,
     selectedPlayers = [];
 
 $(document).ready(function() {
