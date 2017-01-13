@@ -110,8 +110,16 @@ function resetResultsData() {
         $(obj).text('');
     });
 
+    $('.killCount').each(function(i, obj) {
+        $(obj).html('')
+    });
+
     $('.voteIconsContainer').each(function(i, obj) {
         $(obj).text('');
+    });
+
+    $('.voteCount').each(function(i, obj) {
+        $(obj).html('')
     });
 
     $('.winIconContainer').each(function(i, obj) {
