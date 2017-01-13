@@ -862,7 +862,7 @@ footer p {
       outline-color: #9b4dca; }
 
 #match-slip {
-  width: 90%;
+  width: 95%;
   border-radius: 10px;
   margin-left: auto;
   margin-right: auto;
@@ -877,36 +877,43 @@ footer p {
 #player-icon-selection {
   margin-bottom: 2rem; }
 
-#slip-results-selection .playerResultsDiv {
-  display: table;
-  margin-bottom: 1rem; }
-  #slip-results-selection .playerResultsDiv img, #slip-results-selection .playerResultsDiv .resultsInput {
-    display: table-cell;
-    vertical-align: middle; }
-  #slip-results-selection .playerResultsDiv .resultTypeInput {
-    display: inline-block;
-    margin-right: 1.25rem;
-    vertical-align: top; }
-    #slip-results-selection .playerResultsDiv .resultTypeInput .button-add {
-      min-width: 70px;
-      width: auto;
-      padding: 0 15px;
-      margin: 0;
+#slip-results-selection {
+  margin-top: 2rem; }
+  #slip-results-selection .playerResultsDiv {
+    display: table;
+    margin-bottom: 2rem; }
+    #slip-results-selection .playerResultsDiv img, #slip-results-selection .playerResultsDiv .resultsInput {
+      display: table-cell;
       vertical-align: middle; }
-    #slip-results-selection .playerResultsDiv .resultTypeInput .killIconsContainer, #slip-results-selection .playerResultsDiv .resultTypeInput .voteIconsContainer, #slip-results-selection .playerResultsDiv .resultTypeInput .winIconContainer {
-      height: 25px;
-      display: block; }
-      #slip-results-selection .playerResultsDiv .resultTypeInput .killIconsContainer img, #slip-results-selection .playerResultsDiv .resultTypeInput .voteIconsContainer img, #slip-results-selection .playerResultsDiv .resultTypeInput .winIconContainer img {
-        display: inline-block;
-        width: 25px; }
 
-.playerResultsIcon, .playerSelectionIcon {
+.resultTypeInput {
+  display: inline-block;
+  vertical-align: top; }
+  .resultTypeInput .killIncrement, .resultTypeInput .voteIncrement, .resultTypeInput .winIncrement {
+    margin-bottom: 0;
+    float: left;
+    display: inline-block; }
+  .resultTypeInput .killCount, .resultTypeInput .voteCount {
+    margin-bottom: 0;
+    float: left;
+    display: inline-block;
+    padding: 1rem;
+    font-size: 2rem; }
+
+.playerResultsIcon {
+  border-radius: 50%;
+  border: 1px solid #222;
+  width: 50px;
+  height: auto;
+  margin-right: 3rem; }
+
+.playerSelectionIcon {
   border-radius: 50%;
   border: 1px solid #222;
   width: 50px;
   height: auto;
   margin-right: 1rem; }
-  .playerResultsIcon.winner, .playerSelectionIcon.winner {
+  .playerSelectionIcon.winner {
     border: 3px solid #f4bf42; }
 
 #match-slip-submit {

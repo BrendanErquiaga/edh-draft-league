@@ -1,5 +1,5 @@
 #match-slip {
-	width: 90%;
+	width: 95%;
 	border-radius: 10px;
 	margin-left: auto;
 	margin-right: auto;
@@ -16,36 +16,40 @@
 	margin-bottom: 2rem;
 }
 #slip-results-selection {
+	margin-top: 2rem;
 	.playerResultsDiv {
 		display: table;
-		margin-bottom: 1rem;
+		margin-bottom: 2rem;
 		& img, .resultsInput {
 			display: table-cell;
 			vertical-align: middle;
 		}
-		.resultTypeInput {
-			display: inline-block;
-			margin-right: 1.25rem;
-			vertical-align: top;
-			.button-add {
-				min-width: 70px;
-				width: auto;
-				padding: 0 15px;
-				margin: 0;
-				vertical-align: middle;
-			}
-		.killIconsContainer, .voteIconsContainer, .winIconContainer {
-			height: 25px;
-			display: block;
-			img {
-				display: inline-block;
-				width: 25px;
-			}
-		}
-		}
 	}
 }
-.playerResultsIcon, .playerSelectionIcon {
+.resultTypeInput {
+	display: inline-block;
+	vertical-align: top;
+	.killIncrement, .voteIncrement, .winIncrement {
+		margin-bottom: 0;
+		float: left;
+		display: inline-block;
+	}
+	.killCount, .voteCount {
+		margin-bottom: 0;
+		float: left;
+		display: inline-block;
+		padding: 1rem;
+		font-size: 2rem;
+	}
+}
+.playerResultsIcon {
+	border-radius: 50%;
+	border: 1px solid $light-font;
+	width: 50px;
+	height: auto;
+	margin-right: 3rem;
+}
+.playerSelectionIcon {
 		border-radius: 50%;
 		border: 1px solid $light-font;
 		width: 50px;
@@ -55,6 +59,7 @@
 			border: 3px solid #f4bf42;
 		}
 }
+
 #match-slip-submit {
 	margin-top: 1rem;
 }
