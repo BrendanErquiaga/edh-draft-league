@@ -2,7 +2,7 @@
 
 var recentlyDraftedCardArrayLimit = 3,
     slipOptionsObject = {
-      minimumSwipeVelocity: 0.5
+      minimumSwipeVelocity: 0.4
     };
 
 $(document).ready(function() {
