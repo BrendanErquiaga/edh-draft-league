@@ -17,18 +17,26 @@
 }
 #slip-results-selection {
 	margin-top: 2rem;
-	.playerResultsDiv {
-		display: table;
-		margin-bottom: 2rem;
-		& img, .resultsInput {
-			display: table-cell;
-			vertical-align: middle;
-		}
-	}
+}
+.playerResultsDiv {
+	margin-bottom: 2rem;
+	width: 100%;
+	display: table;
+	vertical-align: top;
+}
+.selectedPlayer {
+	width: 25%;
+	display: table-cell;
+	vertical-align: top;
+}
+.resultsInput {
+	width: 75%;
+	display: table-cell;
 }
 .resultTypeInput {
 	display: inline-block;
 	vertical-align: top;
+	width: 30%;
 	.killIncrement, .voteIncrement, .winIncrement {
 		margin-bottom: 0;
 		float: left;
@@ -38,8 +46,8 @@
 		margin-bottom: 0;
 		float: left;
 		display: inline-block;
-		padding: 1rem;
 		font-size: 2rem;
+		padding: 1rem 0 0 .5rem;
 	}
 }
 .playerResultsIcon {
@@ -47,7 +55,6 @@
 	border: 1px solid $light-font;
 	width: 50px;
 	height: auto;
-	margin-right: 3rem;
 }
 .playerSelectionIcon {
 		border-radius: 50%;
