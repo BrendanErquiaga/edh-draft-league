@@ -99,6 +99,8 @@ function getFirebaseData() {
     messaging.onMessage(function(payload){
       console.log(payload.notification.title + ' : ' + payload.notification.body);
     })
+
+    $('.loadingSection').hide();
 }
 
 /*
@@ -192,11 +194,17 @@ function updateUsersSnapshot(snapshot) {
   }
 
   if ($(document.body).hasClass('admin')) {
-    if (currentUserId !== null || currentUserId !== undefined) {
-        if (usersSnapshot[currentUserId].leagueAdmin) {
-            displayAdminSection();
-        }
+    if (usersSnapshot[currentUserId].leagueAdmin) {
+        displayAdminSection();
     }
+  }
+
+  if (usersSnapshot[currentUserId].leagueId !== null && usersSnapshot[currentUserId].leagueId !== undefined) {
+    $('.authenticatedUserSection').show();
+    $('.nonLeagueSection').hide();    
+  } else {
+    $('.nonLeagueSection').show();
+    $('.authenticatedUserSection').hide();
   }
 }
 
