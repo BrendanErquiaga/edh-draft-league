@@ -105,6 +105,7 @@ function handleLoggedInUserUI(user) {
   document.getElementById('quickstart-sign-in').textContent = 'Sign out';
 
   $('.authenticatedUserSection').show();
+  $('.loadingSection').hide();
 }
 
 function handleNoUserUI() {
@@ -112,7 +113,9 @@ function handleNoUserUI() {
   document.getElementById('quickstart-sign-in').textContent = 'Sign in';
   document.getElementById('userIcon').src = 'img/unknown.jpg';
 
+  $('.unauthenticatedUserSection').show();  
   $('.authenticatedUserSection').hide();
+  $('.loadingSection').hide();
 }
 
 // Saves basic user data
