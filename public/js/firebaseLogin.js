@@ -2,7 +2,9 @@
 
 var currentUserId,
     userQueuedCards,
-    notificationToken;
+    notificationToken,
+    dataScriptLoaded = false,
+    userScriptLoaded = false;
 
 // Retrieve Firebase Messaging object.
 const messaging = firebase.messaging();
@@ -11,6 +13,12 @@ const messaging = firebase.messaging();
 window.addEventListener('load', function() {
     // Listen for auth state changes
     firebase.auth().onAuthStateChanged(onAuthStateChanged);
+
+    firebase.auth().getRedirectResult().then(function(result) {
+    }).catch(function(error) {
+        console.error(error);
+    });
+    document.getElementById('quickstart-sign-in').addEventListener('click', toggleSignIn, false);
 
     setupNotifications();
 });
@@ -49,6 +57,20 @@ function sendTokenToServer(token) {
 }
 
 /**
+ * Function called when clicking the Login/Logout button.
+ */
+function toggleSignIn() {
+  if (!firebase.auth().currentUser) {
+    var provider = new firebase.auth.GoogleAuthProvider();
+    provider.addScope('https://www.googleapis.com/auth/plus.login');
+    firebase.auth().signInWithRedirect(provider);
+  } else {
+    firebase.auth().signOut();
+  }
+  document.getElementById('quickstart-sign-in').disabled = true;
+}
+
+/**
  * Triggers every time there is a change in the Firebase auth state (i.e. user signed-in or user signed out).
  */
 function onAuthStateChanged(user) {
@@ -62,12 +84,36 @@ function onAuthStateChanged(user) {
         saveUserData(user.uid, user.displayName, user.email, user.photoURL);
         updateReferencesWithUserId();
         //Hit the DB -> startDatabaseQueries();
-        //Display Logged In State
-        //Update autodraft button based on users status
+        handleLoggedInUserUI(user);
+
+        if(dataScriptLoaded){
+          getFirebaseData();
+        } else {
+          userScriptLoaded = true;
+        }
     } else {
         currentUserId = null;
-        //Prompt Login
+        handleNoUserUI();
     }
+
+    document.getElementById('quickstart-sign-in').disabled = false;
+}
+
+function handleLoggedInUserUI(user) {
+  document.getElementById('quickstart-sign-in-status').textContent = user.displayName;
+  document.getElementById('userIcon').src = user.photoURL;
+  document.getElementById('quickstart-sign-in').textContent = 'Sign out';
+}
+
+function handleNoUserUI() {
+  document.getElementById('quickstart-sign-in-status').textContent = 'Signed out';
+  document.getElementById('quickstart-sign-in').textContent = 'Sign in';
+  document.getElementById('userIcon').src = 'img/unknown.jpg';
+
+  $('.unauthenticatedUserSection').show();
+  $('.authenticatedUserSection').hide();
+  $('.nonLeagueSection').hide();
+  $('.loadingSection').hide();
 }
 
 // Saves basic user data

@@ -18,6 +18,11 @@ var usersSnapshot,
     matchResultsSnapshot;
 
 function getFirebaseData() {
+    if(!dataScriptLoaded && !userScriptLoaded){
+      dataScriptLoaded = true;
+      return;
+    }
+
     draftedCardsRef = firebase.database().ref('draftedUserCards');
     queuedCardsRef = firebase.database().ref('queuedUserCards');
     if(recentlyDraftedCardArrayLimit !== undefined && recentlyDraftedCardArrayLimit > 0){
@@ -65,10 +70,6 @@ function getFirebaseData() {
 
     //Standings only section
     if($(document.body).hasClass('standings')) {
-      firebase.database().ref('matchResults').on('value', function(snapshot) {
-          updatematchResultsSnapshot(snapshot);
-      });
-
       firebase.database().ref('playerStats').on('value', function(snapshot) {
           updatePlayerStatsSnapshot(snapshot);
       });
@@ -77,6 +78,10 @@ function getFirebaseData() {
           updatePlayerEloSnapshot(snapshot);
       });
     }
+
+    firebase.database().ref('matchResults').on('value', function(snapshot) {
+        updatematchResultsSnapshot(snapshot);
+    });
 
     firebase.database().ref('leagueData').on('value', function(snapshot) {
         updateLeagueDataObject(snapshot);
@@ -94,6 +99,8 @@ function getFirebaseData() {
     messaging.onMessage(function(payload){
       console.log(payload.notification.title + ' : ' + payload.notification.body);
     })
+
+    $('.loadingSection').hide();
 }
 
 /*
@@ -137,7 +144,7 @@ function updateLeagueDataObject(snapshot){
 
   if($(document.body).hasClass('admin')) {
     updateLeagueDataUI();
-  } else if ($(document.body).hasClass('match-slip')) {
+  } else if ($(document.body).hasClass('match-slip') || $(document.body).hasClass('pod-generator')) {
     updateMatchSlipPlayerIcons();
   }
 }
@@ -187,11 +194,17 @@ function updateUsersSnapshot(snapshot) {
   }
 
   if ($(document.body).hasClass('admin')) {
-    if (currentUserId !== null || currentUserId !== undefined) {
-        if (usersSnapshot[currentUserId].leagueAdmin) {
-            displayAdminSection();
-        }
+    if (usersSnapshot[currentUserId].leagueAdmin) {
+        displayAdminSection();
     }
+  }
+
+  if (usersSnapshot[currentUserId].leagueId !== null && usersSnapshot[currentUserId].leagueId !== undefined) {
+    $('.authenticatedUserSection').show();
+    $('.nonLeagueSection').hide();
+  } else {
+    $('.nonLeagueSection').show();
+    $('.authenticatedUserSection').hide();
   }
 }
 

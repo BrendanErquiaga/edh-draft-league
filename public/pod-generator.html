@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="author" content="Andrew Maul, Brendan Erquiaga">
 	<meta name="description" content="EDH Draft League 2016">
-	<title>Admin Center</title>
+	<title>Match Slip</title>
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
 	<link rel="stylesheet" href="sass/milligram.css">
@@ -46,10 +46,10 @@
 	</script>
 </head>
 
-<body class="admin">
+<body class="pod-generator">
 	<ul class="nav">
 		<li><a href="index.html">Draft</a></li>
-		<li><a href="admin.html" class="active">Admin</a></li>
+		<li><a href="pod-generator.html" class="active">Pod Generator</a></li>
 		<li><a href="decklists.html">Decks</a></li>
 		<li><a href="standings.html">Standings</a></li>
 		<li><a href="rules.html">Rules</a></li>
@@ -85,7 +85,7 @@
 			</div>
 		</section>
 		<section class="loadingSection">
-			<h3>Loading this shit...</h3>
+			<h3>Building the thing...</h3>
 		</section>
 		<section class="unauthenticatedUserSection" style="display:none;">
 			<h2>You have to sign in to use this page</h2>
@@ -95,31 +95,18 @@
 			<p>Please contact an admin to be placed into a league. If you don't know an admin, fear not the site will be public one day!</p>
 		</section>
 		<section class="authenticatedUserSection" style="display:none;">
-			<h1>Admin Center</h1>
-			<section id="adminOnlySection" style="display:none">
-				<h2 id="leagueName"></h2>
-				<section id="autoDraftSection">
-					<label class="switch">
-					<input type="checkbox" id="draftMasterSwitch">
-					<div class="slider round"></div>
-				</label>
-					<span>Master Drafter</span>
-					<br/>
-					<button class="mdl-button" id="refreshAutoDraft">Refresh Draft</button>
+			<h1>Pod Generator</h1>
+			<section id="pod-generation">
+				<span>Who is present?</span>
+				<section id="player-icon-selection">
 				</section>
-				<section id="leagueDataSection">
-					<h4>League Members</h4>
-					<ul id="leagueMembers">
-						<li>This was already here...</li>
-					</ul>
-				</section>
-				<section id="resultsToApproveSection">
-					<h4>Match Results To Approve</h4>
-					<ul id="resultsToApprove">
-						<li>This was already here...</li>
-					</ul>
-				</section>
+				<button class="mdl-button" id="podRequestButton">Generate Pods</button>
+				<button class="mdl-button" id="podResetButton">Reset</button>
 			</section>
+			<div id="generatedPodSection">
+				<ul>
+				</ul>
+			</div>
 		</section>
 		<footer>
 			<section>
@@ -135,7 +122,7 @@
 <script>
 	window.jQuery || document.write('<script src="js/vendor/jquery.min.js"><\/script>')
 </script>
-<script data-main="js/admin" src="require.js"></script>
+<script data-main="js/podGenerator" src="require.js"></script>
 <script src="js/firebaseLogin.js"></script>
 
 </html>
