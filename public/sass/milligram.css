@@ -623,6 +623,33 @@ a.active {
     .nav li:hover ul {
       display: block; }
 
+.login {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 999; }
+  .login .quickstart-user-details-container #userIcon {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    float: right;
+    margin-right: 0.5rem;
+    margin-top: 0.5rem; }
+  .login .quickstart-user-details-container #quickstart-sign-in-status {
+    display: none; }
+  .login #quickstart-sign-in {
+    margin-bottom: 0;
+    background-color: transparent;
+    border: none;
+    color: #222;
+    display: inline-block;
+    font-size: 1.2rem;
+    height: 20px;
+    letter-spacing: 0.1rem;
+    line-height: normal;
+    padding: 0;
+    text-align: right; }
+
 header {
   margin-top: 6rem; }
   header section {
