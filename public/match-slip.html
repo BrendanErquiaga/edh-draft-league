@@ -53,7 +53,7 @@
 		<li><a href="decklists.html">Decks</a></li>
 		<li><a href="standings.html">Standings</a></li>
 		<li><a href="rules.html">Rules</a></li>
-		<li><a href="#" class="active">Seasons</a>
+		<li><a href="#">Seasons</a>
 			<ul>
 				<li><a href="data_2016.html" class="active">Season 1</a></li>
 				<li><a href="#">Season 2</a></li>
@@ -84,108 +84,90 @@
 				</div>
 			</div>
 		</section>
-		<section class="loadingSection">
-			<h3>Building the thing...</h3>
-		</section>
-		<section class="unauthenticatedUserSection" style="display:none;">
-			<h2>You have to sign in to use this page</h2>
-		</section>
-		<section class="nonLeagueSection" style="display:none;">
-			<h2>You are not in an active league. =/</h2>
-			<p>Please contact an admin to be placed into a league. If you don't know an admin, fear not the site will be public one day!</p>
-		</section>
-		<section class="authenticatedUserSection" style="display:none;">
+		<section>
 			<h1>Match Slip</h1>
-			<section id="match-slip">
-				<span>Who was playing? (Choose 4)</span>
-				<section id="player-icon-selection">
-				</section>
-				<span>Who got what?</span>
-				<input type="image" src="img/icons/loop.svg" id="resultsResetButton" />
-				<section id="slip-results-selection">
-					<div class="playerResultsDiv" id="player1ResultsDiv">
+			<p>Use the form below to submit a match record for approval.</p>
+		</section>
+		<section id="match-slip">
+			<h3>Who was playing? (Choose 4)</h3>
+			<div id="player-icon-selection"></div>
+			<h3>Who got what?</h3>
+			<input type="button" class="button-danger" id="resultsResetButton" value="Reset" />
+			<div id="slip-results-selection">
+				<div class="playerResultsDiv" id="player1ResultsDiv">
+					<div class="selectedPlayer">
 						<img src="img/icons/p1.png" alt="P1" class="playerResultsIcon inactive">
-						<span class="resultsInput">
-            <span class="resultTypeInput">
-              Kill
-              <input type="image" src="img/icons/plus.svg" class="resultsIncrementer killIncrement"/>
-              <span class="killIconsContainer"></span>
-						</span>
-						<span class="resultTypeInput">
-              Vote
-              <input type="image" src="img/icons/plus.svg" class="resultsIncrementer voteIncrement"/>
-              <span class="voteIconsContainer"></span>
-						</span>
-						<span class="resultTypeInput">
-              Win
-              <input type="image" src="img/icons/plus.svg" class="resultsIncrementer winIncrement"/>
-            </span>
-						<span class="winIconContainer"></span>
-						</span>
 					</div>
-					<div class="playerResultsDiv" id="player2ResultsDiv">
+					<div class="resultsInput">
+						<div class="resultTypeInput">
+							<input type="image" src="img/icons/kill_icon.png" class="resultsIncrementer killIncrement inactive" style="width:50px"/>
+							<div class="killCount"></div>
+						</div>
+						<div class="resultTypeInput">
+							<input type="image" src="img/icons/vote_icon.png" class="resultsIncrementer voteIncrement inactive" style="width:50px"/>
+							<div class="voteCount"></div>
+						</div>
+						<div class="resultTypeInput">
+							<input type="image" src="img/icons/win_icon.png" class="resultsIncrementer winIncrement inactive" style="width:50px"/>
+						</div>
+					</div>
+				</div>
+				<div class="playerResultsDiv" id="player2ResultsDiv">
+					<div class="selectedPlayer">
 						<img src="img/icons/p2.png" alt="P2" class="playerResultsIcon inactive">
-						<span class="resultsInput">
-	            <span class="resultTypeInput">
-	              Kill
-	              <input type="image" src="img/icons/plus.svg" class="resultsIncrementer killIncrement"/>
-	              <span class="killIconsContainer"></span>
-						</span>
-						<span class="resultTypeInput">
-	              Vote
-	              <input type="image" src="img/icons/plus.svg" class="resultsIncrementer voteIncrement"/>
-	              <span class="voteIconsContainer"></span>
-						</span>
-						<span class="resultTypeInput">
-	              Win
-	              <input type="image" src="img/icons/plus.svg" class="resultsIncrementer winIncrement"/>
-	            </span>
-						<span class="winIconContainer"></span>
-						</span>
 					</div>
-					<div class="playerResultsDiv" id="player3ResultsDiv">
+					<div class="resultsInput">
+						<div class="resultTypeInput">
+							<input type="image" src="img/icons/kill_icon.png" class="resultsIncrementer killIncrement inactive" style="width:50px"/>
+							<div class="killCount"></div>
+						</div>
+						<div class="resultTypeInput">
+							<input type="image" src="img/icons/vote_icon.png" class="resultsIncrementer voteIncrement inactive" style="width:50px"/>
+							<div class="voteCount"></div>
+						</div>
+						<div class="resultTypeInput">
+							<input type="image" src="img/icons/win_icon.png" class="resultsIncrementer winIncrement inactive" style="width:50px"/>
+						</div>
+					</div>
+				</div>
+				<div class="playerResultsDiv" id="player3ResultsDiv">
+					<div class="selectedPlayer">
 						<img src="img/icons/p3.png" alt="P3" class="playerResultsIcon inactive">
-						<span class="resultsInput">
-	            <span class="resultTypeInput">
-	              Kill
-	              <input type="image" src="img/icons/plus.svg" class="resultsIncrementer killIncrement"/>
-	              <span class="killIconsContainer"></span>
-						</span>
-						<span class="resultTypeInput">
-	              Vote
-	              <input type="image" src="img/icons/plus.svg" class="resultsIncrementer voteIncrement"/>
-	              <span class="voteIconsContainer"></span>
-						</span>
-						<span class="resultTypeInput">
-	              Win
-	              <input type="image" src="img/icons/plus.svg" class="resultsIncrementer winIncrement"/>
-	            </span>
-						<span class="winIconContainer"></span>
-						</span>
 					</div>
-					<div class="playerResultsDiv" id="player4ResultsDiv">
+					<div class="resultsInput">
+						<div class="resultTypeInput">
+							<input type="image" src="img/icons/kill_icon.png" class="resultsIncrementer killIncrement inactive" style="width:50px"/>
+							<div class="killCount"></div>
+						</div>
+						<div class="resultTypeInput">
+							<input type="image" src="img/icons/vote_icon.png" class="resultsIncrementer voteIncrement inactive" style="width:50px"/>
+							<div class="voteCount"></div>
+						</div>
+						<div class="resultTypeInput">
+							<input type="image" src="img/icons/win_icon.png" class="resultsIncrementer winIncrement inactive" style="width:50px"/>
+						</div>
+					</div>
+				</div>
+				<div class="playerResultsDiv" id="player4ResultsDiv">
+					<div class="selectedPlayer">
 						<img src="img/icons/p4.png" alt="P4" class="playerResultsIcon inactive">
-						<span class="resultsInput">
-	            <span class="resultTypeInput">
-	              Kill
-	              <input type="image" src="img/icons/plus.svg" class="resultsIncrementer killIncrement"/>
-	              <span class="killIconsContainer"></span>
-						</span>
-						<span class="resultTypeInput">
-	              Vote
-	              <input type="image" src="img/icons/plus.svg" class="resultsIncrementer voteIncrement"/>
-	              <span class="voteIconsContainer"></span>
-						</span>
-						<span class="resultTypeInput">
-	              Win
-	              <input type="image" src="img/icons/plus.svg" class="resultsIncrementer winIncrement"/>
-	            </span>
-						<span class="winIconContainer"></span>
-						</span>
 					</div>
+					<div class="resultsInput">
+						<div class="resultTypeInput">
+							<input type="image" src="img/icons/kill_icon.png" class="resultsIncrementer killIncrement inactive" style="width:50px"/>
+							<div class="killCount"></div>
+						</div>
+						<div class="resultTypeInput">
+							<input type="image" src="img/icons/vote_icon.png" class="resultsIncrementer voteIncrement inactive" style="width:50px"/>
+							<div class="voteCount"></div>
+						</div>
+						<div class="resultTypeInput">
+							<input type="image" src="img/icons/win_icon.png" class="resultsIncrementer winIncrement inactive" style="width:50px"/>
+						</div>
+					</div>
+				</div>
 					<button type="submit" class="btn btn-success inactive" id="match-slip-submit">Submit</button>
-				</section>
-			</section>
+			</div>
 		</section>
 		<footer>
 			<section>
@@ -195,13 +177,9 @@
 			</section>
 		</footer>
 	</main>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="js/vendor/jquery.min.js"><\/script>')</script>
+	<script data-main="js/matchSlip" src="require.js"></script>
+	<script src="js/firebaseLogin.js"></script>
 </body>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script>
-	window.jQuery || document.write('<script src="js/vendor/jquery.min.js"><\/script>')
-</script>
-<script data-main="js/matchSlip" src="require.js"></script>
-<script src="js/firebaseLogin.js"></script>
-
 </html>
