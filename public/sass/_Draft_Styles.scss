@@ -40,6 +40,7 @@ a.active {
 			border: 1px solid $light-accent;
 			box-shadow: 3px 3px 5px 0px hsla(0, 0%, 0%, 0.5);
 			li {
+				font-size: 1.6rem;
 				padding: 1rem 0 1rem 0;
 				@media(min-width: $desktop){
 					padding: 2rem 0 2rem 0;
