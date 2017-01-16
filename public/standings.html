@@ -48,41 +48,44 @@
 
 <body class="standings">
 	<ul class="nav">
-		<li><a href="index.html">Draft</a></li>
-		<li><a href="decklists.html">Decks</a></li>
-		<li><a href="standings.html" class="active">Standings</a></li>
-		<li><a href="rules.html">Rules</a></li>
-		<li><a href="#">Seasons</a>
-			<ul>
-				<li><a href="data_2016.html" class="active">Season 1</a></li>
-				<li><a href="#">Season 2</a></li>
-			</ul>
-		</li>
-	</ul>
-	<header>
-		<section>
-			<picture>
-				<source media="(max-width: 480px)" srcset="img/banner_small.jpg">
-				<source media="(max-width: 768px)" srcset="img/banner_medium.jpg">
-				<source media="(max-width: 1280px)" srcset="img/banner_large.jpg">
-				<img src="img/banner_largest.jpg" alt="EDH Draft League Banner">
-			</picture>
-		</section>
-	</header>
-	<main class="container">
-		<section class="login">
-			<!-- Container for the demo -->
+			<li><a href="#">Draft</a>
+				<ul>
+					<li><a href="index.html">Draft</a></li>
+					<li><a href="match-slip.html">Match Slip</a></li>
+					<li><a href="pod-generator.html">Pod Generator</a></li>
+				</ul>
+			</li>
+			<li><a href="rules.html">Rules</a></li>
+			<li><a href="#.html" class="active">Stats</a>
+				<ul>
+					<li><a href="standings.html" class="active">Standings</a></li>
+					<li><a href="deck-lists.html">Deck Lists</a></li>
+					<li><a href="data_2016.html">Season 1</a></li>
+					<li><a href="data_2017.html">Season 2</a></li>
+				</ul>
+			</li>
+			<li>&nbsp;</li>
+		</ul>
+		<div class="login">
 			<div class="mdl-card__supporting-text mdl-color-text--grey-600">
-				<!-- Button that handles sign-in/sign-out -->
-				<button disabled class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-in">Sign in</button>
-
-				<!-- Container where we'll display the user details -->
 				<div class="quickstart-user-details-container">
 					<img src="img/unknown.jpg" id="userIcon" height="50px" width="50px" />
 					<span id="quickstart-sign-in-status">Unknown</span>
 				</div>
+				<button disabled class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-in">Sign in</button>
 			</div>
-		</section>
+		</div>
+		<header>
+			<section>
+				<picture>
+					<source media="(max-width: 480px)" srcset="img/banner_small.jpg">
+					<source media="(max-width: 768px)" srcset="img/banner_medium.jpg">
+					<source media="(max-width: 1280px)" srcset="img/banner_large.jpg">
+					<img src="img/banner_largest.jpg" alt="EDH Draft League Banner">
+				</picture>
+			</section>
+		</header>
+	<main class="container">
 		<section class="loadingSection">
 			<h3>Calculating...</h3>
 		</section>
