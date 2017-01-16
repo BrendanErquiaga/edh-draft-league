@@ -150,6 +150,24 @@
 			</section>
 		</footer>
 	</main>
+	<!-- Draft Confirmation Modal -->
+	<div class="modal" id="Draft-Modal">
+		<div class="modal-content">
+			<div class="modal-header">
+				<span class="modal-close">&times;</span>
+				<h3>Confirm Draft Pick</h3>
+			</div>
+			<div class="modal-body row">
+				<div class="column">
+					<img src="img/draft-placeholder.jpg">
+				</div>
+				<div class="column">
+					<p>You are drafting <span class="drafted-card">CARD NAME</span>. Are you sure?</p>
+					<button class="button-add" id="draft-confirm-selection">Confirm Pick</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -159,4 +177,5 @@
 <script src="js/typeahead.js"></script>
 <script data-main="js/draft" src="require.js"></script>
 <script src="js/firebaseLogin.js"></script>
+<script src="js/frontend.js"></script>
 </html>

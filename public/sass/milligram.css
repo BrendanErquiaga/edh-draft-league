@@ -640,6 +640,7 @@ a.active {
     width: 35px;
     height: 35px;
     border-radius: 50%;
+    border: 1px solid #222;
     float: right;
     margin-right: 0.5rem;
     margin-top: 0.5rem; }
@@ -912,6 +913,42 @@ footer p {
     user-select: none; }
     #queuedCards li:focus {
       outline-color: #9b4dca; }
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: #000;
+  background-color: rgba(0, 0, 0, 0.4);
+  text-align: center; }
+
+.modal-content {
+  background-color: #fff;
+  margin: 5% auto;
+  padding: 2rem;
+  border: 1px solid #d1d1d1;
+  width: 90%;
+  border-radius: 10px; }
+  @media (min-width: 1170px) {
+    .modal-content {
+      width: 60%; } }
+
+.modal-header {
+  border-bottom: 1px solid #222;
+  margin-bottom: 2rem; }
+  .modal-header .modal-close {
+    color: #222;
+    float: right;
+    font-size: 3rem;
+    font-weight: bold; }
+    .modal-header .modal-close:hover, .modal-header .modal-close:focus {
+      text-decoration: none;
+      cursor: pointer; }
 
 #match-slip {
   width: 95%;
