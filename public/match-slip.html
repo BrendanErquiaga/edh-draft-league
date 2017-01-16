@@ -47,21 +47,36 @@
 </head>
 
 <body class="match-slip">
-	<ul class="nav">
-		<li><a href="index.html">Draft</a></li>
-		<li><a href="match-slip.html" class="active">Match Slip</a></li>
-		<li><a href="decklists.html">Decks</a></li>
-		<li><a href="standings.html">Standings</a></li>
-		<li><a href="rules.html">Rules</a></li>
-		<li><a href="#">Seasons</a>
+<ul class="nav">
+		<li><a href="#" class="active">Draft</a>
 			<ul>
-				<li><a href="data_2016.html" class="active">Season 1</a></li>
-				<li><a href="#">Season 2</a></li>
+				<li><a href="index.html">Draft</a></li>
+				<li><a href="match-slip.html" class="active">Match Slip</a></li>
+				<li><a href="pod-generator.html">Pod Generator</a></li>
 			</ul>
 		</li>
+		<li><a href="rules.html">Rules</a></li>
+		<li><a href="#">Stats</a>
+			<ul>
+				<li><a href="standings.html">Standings</a></li>
+				<li><a href="deck-lists.html">Deck Lists</a></li>
+				<li><a href="data_2016.html">Season 1</a></li>
+				<li><a href="data_2017.html">Season 2</a></li>
+			</ul>
+		</li>
+		<li>&nbsp;</li>
 	</ul>
+	<div class="login">
+		<div class="mdl-card__supporting-text mdl-color-text--grey-600">
+			<div class="quickstart-user-details-container">
+				<img src="img/unknown.jpg" id="userIcon" height="50px" width="50px" />
+				<span id="quickstart-sign-in-status">Unknown</span>
+			</div>
+			<button disabled class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-in">Sign in</button>
+		</div>
+	</div>
 	<header>
-		<section class="container">
+		<section>
 			<picture>
 				<source media="(max-width: 480px)" srcset="img/banner_small.jpg">
 				<source media="(max-width: 768px)" srcset="img/banner_medium.jpg">
@@ -71,19 +86,6 @@
 		</section>
 	</header>
 	<main class="container">
-		<section class="login">
-			<!-- Container for the demo -->
-			<div class="mdl-card__supporting-text mdl-color-text--grey-600">
-				<!-- Button that handles sign-in/sign-out -->
-				<button disabled class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-in">Sign in with Google</button>
-
-				<!-- Container where we'll display the user details -->
-				<div class="quickstart-user-details-container">
-					<img src="img/unknown.jpg" id="userIcon" height="50px" width="50px" />
-					<span id="quickstart-sign-in-status">Unknown</span>
-				</div>
-			</div>
-		</section>
 		<section>
 			<h1>Match Slip</h1>
 			<p>Use the form below to submit a match record for approval.</p>

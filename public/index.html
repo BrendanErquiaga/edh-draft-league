@@ -48,19 +48,35 @@
 
 <body class="draft">
 	<ul class="nav">
-		<li><a href="index.html" class="active">Draft</a></li>
-		<li><a href="decklists.html">Decks</a></li>
-		<li><a href="standings.html">Standings</a></li>
-		<li><a href="rules.html">Rules</a></li>
-		<li><a href="#">Seasons</a>
+		<li><a href="#" class="active">Draft</a>
 			<ul>
-				<li><a href="data_2016.html" class="active">Season 1</a></li>
-				<li><a href="#">Season 2</a></li>
+				<li><a href="index.html" class="active">Draft</a></li>
+				<li><a href="match-slip.html">Match Slip</a></li>
+				<li><a href="pod-generator.html">Pod Generator</a></li>
 			</ul>
 		</li>
+		<li><a href="rules.html">Rules</a></li>
+		<li><a href="#">Stats</a>
+			<ul>
+				<li><a href="standings.html">Standings</a></li>
+				<li><a href="deck-lists.html">Deck Lists</a></li>
+				<li><a href="data_2016.html">Season 1</a></li>
+				<li><a href="data_2017.html">Season 2</a></li>
+			</ul>
+		</li>
+		<li>&nbsp;</li>
 	</ul>
+	<div class="login">
+		<div class="mdl-card__supporting-text mdl-color-text--grey-600">
+			<div class="quickstart-user-details-container">
+				<img src="img/unknown.jpg" id="userIcon" height="50px" width="50px" />
+				<span id="quickstart-sign-in-status">Unknown</span>
+			</div>
+			<button disabled class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-in">Sign in</button>
+		</div>
+	</div>
 	<header>
-		<section class="container">
+		<section>
 			<picture>
 				<source media="(max-width: 480px)" srcset="img/banner_small.jpg">
 				<source media="(max-width: 768px)" srcset="img/banner_medium.jpg">
@@ -70,72 +86,61 @@
 		</section>
 	</header>
 	<main class="container">
-		<section class="login">
-			<!-- Container for the demo -->
-			<div class="mdl-card__supporting-text mdl-color-text--grey-600">
-				<!-- Button that handles sign-in/sign-out -->
-				<button disabled class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-in">Sign in</button>
-
-				<!-- Container where we'll display the user details -->
-				<div class="quickstart-user-details-container">
-					<img src="img/unknown.jpg" id="userIcon" height="50px" width="50px" />
-					<span id="quickstart-sign-in-status">Unknown</span>
+		<section>
+			<div class="loadingSection">
+				<h3>Setting up the bits and boops...</h3>
+			</div>
+			<div class="unauthenticatedUserSection" style="display:none;">
+				<h2>You have to sign in to use this page</h2>
+			</div>
+			<div class="nonLeagueSection" style="display:none;">
+				<h2>You are not in an active league =/</h2>
+				<p>Please contact an admin to be placed into a league. If you don't know an admin, fear not the site will be public one day!</p>
+			</div>
+			<div class="authenticatedUserSection" style="display:none;">
+				<h1>Draft Hub</h1>
+				<div id="draftInfoSection">
+					<p>Round#: <span id="roundNumberIndicator"></span></p>
+					<p>Turn Order: <img id="roundTrackerDirection"></img>
+					</p>
+					<ul id="turnOrderList">
+					</ul>
+					<p>Total Cards Drafted: <span id="cardsDraftedIndicator"></span></p>
+				</div>
+				<div id="recentlyDraftedSection">
+					<h4>Recently Drafted Cards:</h4>
+					<ul id="recentlyDraftedList">
+						<li>This was already here...</li>
+					</ul>
+				</div>
+				<div id="userInput">
+					<label class="switch">
+					<input type="checkbox" id="globalSubscribeSwitch">
+					<div class="slider round"></div>
+				</label>
+					<p>Notify me for every pick</p>
+					<h2>Pick a card</h2>
+					<input type="text" class="form-control typeahead" id="form-card" placeholder="Enter card name">
+					<button type="submit" class="btn btn-success" id="card-submit"></button>
+				</div>
+				<div id="queueSection">
+					<label class="switch">
+					<input type="checkbox" id="autoDraftSwitch">
+					<div class="slider round"></div>
+				</label>
+					<p>Auto Draft</p>
+					<h4>Queued Cards: <span id="userQueuedCardCountIndicator"></span></h4>
+					<ul id="queuedCards">
+						<li>This was already here...</li>
+					</ul>
+				</div>
+				<div id="pickedSection">
+					<h4>Picked Cards: <span id="userPickedCardCountIndicator"></span></h4>
+					<ul id="pickedCards">
+						<li>This was already here...</li>
+					</ul>
 				</div>
 			</div>
-		</section>
-		<section class="loadingSection">
-			<h3>Setting up the bits and boops...</h3>
-		</section>
-		<section class="unauthenticatedUserSection" style="display:none;">
-			<h2>You have to sign in to use this page</h2>
-		</section>
-		<section class="nonLeagueSection" style="display:none;">
-			<h2>You are not in an active league =/</h2>
-			<p>Please contact an admin to be placed into a league. If you don't know an admin, fear not the site will be public one day!</p>
-		</section>
-		<section class="authenticatedUserSection" style="display:none;">
-			<h1>Draft Hub</h1>
-			<section id="draftInfoSection">
-				<p>Round#: <span id="roundNumberIndicator"></span></p>
-				<p>Turn Order: <img id="roundTrackerDirection"></img>
-				</p>
-				<ul id="turnOrderList">
-				</ul>
-				<p>Total Cards Drafted: <span id="cardsDraftedIndicator"></span></p>
-			</section>
-			<section id="recentlyDraftedSection">
-				<h4>Recently Drafted Cards:</h4>
-				<ul id="recentlyDraftedList">
-					<li>This was already here...</li>
-				</ul>
-			</section>
-			<section id="userInput">
-				<label class="switch">
-				<input type="checkbox" id="globalSubscribeSwitch">
-				<div class="slider round"></div>
-			</label>
-				<p>Notify me for every pick</p>
-				<h2>Pick a card</h2>
-				<input type="text" class="form-control typeahead" id="form-card" placeholder="Enter card name">
-				<button type="submit" class="btn btn-success" id="card-submit"></button>
-			</section>
-			<section id="queueSection">
-				<label class="switch">
-				<input type="checkbox" id="autoDraftSwitch">
-				<div class="slider round"></div>
-			</label>
-				<p>Auto Draft</p>
-				<h4>Queued Cards: <span id="userQueuedCardCountIndicator"></span></h4>
-				<ul id="queuedCards">
-					<li>This was already here...</li>
-				</ul>
-			</section>
-			<section id="pickedSection">
-				<h4>Picked Cards: <span id="userPickedCardCountIndicator"></span></h4>
-				<ul id="pickedCards">
-					<li>This was already here...</li>
-				</ul>
-			</section>
 		</section>
 		<footer>
 			<section>
