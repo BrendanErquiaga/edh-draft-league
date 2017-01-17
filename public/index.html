@@ -87,6 +87,7 @@
 	</header>
 	<main class="container">
 		<section>
+			<h1>Draft Hub</h1>
 			<div class="loadingSection">
 				<h3>Setting up the bits and boops...</h3>
 			</div>
@@ -98,15 +99,40 @@
 				<p>Please contact an admin to be placed into a league. If you don't know an admin, fear not the site will be public one day!</p>
 			</div>
 			<div class="authenticatedUserSection" style="display:none;">
-				<h1>Draft Hub</h1>
-				<div id="draftInfoSection">
-					<p>Round#: <span id="roundNumberIndicator"></span></p>
-					<p>Turn Order: <img id="roundTrackerDirection"></img>
-					</p>
-					<ul id="turnOrderList">
-					</ul>
-					<p>Total Cards Drafted: <span id="cardsDraftedIndicator"></span></p>
+				<div class="row" id="draftInfoSection">
+					<div class="column">
+						<p>Round #: <span id="roundNumberIndicator"></span></p>
+					</div>
+					<div class="column">
+						<p>Total Cards Drafted: <span id="cardsDraftedIndicator"></span></p>
+					</div>
+					<div class="column">
+						<label class="switch">
+							<input type="checkbox" id="globalSubscribeSwitch">
+							<div class="slider round"></div>
+						</label>
+						<span>Notify me for every pick</span>
+					</div>
 				</div>
+		</section>
+		<section class="dark" style="padding: 0px">
+			<div class="ticker-wrap">
+				<div class="ticker">
+					<div class="ticker__item"><span class="drafter">Andy</span> - <span class="card">Life from the Loam</span> - <span class="timestamp">17:05</span></div>
+					<div class="ticker__item"><span class="drafter">Andy</span> - <span class="card">Life from the Loam</span> - <span class="timestamp">17:05</span></div>
+					<div class="ticker__item"><span class="drafter">Andy</span> - <span class="card">Life from the Loam</span> - <span class="timestamp">17:05</span></div>
+				</div>
+			</div>
+		</section>
+		<section>
+				<div class="row">
+					<div class="column">
+					</div>
+					<div class="column">
+
+					</div>
+				</div>
+
 				<div id="recentlyDraftedSection">
 					<h4>Recently Drafted Cards:</h4>
 					<ul id="recentlyDraftedList">
@@ -114,11 +140,6 @@
 					</ul>
 				</div>
 				<div id="userInput">
-					<label class="switch">
-					<input type="checkbox" id="globalSubscribeSwitch">
-					<div class="slider round"></div>
-				</label>
-					<p>Notify me for every pick</p>
 					<h2>Pick a card</h2>
 					<input type="text" class="form-control typeahead" id="form-card" placeholder="Enter card name">
 					<button type="submit" class="btn btn-success" id="card-submit"></button>
