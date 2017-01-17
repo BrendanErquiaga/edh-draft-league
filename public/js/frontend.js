@@ -26,8 +26,23 @@ function smoothScroll() {
 	});
 }
 
+// Basic modal handling
+function initModals() {
+	// Requires button to have an id preceeded by "modal_"
+	$('.modal-launch').click(function(){
+		var target = $(this).attr('id');
+		target = target.replace("modal_","");
+		target = "#" + target;
+		$(target).fadeToggle('200');
+	});
+	$('.modal-close').click(function(){
+		$(this).parents('.modal').fadeToggle('200');
+	});
+}
+
 // Document Ready
 $(document).ready(function(){
 	simpleAccordions();
 	smoothScroll();
+	initModals();
 });
