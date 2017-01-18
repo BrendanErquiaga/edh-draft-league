@@ -86,8 +86,24 @@
 		</section>
 	</header>
 	<main class="container">
+		<section class="dark recentlyDrafted">
+			<div class="ticker-wrap">
+				<div class="ticker">
+					<div class="ticker__item">Recently Drafted:</div>
+					<div class="ticker__item"><span class="drafter">Andy</span> - <span class="card">Life from the Loam</span> - <span class="timestamp">17:05</span></div>
+					<div class="ticker__item"><span class="drafter">Brendan</span> - <span class="card">Cyclonic Rift</span> - <span class="timestamp">18:00</span></div>
+					<div class="ticker__item"><span class="drafter">Justin</span> - <span class="card">Fireball</span> - <span class="timestamp">18:05</span></div>
+					<div class="ticker__item"><span class="drafter">Andy</span> - <span class="card">Life from the Loam</span> - <span class="timestamp">17:05</span></div>
+					<div class="ticker__item"><span class="drafter">Brendan</span> - <span class="card">Cyclonic Rift</span> - <span class="timestamp">18:00</span></div>
+					<div class="ticker__item"><span class="drafter">Justin</span> - <span class="card">Fireball</span> - <span class="timestamp">18:05</span></div>
+					<div class="ticker__item"><span class="drafter">Andy</span> - <span class="card">Life from the Loam</span> - <span class="timestamp">17:05</span></div>
+					<div class="ticker__item"><span class="drafter">Brendan</span> - <span class="card">Cyclonic Rift</span> - <span class="timestamp">18:00</span></div>
+					<div class="ticker__item"><span class="drafter">Justin</span> - <span class="card">Fireball</span> - <span class="timestamp">18:05</span></div>
+				</div>
+			</div>
+		</section>
 		<section>
-			<h1>Draft Hub</h1>
+			<h2>Draft Hub</h2>
 			<div class="loadingSection">
 				<h3>Setting up the bits and boops...</h3>
 			</div>
@@ -99,48 +115,30 @@
 				<p>Please contact an admin to be placed into a league. If you don't know an admin, fear not the site will be public one day!</p>
 			</div>
 			<div class="authenticatedUserSection" style="display:none;">
-				<div class="row" id="draftInfoSection">
-					<div class="column">
-						<p>Round #: <span id="roundNumberIndicator"></span></p>
-					</div>
-					<div class="column">
-						<p>Total Cards Drafted: <span id="cardsDraftedIndicator"></span></p>
-					</div>
-					<div class="column">
+				<div id="draftInfoSection">
+					<div><p>Round # <br /><span id="roundNumberIndicator">35</span></p></div>
+					<div><p>Total Drafted <br /><span id="cardsDraftedIndicator">100</span></p></div>
+					<div>
+						<span>Enable All Notifications</span>
+						<br/>
 						<label class="switch">
 							<input type="checkbox" id="globalSubscribeSwitch">
 							<div class="slider round"></div>
 						</label>
-						<span>Notify me for every pick</span>
 					</div>
 				</div>
-		</section>
-		<section class="dark" style="padding: 0px">
-			<div class="ticker-wrap">
-				<div class="ticker">
-					<div class="ticker__item"><span class="drafter">Andy</span> - <span class="card">Life from the Loam</span> - <span class="timestamp">17:05</span></div>
-					<div class="ticker__item"><span class="drafter">Andy</span> - <span class="card">Life from the Loam</span> - <span class="timestamp">17:05</span></div>
-					<div class="ticker__item"><span class="drafter">Andy</span> - <span class="card">Life from the Loam</span> - <span class="timestamp">17:05</span></div>
-				</div>
-			</div>
 		</section>
 		<section>
-				<div class="row">
-					<div class="column">
-					</div>
-					<div class="column">
-
-					</div>
-				</div>
-
+			<h2>Pick a card</h2>
+<!-- 
 				<div id="recentlyDraftedSection">
 					<h4>Recently Drafted Cards:</h4>
 					<ul id="recentlyDraftedList">
 						<li>This was already here...</li>
 					</ul>
-				</div>
+				</div> 
+-->
 				<div id="userInput">
-					<h2>Pick a card</h2>
 					<input type="text" class="form-control typeahead" id="form-card" placeholder="Enter card name">
 					<button type="submit" class="btn btn-success" id="card-submit"></button>
 				</div>
@@ -155,12 +153,14 @@
 						<li>This was already here...</li>
 					</ul>
 				</div>
+<!--
 				<div id="pickedSection">
 					<h4>Picked Cards: <span id="userPickedCardCountIndicator"></span></h4>
 					<ul id="pickedCards">
 						<li>This was already here...</li>
 					</ul>
 				</div>
+-->
 			</div>
 		</section>
 		<footer>

@@ -1,4 +1,4 @@
-$duration: 20s;
+$duration: 30s;
 
 @-webkit-keyframes ticker {
 	0% {
@@ -25,6 +25,12 @@ $duration: 20s;
 		transform: translate3d(-100%, 0, 0);
 	}
 }
+.container {
+	.recentlyDrafted {
+		padding: 0px;
+		overflow: hidden;
+	}
+}
 
 .ticker-wrap {
 	box-sizing: content-box;
@@ -32,6 +38,12 @@ $duration: 20s;
 	overflow: hidden;
 	height: 4rem;
 	padding-left: 100%;
+	&:hover .ticker {
+		-webkit-animation-play-state: paused;
+		-moz-animation-play-state: paused;
+		-o-animation-play-state: paused;
+		 animation-play-state: paused;
+	}
 }
 
 .ticker {
@@ -52,7 +64,21 @@ $duration: 20s;
 	&__item {
 		display: inline-block;
 		padding: 0 2rem;
-		font-size: 2rem;
+		font-size: 1.4rem;
+		font-family: 'Menlo', 'Consolas', 'Bitstream Vera Sans Mono', 'DejaVu Sans Mono', 'Monaco', monospace;
 		color: white;
+		letter-spacing: initial;
+		.drafter {
+			color: $mtg-blue;
+		}
+		.card {
+			color: $mtg-gold;
+		}
+		.timestamp {
+			color: $mtg-green;
+		}
+		@media (min-width: $desktop) {
+			padding: 0 3rem;
+		}
 	}
 }

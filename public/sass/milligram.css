@@ -683,7 +683,7 @@ header {
 .container {
   position: relative; }
   .container section {
-    padding: 1.5rem;
+    padding: 1rem;
     background: #fff;
     color: #222; }
     @media (min-width: 1170px) {
@@ -700,6 +700,23 @@ header {
         color: #ffff99; }
         .container section.dark a:hover {
           color: #ffd700; }
+
+#draftInfoSection {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  text-align: center; }
+  #draftInfoSection div {
+    margin: 0 auto; }
+  #draftInfoSection p {
+    margin: 0; }
+
+#roundNumberIndicator, #cardsDraftedIndicator {
+  font-size: 2rem;
+  font-weight: bold; }
+
+.twitter-typeahead {
+  vertical-align: top; }
 
 canvas {
   max-width: 100%;
@@ -1055,12 +1072,21 @@ footer p {
   100% {
     -webkit-transform: translate3d(-100%, 0, 0);
     transform: translate3d(-100%, 0, 0); } }
+.container .recentlyDrafted {
+  padding: 0px;
+  overflow: hidden; }
+
 .ticker-wrap {
   box-sizing: content-box;
   width: 100%;
   overflow: hidden;
   height: 4rem;
   padding-left: 100%; }
+  .ticker-wrap:hover .ticker {
+    -webkit-animation-play-state: paused;
+    -moz-animation-play-state: paused;
+    -o-animation-play-state: paused;
+    animation-play-state: paused; }
 
 .ticker {
   display: inline-block;
@@ -1074,12 +1100,23 @@ footer p {
   animation-timing-function: linear;
   -webkit-animation-name: ticker;
   animation-name: ticker;
-  -webkit-animation-duration: 20s;
-  animation-duration: 20s; }
+  -webkit-animation-duration: 30s;
+  animation-duration: 30s; }
   .ticker__item {
     display: inline-block;
     padding: 0 2rem;
-    font-size: 2rem;
-    color: white; }
+    font-size: 1.4rem;
+    font-family: 'Menlo', 'Consolas', 'Bitstream Vera Sans Mono', 'DejaVu Sans Mono', 'Monaco', monospace;
+    color: white;
+    letter-spacing: initial; }
+    .ticker__item .drafter {
+      color: #bcd9e8; }
+    .ticker__item .card {
+      color: #fdfd96; }
+    .ticker__item .timestamp {
+      color: #9cc497; }
+    @media (min-width: 1170px) {
+      .ticker__item {
+        padding: 0 3rem; } }
 
 /*# sourceMappingURL=milligram.css.map */
