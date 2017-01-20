@@ -54,6 +54,10 @@ function queueHandler() {
 	return new Slip(list, slipOptionsObject);
 }
 
+function launchConfirmationModal(card) {
+
+}
+
 function pickCardForUser(card) {
   if(card === false){
     console.log('That isnt a valid card, Cant Draft');
@@ -225,9 +229,14 @@ function updatePickOrQueueButton() {
 
   if(turnOrderObject.turnOrder[turnOrderObject.turnIndex] === currentUserId){
     buttonString = 'Pick';
+    $("#card-submit").addClass("button-add");
+    $("#draft-first-item").removeClass("button-disabled");
+  } else {
+    $("#card-submit").removeClass("button-add");
+    $("#draft-first-item").addClass("button-disabled");
   }
 
-  $('#card-submit').html(buttonString)
+  $('#card-submit').html(buttonString);
 }
 
 function updateRoundTracker() {
