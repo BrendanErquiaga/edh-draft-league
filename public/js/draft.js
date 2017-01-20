@@ -1,9 +1,10 @@
 "use strict";
 
-var recentlyDraftedCardArrayLimit = 3,
+var recentlyDraftedCardArrayLimit = 9,
     slipOptionsObject = {
       minimumSwipeVelocity: 0.4
-    };
+    },
+    desiredCardToDraft;
 
 $(document).ready(function() {
     requirejs(['./utils','./firebaseUtils', './slip'], function(){
@@ -54,15 +55,33 @@ function queueHandler() {
 	return new Slip(list, slipOptionsObject);
 }
 
+function launchConfirmationModal(card) {
+  if(card === false){
+    //display a message about why it's bad
+    clearCardInputField();
+    return;
+  }
+
+  $('#Draft-Modal').fadeToggle('200');
+  $('.drafted-card').html("'" + card + "'");
+
+  viewCard(card);
+}
+
 function pickCardForUser(card) {
   if(card === false){
     console.log('That isnt a valid card, Cant Draft');
     return;
   }
 
-    savePickedCardToFirebase(getCardObject(card), currentUserId);
+  $('#Draft-Modal').fadeToggle('200');
+  $('.drafted-card').html("");
+  resetCardImage();
+  desiredCardToDraft = "";
 
-    goToNextTurn();
+  savePickedCardToFirebase(getCardObject(card), currentUserId);
+
+  goToNextTurn();
 }
 
 function queueCardForUser(card) {
@@ -80,6 +99,11 @@ function queueCardForUser(card) {
 }
 
 function validateCard(card) {
+  if(card === null || card === undefined){
+    console.log('You didnt even as for a card...');
+    return false;
+  }
+
   var convertedCardName = getConvertedCardName(card);
 
   if(convertedCardName === false){
@@ -97,12 +121,28 @@ function validateCard(card) {
     return false; //Someone already had that card, do something about that
   }
 
+  desiredCardToDraft = convertedCardName;
+
   return convertedCardName;
+}
+
+function viewCard(card) {
+  var requestURL = "https://api.deckbrew.com/mtg/cards/";
+
+  requestURL += getAPIValidCardName(card);
+
+  $.get(requestURL, function(data, status){
+    $("#cardToView").attr('src', getImageURLFromAPIData(data));
+  });
+}
+
+function resetCardImage() {
+  $("#cardToView").attr('src', 'img/draft-placeholder.jpg');
 }
 
 function pickOrQueueCard(card){
   if(currentUsersTurn()){
-    pickCardForUser(validateCard(card));
+    launchConfirmationModal(validateCard(card));
   }
   else {
     console.log('Its not your turn, so I put the card in your queue');
@@ -111,16 +151,24 @@ function pickOrQueueCard(card){
 }
 
 function catchDraftPageInput() {
-    $('#card-submit').on('click', function(e) {
+    $('#modal_Draft-Modal').on('click', function(e) {
         pickOrQueueCard($('#form-card').val());
         clearCardInputField();
+    });
+
+    $('#draft-first-item').on('click', function(e) {
+        pickOrQueueCard(userQueuedCards[0]);
+    });
+
+    $('#draft-confirm-selection').on('click', function(e) {
+        pickCardForUser(desiredCardToDraft);
     });
 
     $('#form-card').keypress(function(event) {
         var keycode = (event.keyCode ? event.keyCode : event.which);
         if (keycode == '13') {
-            pickOrQueueCard($('#form-card').val());
-            clearCardInputField();
+          pickOrQueueCard($('#form-card').val());
+          clearCardInputField();
         }
     });
 
@@ -143,14 +191,17 @@ function clearCardInputField() {
 
 //TODO: Right now this just clears the whole list every time, should only do that on load
 function updateRecentlyDraftedCardsUI(){
-  var recentlyDraftedUL = $("#recentlyDraftedList");
+  var recentlyDraftedUL = $("#recentlyDraftedList .ticker");
 
-  recentlyDraftedUL.empty();
+  $("#recentlyDraftedList .ticker .ticker__item").not(':first').remove();
 
-  for(var i = 0; i < recentlyDraftCards.length; i++){
-    recentlyDraftedUL.append('<li>' +
-      usersSnapshot[recentlyDraftCards[i].drafterId].username + ' - ' +
-      recentlyDraftCards[i].name + '</li>');
+  for(var i = recentlyDraftCards.length - 1; i >= 0; i--){
+    var pickTimeDate = new Date(recentlyDraftCards[i].pickTime);
+
+    recentlyDraftedUL.append('<div class="ticker__item"><span class="drafter">'
+    + usersSnapshot[recentlyDraftCards[i].drafterId].username + '</span> - <span class="card">'
+    + recentlyDraftCards[i].name + '</span> - <span class="timestamp">'
+    + pickTimeDate.toLocaleTimeString() + '</span></div>');
   }
 }
 
@@ -222,9 +273,14 @@ function updatePickOrQueueButton() {
 
   if(turnOrderObject.turnOrder[turnOrderObject.turnIndex] === currentUserId){
     buttonString = 'Pick';
+    $("#modal_Draft-Modal").addClass("button-add");
+    $("#draft-first-item").removeClass("button-disabled");
+  } else {
+    $("#modal_Draft-Modal").removeClass("button-add");
+    $("#draft-first-item").addClass("button-disabled");
   }
 
-  $('#card-submit').html(buttonString)
+  $('#modal_Draft-Modal').html(buttonString);
 }
 
 function updateRoundTracker() {

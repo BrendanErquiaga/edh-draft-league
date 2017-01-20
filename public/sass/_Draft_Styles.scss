@@ -122,7 +122,7 @@ header {
 .container {
 	position: relative;
 	section {
-		padding: 1.5rem;
+		padding: 1rem;
 		@media (min-width: $desktop){
 			padding: 2rem 2.5rem;
 		}
@@ -146,6 +146,74 @@ header {
 
 		}
 	}
+}
+section.draft-info {
+	padding-bottom: 0px;
+}
+section.draft-queue {
+	padding-top: 0px;
+}
+#draftInfoSection {
+	display: flex;
+	flex-direction: row;
+	flex-grow: 1;
+	text-align: center;
+	div {
+		margin: 0 auto;
+	}
+	p {
+		margin: 0;
+	}
+}
+#roundNumberIndicator, #cardsDraftedIndicator {
+	font-size: 2rem;
+	font-weight: bold;
+}
+.twitter-typeahead {
+	vertical-align: top;
+	@media(min-width: 1px) and (max-width: 1169px) {
+		width: 70%;
+	}
+		width: 30%;
+}
+.tt-input {
+	margin-bottom: 0;
+}
+.tt-menu {
+	width: 100%;
+	background-color: #fff;
+	border: 1px solid $light-accent;
+}
+.tt-selectable {
+	padding-left: 1rem;
+	&:hover {
+		background-color: $light-accent;
+	}
+}
+#modal_Draft-Modal {
+	@media(min-width: 1px) and (max-width: 767px) {
+		float: right;
+	}
+}
+.switch-caption {
+	display: inline-block;
+	vertical-align: top;
+	line-height: 210%;
+	margin-left: 1rem;
+	margin-bottom: 2rem;
+}
+#queueHeader {
+	@media(min-width: 1px) and (max-width: 767px) {
+		float: left;
+	}
+}
+#draft-first-item {
+	@media(min-width: 1px) and (max-width: 767px) {
+		float: right;
+	}
+}
+#userQueuedCardCountIndicator {
+	font-weight: bold;
 }
 
 canvas {
@@ -400,7 +468,6 @@ footer {
 	}
 }
 #queuedCards {
-	width: 90%;
 	@media(min-width: $desktop) {
 		width: 50%;
 	}
@@ -410,6 +477,7 @@ footer {
 		border-radius: 2px;
 		padding: 5px;
 		user-select: none;
+		font-weight: bold;
 		&:focus {
 			outline-color: #9b4dca;
 		}

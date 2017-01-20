@@ -24,6 +24,9 @@ function smoothScroll() {
 			}
 		}
 	});
+	$('.nav a[href*="#"]').click(function(){
+		event.preventDefault();
+	});
 }
 
 // Basic modal handling
