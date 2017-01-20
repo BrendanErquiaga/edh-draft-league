@@ -284,23 +284,34 @@ function updatePickOrQueueButton() {
 }
 
 function updateRoundTracker() {
-  var turnedOrderUL = $('#turnOrderList');
-  turnedOrderUL.empty();
+  var turnedOrderDiv = $('.turn-order #player-icon-section');
+  turnedOrderDiv.empty();
 
   for(var i = 0; i < turnOrderObject.turnOrder.length;i++){
-    var liClass = '';
+    var imageClass = '',
+        arrowSrc = '';
     if(i === turnOrderObject.turnIndex){
-      liClass = 'activePlayer';
+      imageClass = 'activePlayer';
     }
 
-    turnedOrderUL.append('<li class="' + liClass + '">' + usersSnapshot[turnOrderObject.turnOrder[i]].username + '</li>');
-  }
+    if(turnOrderObject.ascendingTurnOrder) {
+      arrowSrc = "/img/icons/arrow-right.svg";
+    } else {
+      arrowSrc = "/img/icons/arrow-left.svg";
+    }
 
-  if(turnOrderObject.ascendingTurnOrder){
-    $('#roundTrackerDirection').attr("src","img/icons/arrow-down.svg");
-  }
-  else {
-    $('#roundTrackerDirection').attr("src","img/icons/arrow-up.svg");
+    turnedOrderDiv.append($('<img>', {
+        src: usersSnapshot[turnOrderObject.turnOrder[i]].profile_picture,
+        class: 'playerSelectionIcon ' + imageClass,
+        id: 'selectionIcon_' + turnOrderObject.turnOrder[i]
+    }));
+
+    if(i !== turnOrderObject.turnOrder.length - 1){
+      turnedOrderDiv.append($('<img>', {
+          src: arrowSrc,
+          class: 'turnDirectionIndicator'
+      }));
+    }
   }
 }
 

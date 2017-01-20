@@ -118,6 +118,20 @@
 						</label>
 					</div>
 				</div>
+				<style>
+					.activePlayer {
+						border: 4px solid #f4b042;
+					}
+
+					.turnDirectionIndicator {
+						width: 25px;
+						padding-bottom: 15px;
+						padding-right: 10px;
+					}
+				</style>
+				<div class="turn-order" style="padding:20px">
+					<div id="player-icon-section"></div>
+				</div>
 		</section>
 		<section class="draft-queue">
 			<h2>Pick a card</h2>
@@ -137,7 +151,6 @@
 					<button type="submit" class="button-add button-disabled" id="draft-first-item">Draft Top Card</button>
 					<div class="clearfix"></div>
 					<ul id="queuedCards">
-						<li>This was already here...</li>
 					</ul>
 				</div>
 			</div>
