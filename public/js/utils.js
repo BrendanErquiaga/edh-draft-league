@@ -147,6 +147,10 @@ function getConvertedCardName(cardName) {
 function getAPIValidCardName(cardName) {
   var tempName = cardName.toLowerCase();
 
+  if(tempName.includes('//')){
+    return tempName.split('//', 1);
+  }
+
   tempName = tempName.split(' ').join('-');
   tempName = tempName.split(',').join('');
   tempName = tempName.split("'").join('');
