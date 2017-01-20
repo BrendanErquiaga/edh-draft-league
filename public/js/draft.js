@@ -4,7 +4,9 @@ var recentlyDraftedCardArrayLimit = 9,
     slipOptionsObject = {
       minimumSwipeVelocity: 0.4
     },
-    desiredCardToDraft;
+    desiredCardToDraft,
+    errorMessageResetTime = 5000,
+    confirmationMessageResetTime = 5000;
 
 $(document).ready(function() {
     requirejs(['./utils','./firebaseUtils', './slip'], function(){
@@ -38,7 +40,6 @@ function pageReady(){
 // Queue Re-Ordering via slip.js
 function queueHandler() {
 	var list = $('#queuedCards')[0];
-	//console.log(list);
 
 	list.addEventListener('slip:afterswipe', function(e){
 		//e.target.parentNode.appendChild(e.target);
@@ -70,7 +71,7 @@ function launchConfirmationModal(card) {
 
 function pickCardForUser(card) {
   if(card === false){
-    console.log('That isnt a valid card, Cant Draft');
+    setErrorMessage('That isnt a valid card, Cant Draft');
     return;
   }
 
@@ -79,6 +80,8 @@ function pickCardForUser(card) {
   resetCardImage();
   desiredCardToDraft = "";
 
+  setConfirmationMessage(card + ' added to your deck');
+
   savePickedCardToFirebase(getCardObject(card), currentUserId);
 
   goToNextTurn();
@@ -86,38 +89,40 @@ function pickCardForUser(card) {
 
 function queueCardForUser(card) {
   if(card === false){
-    console.log('That isnt a valid card, Cant Queue');
+    //setErrorMessage('That isnt a valid card, Cant Queue');
     return;
   }
 
   if($.inArray(card, userQueuedCards) !== -1){
-    console.log('You already had that card in your queue.');
+    setErrorMessage("Q_Q You already had " + card + " in your queue.");
     return;
   }
+
+  setConfirmationMessage(card + ' placed in your queue.');
 
   saveCardToUserQueue(card);
 }
 
 function validateCard(card) {
-  if(card === null || card === undefined){
-    console.log('You didnt even as for a card...');
+  if(card === null || card === undefined || card === ''){
+    setErrorMessage('No card info found =/');
     return false;
   }
 
   var convertedCardName = getConvertedCardName(card);
 
   if(convertedCardName === false){
-    console.log('That wasnt a real card ?_?', card);
+    setErrorMessage("?_? This isn't a real card " + card);
     return false;
   }
 
   if (cardIsBanned(convertedCardName)) {
-      console.log('Card is banned. -_-');
+      setErrorMessage('-_- ' + card + ' is banned. ');
       return false; //Don't draft a card if it's banned
   }
 
   if (!cardIsFree(convertedCardName)) {
-    console.log('Someone already had that card. :(');
+    setErrorMessage(':( Someone already had ' + card);
     return false; //Someone already had that card, do something about that
   }
 
@@ -145,7 +150,6 @@ function pickOrQueueCard(card){
     launchConfirmationModal(validateCard(card));
   }
   else {
-    console.log('Its not your turn, so I put the card in your queue');
     queueCardForUser(validateCard(card));
   }
 }
@@ -183,6 +187,24 @@ function catchDraftPageInput() {
 
 function clearCardInputField() {
     $('#form-card').val('');
+}
+
+function setErrorMessage(newMessage) {
+    $('#errorMessage').html(newMessage);
+    setTimeout(resetErrorMessage, errorMessageResetTime);
+}
+
+function setConfirmationMessage(newMessage) {
+  $('#confirmMessage').html(newMessage);
+  setTimeout(resetConfirmationMessage, confirmationMessageResetTime);
+}
+
+function resetErrorMessage() {
+  $('#errorMessage').html('');
+}
+
+function resetConfirmationMessage() {
+  $('#confirmMessage').html('');
 }
 
 /*
@@ -284,23 +306,34 @@ function updatePickOrQueueButton() {
 }
 
 function updateRoundTracker() {
-  var turnedOrderUL = $('#turnOrderList');
-  turnedOrderUL.empty();
+  var turnedOrderDiv = $('.turn-order #player-icon-section');
+  turnedOrderDiv.empty();
 
   for(var i = 0; i < turnOrderObject.turnOrder.length;i++){
-    var liClass = '';
+    var imageClass = '',
+        arrowSrc = '';
     if(i === turnOrderObject.turnIndex){
-      liClass = 'activePlayer';
+      imageClass = 'activePlayer';
     }
 
-    turnedOrderUL.append('<li class="' + liClass + '">' + usersSnapshot[turnOrderObject.turnOrder[i]].username + '</li>');
-  }
+    if(turnOrderObject.ascendingTurnOrder) {
+      arrowSrc = "/img/icons/arrow-right.svg";
+    } else {
+      arrowSrc = "/img/icons/arrow-left.svg";
+    }
 
-  if(turnOrderObject.ascendingTurnOrder){
-    $('#roundTrackerDirection').attr("src","img/icons/arrow-down.svg");
-  }
-  else {
-    $('#roundTrackerDirection').attr("src","img/icons/arrow-up.svg");
+    turnedOrderDiv.append($('<img>', {
+        src: usersSnapshot[turnOrderObject.turnOrder[i]].profile_picture,
+        class: 'playerSelectionIcon ' + imageClass,
+        id: 'selectionIcon_' + turnOrderObject.turnOrder[i]
+    }));
+
+    if(i !== turnOrderObject.turnOrder.length - 1){
+      turnedOrderDiv.append($('<img>', {
+          src: arrowSrc,
+          class: 'turnDirectionIndicator'
+      }));
+    }
   }
 }
 
