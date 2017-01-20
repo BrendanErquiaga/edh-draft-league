@@ -3,7 +3,8 @@
 var recentlyDraftedCardArrayLimit = 9,
     slipOptionsObject = {
       minimumSwipeVelocity: 0.4
-    };
+    },
+    desiredCardToDraft;
 
 $(document).ready(function() {
     requirejs(['./utils','./firebaseUtils', './slip'], function(){
@@ -68,8 +69,6 @@ function launchConfirmationModal(card) {
 }
 
 function pickCardForUser(card) {
-  clearCardInputField();
-
   if(card === false){
     console.log('That isnt a valid card, Cant Draft');
     return;
@@ -78,6 +77,7 @@ function pickCardForUser(card) {
   $('#Draft-Modal').fadeToggle('200');
   $('.drafted-card').html("");
   resetCardImage();
+  desiredCardToDraft = "";
 
   savePickedCardToFirebase(getCardObject(card), currentUserId);
 
@@ -85,8 +85,6 @@ function pickCardForUser(card) {
 }
 
 function queueCardForUser(card) {
-  clearCardInputField();
-
   if(card === false){
     console.log('That isnt a valid card, Cant Queue');
     return;
@@ -101,6 +99,11 @@ function queueCardForUser(card) {
 }
 
 function validateCard(card) {
+  if(card === null || card === undefined){
+    console.log('You didnt even as for a card...');
+    return false;
+  }
+
   var convertedCardName = getConvertedCardName(card);
 
   if(convertedCardName === false){
@@ -117,6 +120,8 @@ function validateCard(card) {
     console.log('Someone already had that card. :(');
     return false; //Someone already had that card, do something about that
   }
+
+  desiredCardToDraft = convertedCardName;
 
   return convertedCardName;
 }
@@ -142,23 +147,28 @@ function pickOrQueueCard(card){
   else {
     console.log('Its not your turn, so I put the card in your queue');
     queueCardForUser(validateCard(card));
-    clearCardInputField();
   }
 }
 
 function catchDraftPageInput() {
     $('#modal_Draft-Modal').on('click', function(e) {
         pickOrQueueCard($('#form-card').val());
+        clearCardInputField();
+    });
+
+    $('#draft-first-item').on('click', function(e) {
+        pickOrQueueCard(userQueuedCards[0]);
     });
 
     $('#draft-confirm-selection').on('click', function(e) {
-        pickCardForUser(validateCard($('#form-card').val()));
+        pickCardForUser(desiredCardToDraft);
     });
 
     $('#form-card').keypress(function(event) {
         var keycode = (event.keyCode ? event.keyCode : event.which);
         if (keycode == '13') {
-            pickOrQueueCard($('#form-card').val());
+          pickOrQueueCard($('#form-card').val());
+          clearCardInputField();
         }
     });
 
