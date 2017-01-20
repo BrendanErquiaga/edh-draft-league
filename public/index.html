@@ -92,19 +92,21 @@
 				</div>
 			</div>
 		</section>
-		<section class="draft-info">
+		<section class="header">
 			<h2>Draft Hub</h2>
-			<div class="loadingSection">
-				<h3>Setting up the bits and boops...</h3>
-			</div>
-			<div class="unauthenticatedUserSection" style="display:none;">
-				<h2>You have to sign in to use this page</h2>
-			</div>
-			<div class="nonLeagueSection" style="display:none;">
-				<h2>You are not in an active league =/</h2>
-				<p>Please contact an admin to be placed into a league. If you don't know an admin, fear not the site will be public one day!</p>
-			</div>
-			<div class="authenticatedUserSection" style="display:none;">
+		</section>
+		<div class="loadingSection" style="padding: 2rem 2.5rem;">
+			<h3>Setting up the bits and boops...</h3>
+		</div>
+		<div class="unauthenticatedUserSection" style="display:none; padding: 2rem 2.5rem;">
+			<h2>You have to sign in to use this page</h2>
+		</div>
+		<div class="nonLeagueSection" style="display:none; padding: 2rem 2.5rem;">
+			<h4>You are not in an active league</h4>
+			<p>The league will be starting soon!</p>
+		</div>
+		<div class="authenticatedUserSection" style="display:none;">
+		<section class="draft-info">
 				<div id="draftInfoSection">
 					<div><p>Round # <br /><span id="roundNumberIndicator"></span></p></div>
 					<div><p>Total Drafted <br /><span id="cardsDraftedIndicator"></span></p></div>
@@ -143,7 +145,7 @@
 					<ul id="queuedCards">
 					</ul>
 				</div>
-			</div>
+			</div><!--End Auth'd User Section-->
 		</section>
 		<footer>
 			<section>

@@ -134,6 +134,10 @@ function resetResultsData() {
 }
 
 function updateMatchSlipPlayerIcons() {
+  if(usersSnapshot[currentUserId].leagueId === undefined || usersSnapshot[currentUserId].leagueId === null) {
+    return;
+  }
+
   var leagueMembers = leagueDataObject[usersSnapshot[currentUserId].leagueId].members;
 
   $('#player-icon-selection').empty();
