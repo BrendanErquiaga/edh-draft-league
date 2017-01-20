@@ -162,10 +162,12 @@ function catchDraftPageInput() {
 
     $('#draft-first-item').on('click', function(e) {
         pickOrQueueCard(userQueuedCards[0]);
+        clearCardInputField();
     });
 
     $('#draft-confirm-selection').on('click', function(e) {
         pickCardForUser(desiredCardToDraft);
+        clearCardInputField();
     });
 
     $('#form-card').keypress(function(event) {
