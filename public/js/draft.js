@@ -1,6 +1,6 @@
 "use strict";
 
-var recentlyDraftedCardArrayLimit = 3,
+var recentlyDraftedCardArrayLimit = 9,
     slipOptionsObject = {
       minimumSwipeVelocity: 0.4
     };
@@ -145,12 +145,11 @@ function clearCardInputField() {
 function updateRecentlyDraftedCardsUI(){
   var recentlyDraftedUL = $("#recentlyDraftedList");
 
-  recentlyDraftedUL.empty();
+  $(recentlyDraftedUL).not(':first-child').remove();
 
   for(var i = 0; i < recentlyDraftCards.length; i++){
-    recentlyDraftedUL.append('<li>' +
-      usersSnapshot[recentlyDraftCards[i].drafterId].username + ' - ' +
-      recentlyDraftCards[i].name + '</li>');
+    recentlyDraftedUL.append('<div class="ticker__item"><span class="drafter">' + usersSnapshot[recentlyDraftCards[i].drafterId].username + '</span> - <span class="card">' + recentlyDraftCards[i].name + '</span> - <span class="timestamp">' + "18:00" + '</span></div>'
+);
   }
 }
 

@@ -87,18 +87,9 @@
 	</header>
 	<main class="container">
 		<section class="dark recentlyDrafted">
-			<div class="ticker-wrap">
+			<div class="ticker-wrap" id="recentlyDraftedList">
 				<div class="ticker">
 					<div class="ticker__item">Recently Drafted:</div>
-					<div class="ticker__item"><span class="drafter">Andy</span> - <span class="card">Life from the Loam</span> - <span class="timestamp">17:05</span></div>
-					<div class="ticker__item"><span class="drafter">Brendan</span> - <span class="card">Cyclonic Rift</span> - <span class="timestamp">18:00</span></div>
-					<div class="ticker__item"><span class="drafter">Justin</span> - <span class="card">Fireball</span> - <span class="timestamp">18:05</span></div>
-					<div class="ticker__item"><span class="drafter">Andy</span> - <span class="card">Life from the Loam</span> - <span class="timestamp">17:05</span></div>
-					<div class="ticker__item"><span class="drafter">Brendan</span> - <span class="card">Cyclonic Rift</span> - <span class="timestamp">18:00</span></div>
-					<div class="ticker__item"><span class="drafter">Justin</span> - <span class="card">Fireball</span> - <span class="timestamp">18:05</span></div>
-					<div class="ticker__item"><span class="drafter">Andy</span> - <span class="card">Life from the Loam</span> - <span class="timestamp">17:05</span></div>
-					<div class="ticker__item"><span class="drafter">Brendan</span> - <span class="card">Cyclonic Rift</span> - <span class="timestamp">18:00</span></div>
-					<div class="ticker__item"><span class="drafter">Justin</span> - <span class="card">Fireball</span> - <span class="timestamp">18:05</span></div>
 				</div>
 			</div>
 		</section>
@@ -141,15 +132,18 @@
 				<div id="userInput">
 					<input type="text" class="form-control typeahead" id="form-card" placeholder="Enter card name">
 					<button type="submit" class="button" id="card-submit"></button>
+					<div class="clearfix"></div>
 				</div>
 				<div id="queueSection">
 					<label class="switch">
 					<input type="checkbox" id="autoDraftSwitch">
 					<div class="slider round"></div>
 				</label>
-					<p>Enable Auto Draft</p>
-					<h2>Your Queue (<span id="userQueuedCardCountIndicator"></span>)</h2>
+					<span class="switch-caption">Enable Auto Draft</span>
+					<div class="clearfix"></div>
+					<h2 id="queueHeader">Queue (<span id="userQueuedCardCountIndicator"></span>)</h2>
 					<button type="submit" class="button-add button-disabled" id="draft-first-item">Draft Top Card</button>
+					<div class="clearfix"></div>
 					<ul id="queuedCards">
 						<li>This was already here...</li>
 					</ul>

@@ -171,7 +171,7 @@ section.draft-queue {
 }
 .twitter-typeahead {
 	vertical-align: top;
-	@media(min-width: 1px) and (max-width: 1199px) {
+	@media(min-width: 1px) and (max-width: 1169px) {
 		width: 70%;
 	}
 		width: 30%;
@@ -184,10 +184,34 @@ section.draft-queue {
 	background-color: #fff;
 	border: 1px solid $light-accent;
 }
-.tt-selectable:hover {
-	background-color: $light-accent;
+.tt-selectable {
+	padding-left: 1rem;
+	&:hover {
+		background-color: $light-accent;
+	}
 }
-
+#card-submit {
+	@media(min-width: 1px) and (max-width: 767px) {
+		float: right;
+	}
+}
+.switch-caption {
+	display: inline-block;
+	vertical-align: top;
+	line-height: 210%;
+	margin-left: 1rem;
+	margin-bottom: 2rem;
+}
+#queueHeader {
+	@media(min-width: 1px) and (max-width: 767px) {
+		float: left;
+	}
+}
+#draft-first-item {
+	@media(min-width: 1px) and (max-width: 767px) {
+		float: right;
+	}
+}
 #userQueuedCardCountIndicator {
 	font-weight: bold;
 }
@@ -444,7 +468,6 @@ footer {
 	}
 }
 #queuedCards {
-	width: 90%;
 	@media(min-width: $desktop) {
 		width: 50%;
 	}
@@ -454,6 +477,7 @@ footer {
 		border-radius: 2px;
 		padding: 5px;
 		user-select: none;
+		font-weight: bold;
 		&:focus {
 			outline-color: #9b4dca;
 		}

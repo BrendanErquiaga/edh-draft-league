@@ -724,7 +724,7 @@ section.draft-queue {
 .twitter-typeahead {
   vertical-align: top;
   width: 30%; }
-  @media (min-width: 1px) and (max-width: 1199px) {
+  @media (min-width: 1px) and (max-width: 1169px) {
     .twitter-typeahead {
       width: 70%; } }
 
@@ -736,8 +736,29 @@ section.draft-queue {
   background-color: #fff;
   border: 1px solid #d1d1d1; }
 
-.tt-selectable:hover {
-  background-color: #d1d1d1; }
+.tt-selectable {
+  padding-left: 1rem; }
+  .tt-selectable:hover {
+    background-color: #d1d1d1; }
+
+@media (min-width: 1px) and (max-width: 767px) {
+  #card-submit {
+    float: right; } }
+
+.switch-caption {
+  display: inline-block;
+  vertical-align: top;
+  line-height: 210%;
+  margin-left: 1rem;
+  margin-bottom: 2rem; }
+
+@media (min-width: 1px) and (max-width: 767px) {
+  #queueHeader {
+    float: left; } }
+
+@media (min-width: 1px) and (max-width: 767px) {
+  #draft-first-item {
+    float: right; } }
 
 #userQueuedCardCountIndicator {
   font-weight: bold; }
@@ -941,19 +962,18 @@ footer p {
 .standings-table td {
   border: none; }
 
-#queuedCards {
-  width: 90%; }
-  @media (min-width: 1170px) {
-    #queuedCards {
-      width: 50%; } }
-  #queuedCards li {
-    border: 1px solid #d1d1d1;
-    list-style: none;
-    border-radius: 2px;
-    padding: 5px;
-    user-select: none; }
-    #queuedCards li:focus {
-      outline-color: #9b4dca; }
+@media (min-width: 1170px) {
+  #queuedCards {
+    width: 50%; } }
+#queuedCards li {
+  border: 1px solid #d1d1d1;
+  list-style: none;
+  border-radius: 2px;
+  padding: 5px;
+  user-select: none;
+  font-weight: bold; }
+  #queuedCards li:focus {
+    outline-color: #9b4dca; }
 
 .modal {
   display: none;
