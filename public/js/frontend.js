@@ -43,9 +43,20 @@ function initModals() {
 	});
 }
 
+// Resets draft ticker animation on click
+function resetTicker() {
+	$('.recentlyDrafted').click(function(){
+		var target = $(this).find('.ticker')[0];
+		target.style.webkitAnimation = 'none';
+		setTimeout(function() {
+			target.style.webkitAnimation = '';
+		}, 10);
+	})
+}
 // Document Ready
 $(document).ready(function(){
 	simpleAccordions();
 	smoothScroll();
 	initModals();
+	resetTicker();
 });
