@@ -123,6 +123,11 @@ function saveUserData(loggedInUserId, name, email, imageUrl) {
         email: email,
         profile_picture: imageUrl
     });
+
+    firebase.database().ref('publicUsers/' + loggedInUserId).update({
+        username: name,
+        profile_picture: imageUrl
+    });
 }
 
 function updateReferencesWithUserId(){
