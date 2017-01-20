@@ -1033,6 +1033,11 @@ footer p {
       text-decoration: none;
       cursor: pointer; }
 
+#generatedPodSection li {
+  list-style: none; }
+  #generatedPodSection li:nth-child(odd) {
+    background: #f2f2f2; }
+
 /* Admin page styles, can be moved to its own partial later */
 #resultsToApprove img {
   max-width: 50px; }
@@ -1050,6 +1055,9 @@ footer p {
 #resultsToApprove .playerResultRow * {
   vertical-align: middle; }
 
+.inactive {
+  opacity: 0.5; }
+
 #match-slip {
   width: 95%;
   border-radius: 10px;
@@ -1062,8 +1070,6 @@ footer p {
     #match-slip {
       margin-left: 2.5rem;
       width: 75%; } }
-  #match-slip .inactive {
-    opacity: 0.5; }
 
 #player-icon-selection {
   margin-bottom: 0; }
