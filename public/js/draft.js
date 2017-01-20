@@ -147,7 +147,7 @@ function updateRecentlyDraftedCardsUI(){
 
   $("#recentlyDraftedList .ticker .ticker__item").not(':first').remove();
 
-  for(var i = 0; i < recentlyDraftCards.length; i++){
+  for(var i = recentlyDraftCards.length - 1; i >= 0; i--){
     var pickTimeDate = new Date(recentlyDraftCards[i].pickTime);
 
     recentlyDraftedUL.append('<div class="ticker__item"><span class="drafter">'
