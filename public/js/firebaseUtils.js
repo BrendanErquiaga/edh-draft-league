@@ -23,6 +23,10 @@ function getFirebaseData() {
       return;
     }
 
+    firebase.database().ref('users').on('value', function(snapshot) {
+        updateUsersSnapshot(snapshot);
+    });
+
     draftedCardsRef = firebase.database().ref('draftedUserCards');
     queuedCardsRef = firebase.database().ref('queuedUserCards');
     if(recentlyDraftedCardArrayLimit !== undefined && recentlyDraftedCardArrayLimit > 0){
@@ -32,10 +36,6 @@ function getFirebaseData() {
         updateRecentlyDraftedCards(snapshot);
       });
     }
-
-    firebase.database().ref('users').on('value', function(snapshot) {
-        updateUsersSnapshot(snapshot);
-    });
 
     firebase.database().ref('draftedUserCards').on('value', function(snapshot) {
         updateDraftedCardData(snapshot);
@@ -331,7 +331,8 @@ function cleanOutQueuedCards(cardLastPicked){
 }
 
 function savePickedCardToFirebase(cardObject, idToUse){
-  var newCardRef = draftedCardsRef.child(idToUse).push();
+  var newCardRef = draftedCardsRef.child(idToUse).push(),
+      cardPickTime = Date.now();
   newCardRef.set({
       name: cardObject.name,
       type: cardObject.type,
@@ -339,11 +340,11 @@ function savePickedCardToFirebase(cardObject, idToUse){
       cmc: cardObject.cmc,
       manaCost: cardObject.manaCost,
       colorIdentity: cardObject.colorIdentity,
-      pickTime: Date.now()
+      pickTime: cardPickTime
   });
 
   cleanOutQueuedCards(cardObject.name);
-  saveRecentlyPickedCards(cardObject.name, idToUse);
+  saveRecentlyPickedCards(cardObject.name, idToUse, cardPickTime);
   incrementCardsDraftedCounter();
 }
 
@@ -373,11 +374,12 @@ function incrementRoundCounter(){
   });
 }
 
-function saveRecentlyPickedCards(cardName, drafterId) {
+function saveRecentlyPickedCards(cardName, drafterId, cardPickTime) {
   var newCardRef = firebase.database().ref('recentlyDraftedCards').push();
   newCardRef.set({
     name: cardName,
-    drafterId: drafterId
+    drafterId: drafterId,
+    pickTime: cardPickTime
   });
 }
 

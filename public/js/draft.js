@@ -143,13 +143,17 @@ function clearCardInputField() {
 
 //TODO: Right now this just clears the whole list every time, should only do that on load
 function updateRecentlyDraftedCardsUI(){
-  var recentlyDraftedUL = $("#recentlyDraftedList");
+  var recentlyDraftedUL = $("#recentlyDraftedList .ticker");
 
-  $(recentlyDraftedUL).not(':first-child').remove();
+  $("#recentlyDraftedList .ticker .ticker__item").not(':first').remove();
 
   for(var i = 0; i < recentlyDraftCards.length; i++){
-    recentlyDraftedUL.append('<div class="ticker__item"><span class="drafter">' + usersSnapshot[recentlyDraftCards[i].drafterId].username + '</span> - <span class="card">' + recentlyDraftCards[i].name + '</span> - <span class="timestamp">' + "18:00" + '</span></div>'
-);
+    var pickTimeDate = new Date(recentlyDraftCards[i].pickTime);
+
+    recentlyDraftedUL.append('<div class="ticker__item"><span class="drafter">'
+    + usersSnapshot[recentlyDraftCards[i].drafterId].username + '</span> - <span class="card">'
+    + recentlyDraftCards[i].name + '</span> - <span class="timestamp">'
+    + pickTimeDate.toLocaleTimeString() + '</span></div>');
   }
 }
 
