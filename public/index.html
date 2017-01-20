@@ -128,6 +128,14 @@
 						padding-bottom: 15px;
 						padding-right: 10px;
 					}
+
+					#errorMessage {
+						color: #f45042;
+					}
+
+					#confirmMessage {
+						color: #42a1f4;
+					}
 				</style>
 				<div class="turn-order" style="padding:20px">
 					<div id="player-icon-section"></div>
@@ -135,6 +143,8 @@
 		</section>
 		<section class="draft-queue">
 			<h2>Pick a card</h2>
+			<div id="errorMessage"></div>
+			<div id="confirmMessage"></div>
 				<div id="userInput">
 					<input type="text" class="form-control typeahead" id="form-card" placeholder="Enter card name">
 					<button type="submit" class="button" id="modal_Draft-Modal"></button>
