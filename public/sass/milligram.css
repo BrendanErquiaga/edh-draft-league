@@ -742,7 +742,7 @@ section.draft-queue {
     background-color: #d1d1d1; }
 
 @media (min-width: 1px) and (max-width: 767px) {
-  #card-submit {
+  #modal_Draft-Modal {
     float: right; } }
 
 .switch-caption {

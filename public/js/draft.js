@@ -54,18 +54,39 @@ function queueHandler() {
 	return new Slip(list, slipOptionsObject);
 }
 
+function launchConfirmationModal(card) {
+  if(card === false){
+    //display a message about why it's bad
+    clearCardInputField();
+    return;
+  }
+
+  $('#Draft-Modal').fadeToggle('200');
+  $('.drafted-card').html("'" + card + "'");
+
+  viewCard(card);
+}
+
 function pickCardForUser(card) {
+  clearCardInputField();
+
   if(card === false){
     console.log('That isnt a valid card, Cant Draft');
     return;
   }
 
-    savePickedCardToFirebase(getCardObject(card), currentUserId);
+  $('#Draft-Modal').fadeToggle('200');
+  $('.drafted-card').html("");
+  resetCardImage();
 
-    goToNextTurn();
+  savePickedCardToFirebase(getCardObject(card), currentUserId);
+
+  goToNextTurn();
 }
 
 function queueCardForUser(card) {
+  clearCardInputField();
+
   if(card === false){
     console.log('That isnt a valid card, Cant Queue');
     return;
@@ -100,27 +121,44 @@ function validateCard(card) {
   return convertedCardName;
 }
 
+function viewCard(card) {
+  var requestURL = "https://api.deckbrew.com/mtg/cards/";
+
+  requestURL += getAPIValidCardName(card);
+
+  $.get(requestURL, function(data, status){
+    $("#cardToView").attr('src', getImageURLFromAPIData(data));
+  });
+}
+
+function resetCardImage() {
+  $("#cardToView").attr('src', 'img/draft-placeholder.jpg');
+}
+
 function pickOrQueueCard(card){
   if(currentUsersTurn()){
-    pickCardForUser(validateCard(card));
+    launchConfirmationModal(validateCard(card));
   }
   else {
     console.log('Its not your turn, so I put the card in your queue');
     queueCardForUser(validateCard(card));
+    clearCardInputField();
   }
 }
 
 function catchDraftPageInput() {
-    $('#card-submit').on('click', function(e) {
+    $('#modal_Draft-Modal').on('click', function(e) {
         pickOrQueueCard($('#form-card').val());
-        clearCardInputField();
+    });
+
+    $('#draft-confirm-selection').on('click', function(e) {
+        pickCardForUser(validateCard($('#form-card').val()));
     });
 
     $('#form-card').keypress(function(event) {
         var keycode = (event.keyCode ? event.keyCode : event.which);
         if (keycode == '13') {
             pickOrQueueCard($('#form-card').val());
-            clearCardInputField();
         }
     });
 
@@ -225,9 +263,14 @@ function updatePickOrQueueButton() {
 
   if(turnOrderObject.turnOrder[turnOrderObject.turnIndex] === currentUserId){
     buttonString = 'Pick';
+    $("#modal_Draft-Modal").addClass("button-add");
+    $("#draft-first-item").removeClass("button-disabled");
+  } else {
+    $("#modal_Draft-Modal").removeClass("button-add");
+    $("#draft-first-item").addClass("button-disabled");
   }
 
-  $('#card-submit').html(buttonString)
+  $('#modal_Draft-Modal').html(buttonString);
 }
 
 function updateRoundTracker() {

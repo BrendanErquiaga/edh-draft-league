@@ -121,17 +121,9 @@
 		</section>
 		<section class="draft-queue">
 			<h2>Pick a card</h2>
-<!-- 
-				<div id="recentlyDraftedSection">
-					<h4>Recently Drafted Cards:</h4>
-					<ul id="recentlyDraftedList">
-						<li>This was already here...</li>
-					</ul>
-				</div> 
--->
 				<div id="userInput">
 					<input type="text" class="form-control typeahead" id="form-card" placeholder="Enter card name">
-					<button type="submit" class="button" id="card-submit"></button>
+					<button type="submit" class="button" id="modal_Draft-Modal"></button>
 					<div class="clearfix"></div>
 				</div>
 				<div id="queueSection">
@@ -148,14 +140,6 @@
 						<li>This was already here...</li>
 					</ul>
 				</div>
-<!--
-				<div id="pickedSection">
-					<h4>Picked Cards: <span id="userPickedCardCountIndicator"></span></h4>
-					<ul id="pickedCards">
-						<li>This was already here...</li>
-					</ul>
-				</div>
--->
 			</div>
 		</section>
 		<footer>
@@ -175,10 +159,10 @@
 			</div>
 			<div class="modal-body row">
 				<div class="column">
-					<img src="img/draft-placeholder.jpg">
+					<img id="cardToView" src="img/draft-placeholder.jpg">
 				</div>
 				<div class="column">
-					<p>You are drafting <span class="drafted-card">CARD NAME</span>. Are you sure?</p>
+					<p>You are drafting <span class="drafted-card">CARD NAME</span> Are you sure?</p>
 					<button class="button-add" id="draft-confirm-selection">Confirm Pick</button>
 				</div>
 			</div>
