@@ -102,7 +102,7 @@
 				</div>
 			</div>
 		</section>
-		<section>
+		<section class="draft-info">
 			<h2>Draft Hub</h2>
 			<div class="loadingSection">
 				<h3>Setting up the bits and boops...</h3>
@@ -116,8 +116,8 @@
 			</div>
 			<div class="authenticatedUserSection" style="display:none;">
 				<div id="draftInfoSection">
-					<div><p>Round # <br /><span id="roundNumberIndicator">35</span></p></div>
-					<div><p>Total Drafted <br /><span id="cardsDraftedIndicator">100</span></p></div>
+					<div><p>Round # <br /><span id="roundNumberIndicator"></span></p></div>
+					<div><p>Total Drafted <br /><span id="cardsDraftedIndicator"></span></p></div>
 					<div>
 						<span>Enable All Notifications</span>
 						<br/>
@@ -128,7 +128,7 @@
 					</div>
 				</div>
 		</section>
-		<section>
+		<section class="draft-queue">
 			<h2>Pick a card</h2>
 <!-- 
 				<div id="recentlyDraftedSection">
@@ -140,15 +140,16 @@
 -->
 				<div id="userInput">
 					<input type="text" class="form-control typeahead" id="form-card" placeholder="Enter card name">
-					<button type="submit" class="btn btn-success" id="card-submit"></button>
+					<button type="submit" class="button" id="card-submit"></button>
 				</div>
 				<div id="queueSection">
 					<label class="switch">
 					<input type="checkbox" id="autoDraftSwitch">
 					<div class="slider round"></div>
 				</label>
-					<p>Auto Draft</p>
-					<h4>Queued Cards: <span id="userQueuedCardCountIndicator"></span></h4>
+					<p>Enable Auto Draft</p>
+					<h2>Your Queue (<span id="userQueuedCardCountIndicator"></span>)</h2>
+					<button type="submit" class="button-add button-disabled" id="draft-first-item">Draft Top Card</button>
 					<ul id="queuedCards">
 						<li>This was already here...</li>
 					</ul>

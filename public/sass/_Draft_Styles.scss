@@ -147,7 +147,12 @@ header {
 		}
 	}
 }
-
+section.draft-info {
+	padding-bottom: 0px;
+}
+section.draft-queue {
+	padding-top: 0px;
+}
 #draftInfoSection {
 	display: flex;
 	flex-direction: row;
@@ -166,7 +171,27 @@ header {
 }
 .twitter-typeahead {
 	vertical-align: top;
+	@media(min-width: 1px) and (max-width: 1199px) {
+		width: 70%;
+	}
+		width: 30%;
 }
+.tt-input {
+	margin-bottom: 0;
+}
+.tt-menu {
+	width: 100%;
+	background-color: #fff;
+	border: 1px solid $light-accent;
+}
+.tt-selectable:hover {
+	background-color: $light-accent;
+}
+
+#userQueuedCardCountIndicator {
+	font-weight: bold;
+}
+
 canvas {
 	max-width: 100%;
 	max-height: 100%;
