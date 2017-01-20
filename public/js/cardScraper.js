@@ -8,10 +8,9 @@ while (indexVar > 0 ) {
 	indexVar = source.indexOf('"name"');
 	source = source.slice(indexVar);
 	indexVar = source.indexOf('"name"');
-	indexEnd = source.indexOf(',');
+	indexEnd = source.indexOf('","');
 
 	indexVar = indexVar + 8;
-	indexEnd = indexEnd - 1;
 	finishedArray.push(source.slice(indexVar,indexEnd));
 	source = source.slice(indexEnd);
 	indexVar = source.indexOf('"name"');
