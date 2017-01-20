@@ -5,8 +5,10 @@ var recentlyDraftedCardArrayLimit = 9,
       minimumSwipeVelocity: 0.4
     },
     desiredCardToDraft,
-    errorMessageResetTime = 5000,
-    confirmationMessageResetTime = 5000;
+    errorMessageResetTime = 7500,
+    confirmationMessageResetTime = 7500,
+    errorMessageTimeout,
+    confirmationMessageTimeout;
 
 $(document).ready(function() {
     requirejs(['./utils','./firebaseUtils', './slip'], function(){
@@ -193,12 +195,14 @@ function clearCardInputField() {
 
 function setErrorMessage(newMessage) {
     $('#errorMessage').html(newMessage);
-    setTimeout(resetErrorMessage, errorMessageResetTime);
+    clearTimeout(errorMessageTimeout);
+    errorMessageTimeout = setTimeout(resetErrorMessage, errorMessageResetTime);
 }
 
 function setConfirmationMessage(newMessage) {
   $('#confirmMessage').html(newMessage);
-  setTimeout(resetConfirmationMessage, confirmationMessageResetTime);
+  clearTimeout(confirmationMessageTimeout);
+  confirmationMessageTimeout = setTimeout(resetConfirmationMessage, confirmationMessageResetTime);
 }
 
 function resetErrorMessage() {
