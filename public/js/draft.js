@@ -40,7 +40,6 @@ function pageReady(){
 // Queue Re-Ordering via slip.js
 function queueHandler() {
 	var list = $('#queuedCards')[0];
-	//console.log(list);
 
 	list.addEventListener('slip:afterswipe', function(e){
 		//e.target.parentNode.appendChild(e.target);
@@ -72,7 +71,7 @@ function launchConfirmationModal(card) {
 
 function pickCardForUser(card) {
   if(card === false){
-    console.log('That isnt a valid card, Cant Draft');
+    setErrorMessage('That isnt a valid card, Cant Draft');
     return;
   }
 
