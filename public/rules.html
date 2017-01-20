@@ -10,6 +10,18 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
 		<link rel="stylesheet" href="sass/milligram.css">
 		<!--<link rel="icon" href="https://milligram.github.io/img/favicon.png">-->
+		<script src="https://www.gstatic.com/firebasejs/3.6.2/firebase.js"></script>
+		<script>
+			// Initialize Firebase
+			var config = {
+				apiKey: "AIzaSyAlRO_7_sv1BhgJ6xT1MRscondyLoh70vo",
+				authDomain: "draftleague2017.firebaseapp.com",
+				databaseURL: "https://draftleague2017.firebaseio.com",
+				storageBucket: "draftleague2017.appspot.com",
+				messagingSenderId: "382673579824"
+			};
+			firebase.initializeApp(config);
+		</script>
 	</head>
 	<body>
 		<ul class="nav">
@@ -51,7 +63,7 @@
 			</section>
 		</header>
 		<main class="container">
-			<section> 
+			<section>
 				<h1>League Rules</h1>
 				<p>This page will contain the league rules. Coming soon.</p>
 			</section>
@@ -66,5 +78,6 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<script>window.jQuery || document.write('<script src="js/vendor/jquery.min.js"><\/script>')</script>
 		<script src="js/frontend.js"></script>
+		<script src="js/firebaseLogin.js"></script>
 	</body>
 </html>
