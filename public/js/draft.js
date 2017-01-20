@@ -122,7 +122,7 @@ function validateCard(card) {
   }
 
   if (!cardIsFree(convertedCardName)) {
-    setErrorMessage(':( Someone already had ' + card);
+    setErrorMessage(':( Someone already has ' + card);
     return false; //Someone already had that card, do something about that
   }
 
