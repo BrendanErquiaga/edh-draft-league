@@ -3,7 +3,9 @@
 var draftMasterId,
     currentlyDraftMaster = false,
     recentlyDraftedCardArrayLimit = 3,
-    adminSectionShown = false;
+    adminSectionShown = false,
+    autoDraftDelay = 7000,
+    autoDraftTimeout;
 
 $(document).ready(function() {
     requirejs(['./utils','./firebaseUtils', './calculations'], function(){
@@ -90,11 +92,13 @@ function attemptToAutoDraft(){
     return;
   }
 
+  clearTimeout(autoDraftTimeout);
+
   if(draftMasterObject.delayTime !== undefined){
-    setTimeout(performAutoDraft, draftMasterObject.delayTime);
+    autoDraftTimeout = setTimeout(performAutoDraft, draftMasterObject.delayTime);
   }
   else {
-    setTimeout(performAutoDraft, 3000);
+    autoDraftTimeout = setTimeout(performAutoDraft, autoDraftDelay);
   }
 }
 
