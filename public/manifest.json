@@ -1,0 +1,30 @@
+{
+  "short_name": "EDHLeague",
+  "name": "EDH Draft League",
+  "gcm_sender_id": "103953800507",
+  "start_url": "index.html?launcher=true",
+  "background_color": "#bababa",
+  "theme_color": "#abacad",
+  "display": "standalone",
+  "icons": [{
+    "src": "img/icons/badge_c_128.png",
+    "type": "image/png",
+    "sizes": "128x128"
+  }, {
+    "src": "img/icons/badge_c_152.png",
+    "type": "image/png",
+    "sizes": "152x152"
+  }, {
+    "src": "img/icons/badge_c_144.png",
+    "type": "image/png",
+    "sizes": "144x144"
+  }, {
+    "src": "img/icons/badge_c_192.png",
+    "type": "image/png",
+    "sizes": "192x192"
+  }, {
+    "src": "img/icons/badge_c_512.png",
+    "type": "image/png",
+    "sizes": "512x512"
+  }]
+}

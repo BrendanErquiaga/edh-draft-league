@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="Andrew Maul, Brendan Erquiaga">
+		<meta name="description" content="EDH Draft League 2016">
+		<title>League Rules</title>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+		<link rel="stylesheet" href="sass/milligram.css">
+		<!--<link rel="icon" href="https://milligram.github.io/img/favicon.png">-->
+		<script src="https://www.gstatic.com/firebasejs/3.6.2/firebase.js"></script>
+		<script>
+			// Initialize Firebase
+			var config = {
+				apiKey: "AIzaSyAlRO_7_sv1BhgJ6xT1MRscondyLoh70vo",
+				authDomain: "draftleague2017.firebaseapp.com",
+				databaseURL: "https://draftleague2017.firebaseio.com",
+				storageBucket: "draftleague2017.appspot.com",
+				messagingSenderId: "382673579824"
+			};
+			firebase.initializeApp(config);
+		</script>
+	</head>
+	<body>
+		<ul class="nav">
+			<li><a href="#">Draft</a>
+				<ul>
+					<li><a href="index.html" class="active">Draft</a></li>
+					<li><a href="match-slip.html">Match Slip</a></li>
+					<li><a href="pod-generator.html">Pod Generator</a></li>
+				</ul>
+			</li>
+			<li><a href="rules.html" class="active">Rules</a></li>
+			<li><a href="#">Stats</a>
+				<ul>
+					<li><a href="standings.html">Standings</a></li>
+					<li><a href="deck-lists.html">Deck Lists</a></li>
+					<li><a href="data_2016.html">Season 1</a></li>
+					<li><a href="data_2017.html">Season 2</a></li>
+				</ul>
+			</li>
+			<li>&nbsp;</li>
+		</ul>
+		<div class="login">
+			<div class="mdl-card__supporting-text mdl-color-text--grey-600">
+				<div class="quickstart-user-details-container">
+					<img src="img/unknown.jpg" id="userIcon" height="50px" width="50px" />
+					<span id="quickstart-sign-in-status">Unknown</span>
+				</div>
+				<button disabled class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-in">Sign in</button>
+			</div>
+		</div>
+		<header>
+			<section>
+				<picture>
+					<source media="(max-width: 480px)" srcset="img/banner_small.jpg">
+					<source media="(max-width: 768px)" srcset="img/banner_medium.jpg">
+					<source media="(max-width: 1280px)" srcset="img/banner_large.jpg">
+					<img src="img/banner_largest.jpg" alt="EDH Draft League Banner">
+				</picture>
+			</section>
+		</header>
+		<main class="container">
+			<section>
+				<h1>League Rules</h1>
+				<p>This page will contain the league rules. Coming soon.</p>
+			</section>
+		<footer>
+			<section>
+				<p>Magic the Gathering, FNM is TM and copyright Wizards of the Coast, Inc, a subsidiary of Hasbro, Inc. All rights reserved. This site is unaffiliated. /legalese
+					<br /> Site built using <a href="https://milligram.github.io/" target="new">Milligram.io</a>, <a href="http://www.chartjs.org/" target="new">Chart.js</a>, and <a href="https://www.w3.org/TR/css-flexbox-1/" target="new">Flexbox</a>.
+				</p>
+			</section>
+		</footer>
+		</main>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script>window.jQuery || document.write('<script src="js/vendor/jquery.min.js"><\/script>')</script>
+		<script src="js/frontend.js"></script>
+		<script src="js/firebaseLogin.js"></script>
+	</body>
+</html>
