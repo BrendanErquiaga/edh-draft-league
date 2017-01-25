@@ -5,7 +5,7 @@ cardNameArray = [];
 splitCards = ["Life // Death","Fire // Ice","Stand // Deliver","Spite // Malice","Pain // Suffering","Assault // Battery","Wax // Wane","Illusion // Reality","Night // Day","Order // Chaos","Bound // Determined","Crime // Punishment","Hide // Seek","Hit // Run","Odds // Ends","Pure // Simple","Research // Development","Rise // Fall","Supply // Demand","Trial // Error","Boom // Bust","Dead // Gone","Rough // Tumble","Alive // Well","Armed // Dangerous","Beck // Call","Catch // Release","Down // Dirty","Far // Away","Flesh // Blood","Give // Take","Profit // Loss","Protect // Serve","Ready // Willing","Toil // Trouble","Turn // Burn","Wear // Tear"];
 $.each(data, function(key, val) {
     if(data[key].layout != "vanguard" && data[key].layout != "split" && data[key].layout != "token" && data[key].layout != "plane"){
-        cardNameArray.push(key.toString());
+        cardNameArray.push(key.toString().toLowerCase());
     }
 });
 
