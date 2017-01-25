@@ -393,6 +393,12 @@ function updateUserQueuedCards() {
   firebase.database().ref('queuedUserCards/').child(currentUserId).set(userQueuedCards);
 }
 
+function saveNewBanList(banList) {
+  firebase.database().ref('/').update({
+    banList: banList
+  });
+}
+
 /*
 ~~~~~~~FIREBASE NOTIFICATIONS~~~~~~~~~~
 */

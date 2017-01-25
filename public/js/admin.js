@@ -21,6 +21,12 @@ function pageReady(){
   $.getJSON(allcardsLocation, function(data) {
       allcardsLocal = data;
   });
+
+  //Use this to update the banList
+  // $.getJSON(banListLocation, function(data) {
+  //     banListLocal = data;
+  //     updateBanList();
+  // });
 }
 
 function catchAdminPageInput(){
@@ -130,6 +136,14 @@ function autoDraftCardForUser(autoDraftedUserId){
   savePickedCardToFirebase(getCardObject(cardToAutoDraft), autoDraftedUserId);
 
   goToNextTurn();
+}
+
+function updateBanList() {
+  // for(var i = 0; i < banListLocal.length; i++){
+  //   console.log(banListLocal[i]);
+  // }
+
+  saveNewBanList(banListLocal);
 }
 
 /* ~~~~~~~~~~~~~~~ UI Updates ~~~~~~~~~~~~~~~ */
