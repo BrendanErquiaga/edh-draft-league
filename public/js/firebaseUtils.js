@@ -221,6 +221,8 @@ function updateDraftedCardData(snapshot) {
 
   if($(document.body).hasClass('draft')) {
     updatePickedCardsUI();
+  } else if($(document.body).hasClass('decklists')) {
+    updateDeckListUI();
   }
 }
 
