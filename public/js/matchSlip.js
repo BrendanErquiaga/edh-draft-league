@@ -102,7 +102,7 @@ function selectPlayer(playerInputObject) {
 
     $(playerInputObject).addClass('inactive');
 
-    updatePlayerResultsIcon(selectedPlayers.length, $(playerInputObject).attr('src'));
+    updatePlayerResultsIcon(selectedPlayers.length, $(playerInputObject).attr('src'),true);
 }
 
 function resetResultsData() {
@@ -134,10 +134,12 @@ function resetResultsData() {
         $(obj).removeClass('inactive');
     });
 
-    updatePlayerResultsIcon(1, '/img/icons/p1.png');
-    updatePlayerResultsIcon(2, '/img/icons/p2.png');
-    updatePlayerResultsIcon(3, '/img/icons/p3.png');
-    updatePlayerResultsIcon(4, '/img/icons/p4.png');
+    $('#matchSlipNotes').val("Add additional notes here");
+
+    updatePlayerResultsIcon(1, '/img/unknown.jpg',false);
+    updatePlayerResultsIcon(2, '/img/unknown.jpg',false);
+    updatePlayerResultsIcon(3, '/img/unknown.jpg',false);
+    updatePlayerResultsIcon(4, '/img/unknown.jpg',false);
 
     selectedPlayers = [];
     killRecords = [];
@@ -231,6 +233,7 @@ function submitMatchResults() {
     resultsObject.voteRecords = voteRecords.sort();
     resultsObject.winnerId = winnerId;
     resultsObject.podId = getCombinedStringFromArray(resultsObject.players).hashCode();
+    resultsObject.notes = $('#matchSlipNotes').val();
 
     saveUnapprovedMatchResult(resultsObject);
 
@@ -262,11 +265,15 @@ function updateMatchSlipPlayerIcons() {
   });
 }
 
-function updatePlayerResultsIcon(index, imgSource) {
+function updatePlayerResultsIcon(index, imgSource, active) {
     var imageObject = $('#player' + index + 'ResultsDiv .playerResultsIcon');
 
     $(imageObject).attr('src', imgSource);
-    $(imageObject).removeClass('inactive');
+    if(active){
+      $(imageObject).removeClass('inactive');
+    } else {
+      $(imageObject).addClass('inactive');
+    }
 }
 
 function toggleResultsSubmittableUI(resultsCanBeSubmitted) {

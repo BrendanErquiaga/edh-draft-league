@@ -266,7 +266,8 @@ function saveUnapprovedMatchResult(matchResult) {
       killRecords: matchResult.killRecords,
       voteRecords: matchResult.voteRecords,
       winnerId: matchResult.winnerId,
-      podId: matchResult.podId
+      podId: matchResult.podId,
+      notes: matchResult.notes
   });
 }
 
