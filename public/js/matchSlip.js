@@ -134,7 +134,7 @@ function resetResultsData() {
         $(obj).removeClass('inactive');
     });
 
-    $('#matchSlipNotes').val("Add additional notes here");
+    $('#matchSlipNotes').val("");
 
     updatePlayerResultsIcon(1, '/img/unknown.jpg',false);
     updatePlayerResultsIcon(2, '/img/unknown.jpg',false);
