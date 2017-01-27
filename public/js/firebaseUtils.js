@@ -221,6 +221,8 @@ function updateDraftedCardData(snapshot) {
 
   if($(document.body).hasClass('draft')) {
     updatePickedCardsUI();
+  } else if($(document.body).hasClass('decklists')) {
+    updateDeckListUI();
   }
 }
 
@@ -264,7 +266,8 @@ function saveUnapprovedMatchResult(matchResult) {
       killRecords: matchResult.killRecords,
       voteRecords: matchResult.voteRecords,
       winnerId: matchResult.winnerId,
-      podId: matchResult.podId
+      podId: matchResult.podId,
+      notes: matchResult.notes
   });
 }
 
@@ -391,6 +394,12 @@ function saveCardToUserQueue(card){
 
 function updateUserQueuedCards() {
   firebase.database().ref('queuedUserCards/').child(currentUserId).set(userQueuedCards);
+}
+
+function saveNewBanList(banList) {
+  firebase.database().ref('/').update({
+    banList: banList
+  });
 }
 
 /*

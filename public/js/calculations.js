@@ -32,6 +32,10 @@ function calculateNewPlayerElo(eloObjectToEdit, matchResult) {
       playerIds = [],
       tempEloObject = eloObjectToEdit;
 
+  if(tempEloObject === null){
+    tempEloObject = {};
+  }
+
   for(var i = 0; i < matchResult.players.length; i++){
     playerIds.push(matchResult.players[i]);
 

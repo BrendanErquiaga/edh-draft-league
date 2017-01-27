@@ -4,6 +4,8 @@
 var senderKey = "AAAAWRkfbzA:APA91bEhDBDOSArAdhSpI_SFiWh2K-1S7m0Te2OL_Av7JKMdsBXY26rcc7KsaL-lVqN-uzIHU-Xl6wBIrpmoXCe5_O6tNtu1mye5kgX3LbvimYpZ0Ul3hhNsLPvPtoFiOVmZk6rp9SJq2T7oB15Bl_jdEyfHCyJ-dA",
     allcardsLocal,
     allcardsLocation = "/js/json/allcards.json",
+    banListLocal,
+    banListLocation = "/js/json/banList.json",
     lowercaseCardNamesLocal,
     lowercaseCardNamesLocation = "/js/json/cardnames_lc.json",
     cardNamesLocal,
@@ -209,7 +211,10 @@ function goToNextTurn() {
 function sendTurnAdvancedNotification() {
     //Don't double notify someone who is globablly subbed
     if(usersSnapshot[getNextDrafterId()].globallySubscribed !== true){
-      sendTargetdTurnNotification();
+
+      if(usersSnapshot[getNextDrafterId()].fcm_token !== undefined && usersSnapshot[getNextDrafterId()].fcm_token !== null){
+        sendTargetdTurnNotification();
+      }      
     }
     sendGlobalTurnNotification();
 }

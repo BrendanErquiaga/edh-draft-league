@@ -3,7 +3,9 @@
 var draftMasterId,
     currentlyDraftMaster = false,
     recentlyDraftedCardArrayLimit = 3,
-    adminSectionShown = false;
+    adminSectionShown = false,
+    autoDraftDelay = 7000,
+    autoDraftTimeout;
 
 $(document).ready(function() {
     requirejs(['./utils','./firebaseUtils', './calculations'], function(){
@@ -19,6 +21,12 @@ function pageReady(){
   $.getJSON(allcardsLocation, function(data) {
       allcardsLocal = data;
   });
+
+  //Use this to update the banList
+  // $.getJSON(banListLocation, function(data) {
+  //     banListLocal = data;
+  //     updateBanList();
+  // });
 }
 
 function catchAdminPageInput(){
@@ -90,11 +98,13 @@ function attemptToAutoDraft(){
     return;
   }
 
+  clearTimeout(autoDraftTimeout);
+
   if(draftMasterObject.delayTime !== undefined){
-    setTimeout(performAutoDraft, draftMasterObject.delayTime);
+    autoDraftTimeout = setTimeout(performAutoDraft, draftMasterObject.delayTime);
   }
   else {
-    setTimeout(performAutoDraft, 3000);
+    autoDraftTimeout = setTimeout(performAutoDraft, autoDraftDelay);
   }
 }
 
@@ -126,6 +136,14 @@ function autoDraftCardForUser(autoDraftedUserId){
   savePickedCardToFirebase(getCardObject(cardToAutoDraft), autoDraftedUserId);
 
   goToNextTurn();
+}
+
+function updateBanList() {
+  // for(var i = 0; i < banListLocal.length; i++){
+  //   console.log(banListLocal[i]);
+  // }
+
+  saveNewBanList(banListLocal);
 }
 
 /* ~~~~~~~~~~~~~~~ UI Updates ~~~~~~~~~~~~~~~ */
@@ -246,6 +264,10 @@ function getVisualResultsRow(resultKey, result) {
     else if(killCount === 0 && voteCount === 0) {
       baseListItem.append('---');
     }
+  }
+
+  if(result.notes !== ''){
+    baseListItem.append("Notes: '" + result.notes + "'");
   }
 
   return baseListItem;
