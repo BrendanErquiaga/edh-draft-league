@@ -267,9 +267,8 @@ function getVisualResultsRow(resultKey, result) {
   }
 
   if(result.notes !== ''){
-    baseListItem.append(' || ');
-    baseListItem.append("'" + result.notes + "'");
-  }  
+    baseListItem.append("Notes: '" + result.notes + "'");
+  }
 
   return baseListItem;
 }
