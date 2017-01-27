@@ -102,7 +102,7 @@ function selectPlayer(playerInputObject) {
 
     $(playerInputObject).addClass('inactive');
 
-    updatePlayerResultsIcon(selectedPlayers.length, $(playerInputObject).attr('src'));
+    updatePlayerResultsIcon(selectedPlayers.length, $(playerInputObject).attr('src'),true);
 }
 
 function resetResultsData() {
@@ -134,10 +134,12 @@ function resetResultsData() {
         $(obj).removeClass('inactive');
     });
 
-    updatePlayerResultsIcon(1, '/img/icons/p1.png');
-    updatePlayerResultsIcon(2, '/img/icons/p2.png');
-    updatePlayerResultsIcon(3, '/img/icons/p3.png');
-    updatePlayerResultsIcon(4, '/img/icons/p4.png');
+    $('#matchSlipNotes').val("");
+
+    updatePlayerResultsIcon(1, '/img/unknown.jpg',false);
+    updatePlayerResultsIcon(2, '/img/unknown.jpg',false);
+    updatePlayerResultsIcon(3, '/img/unknown.jpg',false);
+    updatePlayerResultsIcon(4, '/img/unknown.jpg',false);
 
     selectedPlayers = [];
     killRecords = [];
@@ -231,12 +233,104 @@ function submitMatchResults() {
     resultsObject.voteRecords = voteRecords.sort();
     resultsObject.winnerId = winnerId;
     resultsObject.podId = getCombinedStringFromArray(resultsObject.players).hashCode();
+    resultsObject.notes = $('#matchSlipNotes').val();
 
     saveUnapprovedMatchResult(resultsObject);
 
-    alert("Match Result Submitted: \n" + JSON.stringify(resultsObject));
-    //TODO: Add Better Confirmation Feedback
+
+    $('#submittedSlipDisplay').html(getTableResultsRow(1,resultsObject));
+    $('#MatchSlip-Modal').fadeToggle('200');
     resetResultsData();
+}
+
+function getTableResultsRow(resultKey, result) {
+  var baseTableItem = $('<tr>', { class: 'data-row', id: resultKey}),
+      dateCell = $('<td>', { class: 'cell-date'}),
+      playersCell = $('<td>', {class: 'cell-players'}),
+      playerCellTable = $('<table>', {});
+
+  dateCell.html(getDateString(result.submissionDate));
+
+  baseTableItem.append(dateCell);
+
+  for(var playerIndex = 0; playerIndex < result.players.length; playerIndex++){
+    var playerId = result.players[playerIndex],
+        playerRow = $('<tr>', {}),
+        playerNameCell = $('<td>', {});
+
+    if(result.winnerId === playerId){
+      $(playerNameCell).addClass('winner');
+    }
+
+    playerNameCell.html(usersSnapshot[playerId].username);
+
+    playerRow.append(playerNameCell);
+    playerCellTable.append(playerRow);
+  }
+
+  playersCell.append(playerCellTable);
+  baseTableItem.append(playersCell);
+
+  var pointsCell = $('<td>', { class: 'cell-points'}),
+      pointsCellTable = $('<table>', {}),
+      killCount = 0,
+      voteCount = 0;
+
+  for(var playerIndex = 0; playerIndex < result.players.length; playerIndex++){
+    var playerId = result.players[playerIndex],
+        pointRow = $('<tr>', {}),
+        pointStringCell = $('<td>', {}),
+        cellString = '';
+
+    if(killCount < killLimit){
+      for(var killerIdIndex = 0; killerIdIndex < result.killRecords.length; killerIdIndex++){
+        if(result.killRecords[killerIdIndex] === playerId){
+          cellString += "K,";
+          killCount++;
+        }
+      }
+    }
+
+    if(voteCount < voteLimit){
+      for(var voterIdIndex = 0; voterIdIndex < result.voteRecords.length; voterIdIndex++){
+        if(result.voteRecords[voterIdIndex] === playerId){
+          cellString += "V,";
+          voteCount++;
+        }
+      }
+    }
+
+    if(result.winnerId === playerId){
+      cellString += "W,";
+    }
+
+    if(cellString === ''){
+      cellString = '-';
+    }
+    else {
+      cellString = cellString.slice(0, -1);//trim the trailing comma
+    }
+
+    pointStringCell.html(cellString);
+    pointRow.append(pointStringCell);
+    pointsCellTable.append(pointRow);
+  }
+
+  pointsCell.append(pointsCellTable);
+  baseTableItem.append(pointsCell);
+
+  var notesCell = $('<td>', { class: 'cell-notes'}),
+      notesCellTable = $('<table>', {}),
+      notesRow = $('<tr>', {}),
+      notesDeltaCell = $('<td>', {});
+
+  notesDeltaCell.html(result.notes);
+  notesRow.append(notesDeltaCell);
+  notesCellTable.append(notesRow);
+  notesCell.append(notesCellTable);
+  baseTableItem.append(notesCell);
+
+  return baseTableItem;
 }
 
 /* ~~~~~~~~~~~~~~~ UI Updates ~~~~~~~~~~~~~~~ */
@@ -262,11 +356,15 @@ function updateMatchSlipPlayerIcons() {
   });
 }
 
-function updatePlayerResultsIcon(index, imgSource) {
+function updatePlayerResultsIcon(index, imgSource, active) {
     var imageObject = $('#player' + index + 'ResultsDiv .playerResultsIcon');
 
     $(imageObject).attr('src', imgSource);
-    $(imageObject).removeClass('inactive');
+    if(active){
+      $(imageObject).removeClass('inactive');
+    } else {
+      $(imageObject).addClass('inactive');
+    }
 }
 
 function toggleResultsSubmittableUI(resultsCanBeSubmitted) {
