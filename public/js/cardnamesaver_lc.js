@@ -2,7 +2,7 @@
 <script>
 $.getJSON("js/json/allcards.json", function(data) {
 cardNameArray = [];
-splitCards = ["Life // Death","Fire // Ice","Stand // Deliver","Spite // Malice","Pain // Suffering","Assault // Battery","Wax // Wane","Illusion // Reality","Night // Day","Order // Chaos","Bound // Determined","Crime // Punishment","Hide // Seek","Hit // Run","Odds // Ends","Pure // Simple","Research // Development","Rise // Fall","Supply // Demand","Trial // Error","Boom // Bust","Dead // Gone","Rough // Tumble","Alive // Well","Armed // Dangerous","Beck // Call","Catch // Release","Down // Dirty","Far // Away","Flesh // Blood","Give // Take","Profit // Loss","Protect // Serve","Ready // Willing","Toil // Trouble","Turn // Burn","Wear // Tear"];
+splitCards = ["life // death","fire // ice","stand // deliver","spite // malice","pain // suffering","assault // battery","wax // wane","illusion // reality","night // day","order // chaos","bound // determined","crime // punishment","hide // seek","hit // run","odds // ends","pure // simple","research // development","rise // fall","supply // demand","trial // error","boom // bust","dead // gone","rough // tumble","alive // well","armed // dangerous","beck // call","catch // release","down // dirty","far // away","flesh // blood","give // take","profit // loss","protect // serve","ready // willing","toil // trouble","turn // burn","wear // tear","breaking // entering"];
 $.each(data, function(key, val) {
     if(data[key].layout != "vanguard" && data[key].layout != "split" && data[key].layout != "token" && data[key].layout != "plane"){
         cardNameArray.push(key.toString().toLowerCase());
