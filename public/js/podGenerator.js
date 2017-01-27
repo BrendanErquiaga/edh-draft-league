@@ -33,26 +33,42 @@ function catchPodGenerationPageInput() {
 function requestPods() {
   var generatedPodUL = $("#generatedPodSection ul");
 
-  if(selectedPlayers.length < podSize){
+  if(selectedPlayers.length === 0){
+    selectAllPlayers();
+    calculateAndDisplayPods();
+  } else if(selectedPlayers.length < podSize){
     return;
   } else if (selectedPlayers.length === podSize) {
     generatedPodUL.empty();
-
     displayPod(selectedPlayers);
   } else {
-    generatedPodUL.empty();
-
-    var tempPlayers = k_combinations(selectedPlayers,podSize);
-
-    tempPlayers = shuffle(tempPlayers);
-
-
-    tempPlayers = getUnusedPods(tempPlayers);
-
-    for(var i = 0; i < tempPlayers.length; i++){
-      displayPod(tempPlayers[i]);
-    }
+    calculateAndDisplayPods();
   }
+}
+
+function calculateAndDisplayPods() {
+  var generatedPodUL = $("#generatedPodSection ul");
+
+  generatedPodUL.empty();
+
+  var tempPlayers = k_combinations(selectedPlayers,podSize);
+
+  tempPlayers = shuffle(tempPlayers);
+
+
+  tempPlayers = getUnusedPods(tempPlayers);
+
+  for(var i = 0; i < tempPlayers.length; i++){
+    displayPod(tempPlayers[i]);
+  }
+}
+
+function selectAllPlayers() {
+  selectedPlayers = leagueDataObject[usersSnapshot[currentUserId].leagueId].members;
+
+  $('#player-icon-selection').children('input').each(function(i, obj) {
+      $(obj).addClass('inactive');
+  });
 }
 
 function getUnusedPods(podsToCheck) {
