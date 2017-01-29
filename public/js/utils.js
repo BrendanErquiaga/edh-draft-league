@@ -78,7 +78,7 @@ function getNextCardFromUsersQueue(currentUserIdToUse) {
 
 function getLastCardDraftedString() {
   var lastDraftObject = recentlyDraftCards[recentlyDraftCards.length - 1];
-  return usersSnapshot[lastDraftObject.drafterId].username + ' picked: ' + lastDraftObject.name;
+  return usersSnapshot[lastDraftObject.drafterId].username + ' picked ' + lastDraftObject.name;
 }
 
 function getTokenForNextDrafter() {
