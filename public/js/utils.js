@@ -214,7 +214,7 @@ function sendTurnAdvancedNotification() {
 
       if(usersSnapshot[getNextDrafterId()].fcm_token !== undefined && usersSnapshot[getNextDrafterId()].fcm_token !== null){
         sendTargetdTurnNotification();
-      }      
+      }
     }
     sendGlobalTurnNotification();
 }
@@ -291,8 +291,12 @@ function getNextTurnNotificationObject() {
           "title": "Somone picked a card",
           "body": "Its your turn!",
           "icon": "/img/icons/badge_c_512.png"
+      },
+      "data": {
+        type: "PickNotification"
       }
   };
+  
   notificationObject.notification.title = getLastCardDraftedString();
   notificationObject.notification.body = "It's your turn to draft!";
   notificationObject.notification.icon = usersSnapshot[getNextDrafterId()].profile_picture;

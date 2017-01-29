@@ -97,11 +97,25 @@ function getFirebaseData() {
     });
 
     messaging.onMessage(function(payload){
-      console.log(payload.notification.title + ' : ' + payload.notification.body);
+      handleNotification(payload);
     })
 
     $('.loadingSection').hide();
 }
+
+/* Notifications */
+function handleNotification(payload) {
+  if(payload.data.type === "PickNotification"){
+      $("#notification-message").html(payload.notification.title);
+      $("#notification-title").html(payload.notification.body);
+  } else {
+      $("#notification-message").html(payload.notification.body);
+      $("#notification-title").html(payload.notification.title);
+  }
+
+  $("#Notification-Modal").fadeToggle('200');
+}
+
 
 /*
 ~~~~~~~FIREBASE UPDATE~~~~~~~~~~
