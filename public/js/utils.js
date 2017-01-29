@@ -78,7 +78,7 @@ function getNextCardFromUsersQueue(currentUserIdToUse) {
 
 function getLastCardDraftedString() {
   var lastDraftObject = recentlyDraftCards[recentlyDraftCards.length - 1];
-  return usersSnapshot[lastDraftObject.drafterId].username + ' picked: ' + lastDraftObject.name;
+  return usersSnapshot[lastDraftObject.drafterId].username + ' picked ' + lastDraftObject.name;
 }
 
 function getTokenForNextDrafter() {
@@ -214,7 +214,7 @@ function sendTurnAdvancedNotification() {
 
       if(usersSnapshot[getNextDrafterId()].fcm_token !== undefined && usersSnapshot[getNextDrafterId()].fcm_token !== null){
         sendTargetdTurnNotification();
-      }      
+      }
     }
     sendGlobalTurnNotification();
 }
@@ -246,6 +246,25 @@ function sendGlobalTurnNotification(){
       },
       url: 'https://fcm.googleapis.com/fcm/send',
       data: JSON.stringify(getGroupTurnNotificationObject()),
+      success: function(response) {
+          //console.log('We did it', response);
+      },
+      failure: function(response) {
+          console.log('Well notification post failed', response);
+      },
+      contentType: "application/json",
+      dataType: 'json'
+  });
+}
+
+function sendQueuePickedNotification(userId, cardPicked, drafterName) {
+  $.ajax({
+      type: 'POST',
+      beforeSend: function(request) {
+          request.setRequestHeader("Authorization", "key=" + senderKey);
+      },
+      url: 'https://fcm.googleapis.com/fcm/send',
+      data: JSON.stringify(getQueuedCardRemovedNotification(userId, cardPicked, drafterName)),
       success: function(response) {
           //console.log('We did it', response);
       },
@@ -290,14 +309,37 @@ function getNextTurnNotificationObject() {
       "notification": {
           "title": "Somone picked a card",
           "body": "Its your turn!",
-          "icon": "/img/icons/badge_c_512.png"
+          "icon": "/img/icons/badge_c_512.png",
+          "click_action" : "https://edh-league.com"
+      },
+      "data": {
+        type: "PickNotification"
       }
   };
+
   notificationObject.notification.title = getLastCardDraftedString();
   notificationObject.notification.body = "It's your turn to draft!";
   notificationObject.notification.icon = usersSnapshot[getNextDrafterId()].profile_picture;
 
   notificationObject.to = getTokenForNextDrafter();
+
+  return notificationObject;
+}
+
+function getQueuedCardRemovedNotification(userId, card, drafterName) {
+  var notificationObject = {
+      "notification": {
+          "title": drafterName + " picked " + card ,
+          "body": card + " was removed from your queue",
+          "icon": "/img/icons/warning.png",
+          "click_action" : "https://edh-league.com"
+      },
+      "data": {
+        type: "QueuedCardRemoved"
+      }
+  };
+
+  notificationObject.to = usersSnapshot[userId].fcm_token;
 
   return notificationObject;
 }

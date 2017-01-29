@@ -97,10 +97,25 @@ function getFirebaseData() {
     });
 
     messaging.onMessage(function(payload){
-      console.log(payload.notification.title + ' : ' + payload.notification.body);
+      handleNotification(payload);
     })
 
     $('.loadingSection').hide();
+}
+
+/*
+~~~~~~~NOTIFICATIONS~~~~~~~~~~
+*/
+function handleNotification(payload) {
+  if(payload.data.type === "PickNotification"){
+      $("#notification-message").html(payload.notification.title);
+      $("#notification-title").html(payload.notification.body);
+  } else {
+      $("#notification-message").html(payload.notification.body);
+      $("#notification-title").html(payload.notification.title);
+  }
+
+  $("#Notification-Modal").fadeIn('200');
 }
 
 /*
@@ -311,7 +326,7 @@ function saveTurnOrderObject(tempTurnOrderObject){
 }
 
 //TODO: Don't delete entire queue object... seems excessive
-function cleanOutQueuedCards(cardLastPicked){
+function cleanOutQueuedCards(cardLastPicked, drafterName){
   var newQueueObject = {};
 
   queuedCardsSnapshot.forEach(function(childSnapshot) {
@@ -320,7 +335,8 @@ function cleanOutQueuedCards(cardLastPicked){
       newQueueObject[key] = Object.values(val);
       childSnapshot.forEach(function(cardObjectSnapshot) {
           if (cardObjectSnapshot.val() === cardLastPicked) {
-              console.log(cardLastPicked + ' was in someones queue, I am removing it');
+              //console.log(cardLastPicked + ' was in ' + key + 's queue, I am removing it');
+              sendQueuePickedNotification(key,cardLastPicked,drafterName);
               newQueueObject[key].splice($.inArray(cardLastPicked,newQueueObject[key]),1);
           }
       });
@@ -346,7 +362,7 @@ function savePickedCardToFirebase(cardObject, idToUse){
       pickTime: cardPickTime
   });
 
-  cleanOutQueuedCards(cardObject.name);
+  cleanOutQueuedCards(cardObject.name, usersSnapshot[idToUse].username);
   saveRecentlyPickedCards(cardObject.name, idToUse, cardPickTime);
   incrementCardsDraftedCounter();
 }

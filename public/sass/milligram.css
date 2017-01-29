@@ -816,26 +816,49 @@ footer p {
   .table-of-contents .active-internal {
     color: #8c8c8c; }
 
+.playerDeckSection {
+  margin-bottom: 3rem;
+  clear: both; }
+  .playerDeckSection .playerSelectionIcon {
+    float: left; }
+    @media (min-width: 1px) and (max-width: 1169px) {
+      .playerDeckSection .playerSelectionIcon {
+        margin-top: -1rem; } }
+
+.playerDeckTitle:after {
+  clear: both; }
+
 .accordion-toggle {
-  margin: 3rem 0 0 0;
+  margin: 0;
   cursor: pointer;
   text-align: center;
   margin-left: auto;
   margin-right: auto;
   position: relative; }
-  .accordion-toggle.open-accordion:after {
-    content: '';
-    width: 0;
-    height: 0;
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-    border-bottom: 7px solid #222;
-    margin-left: 10px;
-    position: absolute;
-    top: 40%; }
+  .decklists .accordion-toggle {
+    text-align: left; }
+  @media (min-width: 1170px) {
+    .accordion-toggle {
+      text-align: center;
+      margin: 3rem 0 0 0; } }
+  .accordion-toggle.open-accordion {
+    margin-bottom: 2.5rem; }
     @media (min-width: 1170px) {
-      .accordion-toggle.open-accordion:after {
-        top: 45%; } }
+      .accordion-toggle.open-accordion {
+        margin-bottom: 1rem; } }
+    .accordion-toggle.open-accordion:after {
+      content: '';
+      width: 0;
+      height: 0;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-bottom: 7px solid #222;
+      margin-left: 10px;
+      position: absolute;
+      top: 40%; }
+      @media (min-width: 1170px) {
+        .accordion-toggle.open-accordion:after {
+          top: 45%; } }
   .accordion-toggle.closed-accordion {
     margin-bottom: 3rem; }
     .accordion-toggle.closed-accordion:after {
@@ -853,7 +876,7 @@ footer p {
           top: 50%; } }
   @media (min-width: 1170px) {
     .accordion-toggle {
-      margin: 3rem 0 0 3rem;
+      margin: 3rem 0 0 0;
       text-align: left; } }
 
 .accordion-content {
@@ -861,14 +884,19 @@ footer p {
   margin: 1rem 0 0 0;
   max-height: 400px;
   overflow: scroll;
-  border: 1px solid #d1d1d1;
-  padding: 5px; }
+  border: 1px solid #d1d1d1; }
+  .accordion-content ul {
+    margin-bottom: 0; }
+  .accordion-content li {
+    list-style: none;
+    margin-bottom: 0;
+    padding: 3px; }
+    .accordion-content li:nth-child(odd) {
+      background-color: #f4f5f6; }
   @media (min-width: 1170px) {
     .accordion-content {
       border-width: 0 0 0 3px;
-      padding-left: 10px;
-      margin-left: 3rem;
-      margin-top: 2rem; } }
+      padding-left: 10px; } }
 
 .circular {
   text-align: center;
@@ -880,7 +908,8 @@ footer p {
   -webkit-border-radius: 150px;
   -moz-border-radius: 150px;
   border: 1px solid #000;
-  position: relative; }
+  position: relative;
+  margin-bottom: 1rem; }
 
 .alesha {
   background: url(../img/commanderIcons/alesha.jpg) no-repeat; }
@@ -943,7 +972,7 @@ footer p {
     padding-bottom: 5px; }
 
 .match-table tr.data-row:nth-child(odd) td {
-  background: #f2f2f2; }
+  background: #f4f5f6; }
   .dark .match-table tr.data-row:nth-child(odd) td {
     background: #333; }
 .match-table td table {
@@ -1036,7 +1065,7 @@ footer p {
 #generatedPodSection li {
   list-style: none; }
   #generatedPodSection li:nth-child(odd) {
-    background: #f2f2f2; }
+    background: #f4f5f6; }
 
 /* Admin page styles, can be moved to its own partial later */
 #resultsToApprove img {
@@ -1142,7 +1171,7 @@ footer p {
   border-radius: 50%;
   border: 1px solid #222;
   width: 50px;
-  height: auto;
+  height: 50px;
   margin-right: 1rem; }
   .playerSelectionIcon.winner {
     border: 3px solid #f4bf42; }

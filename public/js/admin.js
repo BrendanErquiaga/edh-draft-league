@@ -109,7 +109,6 @@ function attemptToAutoDraft(){
 }
 
 function performAutoDraft(){
-
   var nextDraftId = getNextDrafterId();
   //console.log('User: ' + usersSnapshot[nextDraftId].username + ', Autodraft: ' + usersSnapshot[nextDraftId].autoDraft);
 
@@ -123,13 +122,18 @@ function autoDraftCardForUser(autoDraftedUserId){
   var cardToAutoDraft = getNextCardFromUsersQueue(autoDraftedUserId);
 
   if(cardToAutoDraft === undefined){
-    console.log(usersSnapshot[autoDraftedUserId].username + ' didnt have a card in their queue, dont draft');
+    $("#notification-message").html(usersSnapshot[autoDraftedUserId].username + ' didnt have a card in their queue, dont draft');
+    $("#notification-title").html("Auto-Drafting Stopped");
+
+    $("#Notification-Modal").fadeToggle('200');
     return;
   }
 
   if(!cardIsFree(cardToAutoDraft)){
-    console.log('Well shit, autodraft tried to draft: ' + cardToAutoDraft + ' someone else has it, get the next one I guess?');
-    //TODO: Remove card from queue
+    $("#notification-message").html('Tried to draft: ' + cardToAutoDraft + ' someone else has it, get the next one I guess?');
+    $("#notification-title").html("Auto-Drafting Stopped");
+
+    $("#Notification-Modal").fadeToggle('200');
     return;
   }
 
