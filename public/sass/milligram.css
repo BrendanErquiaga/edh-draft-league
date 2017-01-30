@@ -1170,9 +1170,9 @@ footer p {
 .playerSelectionIcon {
   border-radius: 50%;
   border: 1px solid #222;
-  width: 50px;
-  height: 50px;
-  margin-right: 1rem; }
+  width: 40px;
+  height: 40px;
+  margin-right: .75rem; }
   .playerSelectionIcon.winner {
     border: 3px solid #f4bf42; }
 
