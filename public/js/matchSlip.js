@@ -13,6 +13,9 @@ $(document).ready(function() {
 });
 
 function pageReady() {
+    killRecords = [];
+    voteRecords = [];
+
     getFirebaseData();
 
     catchMatchSlipPageInput();
@@ -236,7 +239,6 @@ function submitMatchResults() {
     resultsObject.notes = $('#matchSlipNotes').val();
 
     saveUnapprovedMatchResult(resultsObject);
-
 
     $('#submittedSlipDisplay').html(getTableResultsRow(1,resultsObject));
     $('#MatchSlip-Modal').fadeToggle('200');
