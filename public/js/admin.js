@@ -56,7 +56,7 @@ function approveMatchResult(resultKey) {
   savePlayerStats(calculateNewPlayerStats(playerStatsSnapshot.val(),resultsToApproveSnapshot.val()[resultKey]));
   var newEloObject = calculateNewPlayerElo(playerEloSnapshot.val(),resultsToApproveSnapshot.val()[resultKey]);
   var newResultObject = getEloUpdatedMatchResult(newEloObject, resultsToApproveSnapshot.val()[resultKey]);
-  saveApprovedMatchResult(newResultObject);
+  saveApprovedMatchResult(getValidMatchResults(newResultObject));
   savePlayerElo(newEloObject);
   removeUnapprovedMatchResult(resultKey);
 }
@@ -73,6 +73,18 @@ function getEloUpdatedMatchResult(eloObject, matchResult) {
   }
 
   return tempResultObject;
+}
+
+function getValidMatchResults(matchResult) {
+  if(matchResult.voteRecords === undefined || matchResult.voteRecords === null){
+    matchResult.voteRecords = {};
+  }
+
+  if(matchResult.killRecords === undefined || matchResult.killRecords === null){
+    matchResult.killRecords = {};
+  }
+
+  return matchResult;
 }
 
 function denyMatchResult(resultKey) {
@@ -225,9 +237,11 @@ function getVisualResultsRow(resultKey, result) {
 
     baseListItem.append(playerImage);
 
-    for(var killerIdIndex = 0; killerIdIndex < result.killRecords.length; killerIdIndex++){
-      if(result.killRecords[killerIdIndex] === playerId){
-        killCount++;
+    if(result.killRecords !== undefined && result.killRecords !== null){
+      for(var killerIdIndex = 0; killerIdIndex < result.killRecords.length; killerIdIndex++){
+        if(result.killRecords[killerIdIndex] === playerId){
+          killCount++;
+        }
       }
     }
 
@@ -242,9 +256,11 @@ function getVisualResultsRow(resultKey, result) {
       }
     }
 
-    for(var voterIdIndex = 0; voterIdIndex < result.voteRecords.length; voterIdIndex++){
-      if(result.voteRecords[voterIdIndex] === playerId){
-        voteCount++;
+    if(result.voteRecords !== undefined && result.voteRecords !== null){
+      for(var voterIdIndex = 0; voterIdIndex < result.voteRecords.length; voterIdIndex++){
+        if(result.voteRecords[voterIdIndex] === playerId){
+          voteCount++;
+        }
       }
     }
 

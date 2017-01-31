@@ -330,7 +330,7 @@ function updateRoundTracker() {
 
     turnedOrderDiv.append($('<img>', {
         src: usersSnapshot[turnOrderObject.turnOrder[i]].profile_picture,
-        class: 'playerSelectionIcon ' + imageClass,
+        class: 'playerTurnIndicator ' + imageClass,
         id: 'selectionIcon_' + turnOrderObject.turnOrder[i]
     }));
 

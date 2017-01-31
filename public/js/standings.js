@@ -171,7 +171,7 @@ function getTableResultsRow(resultKey, result) {
         pointStringCell = $('<td>', {}),
         cellString = '';
 
-    if(killCount < killLimit){
+    if(killCount < killLimit && result.killRecords !== undefined){
       for(var killerIdIndex = 0; killerIdIndex < result.killRecords.length; killerIdIndex++){
         if(result.killRecords[killerIdIndex] === playerId){
           cellString += "K,";
@@ -180,7 +180,7 @@ function getTableResultsRow(resultKey, result) {
       }
     }
 
-    if(voteCount < voteLimit){
+    if(voteCount < voteLimit && result.voteRecords !== undefined){
       for(var voterIdIndex = 0; voterIdIndex < result.voteRecords.length; voterIdIndex++){
         if(result.voteRecords[voterIdIndex] === playerId){
           cellString += "V,";

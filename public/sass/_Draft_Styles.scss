@@ -169,6 +169,9 @@ section.draft-queue {
 	font-size: 2rem;
 	font-weight: bold;
 }
+
+$break-small: 700px;
+
 .turn-order {
 	padding: 1rem;
 	.activePlayer {
@@ -178,7 +181,28 @@ section.draft-queue {
 		width: 25px;
 		padding-bottom: 15px;
 		padding-right: 10px;
+		@media screen and (max-width: $break-small) {
+			width: 5vw;
+			padding-bottom: 3vw;
+			padding-right: 2vw;
+  	}
 	}
+}
+
+.playerTurnIndicator {
+		border-radius: 50%;
+		border: 1px solid $light-font;
+		width: 50px;
+		height: 50px;
+		margin-right: 1rem;
+		&.winner {
+			border: 3px solid #f4bf42;
+		}
+		@media screen and (max-width: $break-small) {
+			width: 10vw;
+			height: 10vw;
+			margin-right: 2vw;
+  	}
 }
 #errorMessage {
 	color: #f45042;
