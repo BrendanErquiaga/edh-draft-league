@@ -88,17 +88,21 @@ function getSValue(playerId, matchResult) {
     temp_SValue += win_SValue;
   }
 
-  for(var killerIdIndex = 0; killerIdIndex < matchResult.killRecords.length; killerIdIndex++){
-    if(matchResult.killRecords[killerIdIndex] === playerId){
-      killCount++;
+  if(matchResult.killRecords !== undefined && matchResult.killRecords !== null){
+    for(var killerIdIndex = 0; killerIdIndex < matchResult.killRecords.length; killerIdIndex++){
+      if(matchResult.killRecords[killerIdIndex] === playerId){
+        killCount++;
+      }
     }
   }
 
   temp_SValue += getKill_SValue(killCount);
 
-  for(var voterIdIndex = 0; voterIdIndex < matchResult.voteRecords.length; voterIdIndex++){
-    if(matchResult.voteRecords[voterIdIndex] === playerId){
-      voteCount++;
+  if(matchResult.voteRecords !== undefined && matchResult.voteRecords !== null){
+    for(var voterIdIndex = 0; voterIdIndex < matchResult.voteRecords.length; voterIdIndex++){
+      if(matchResult.voteRecords[voterIdIndex] === playerId){
+        voteCount++;
+      }
     }
   }
 
@@ -187,15 +191,19 @@ function calculateNewPlayerStats(statsObjectToEdit, matchResult) {
     }
     statsObjectToEdit[playerId].gamesPlayed++;
 
-    for(var killerIdIndex = 0; killerIdIndex < matchResult.killRecords.length; killerIdIndex++){
-      if(matchResult.killRecords[killerIdIndex] === playerId){
-        statsObjectToEdit[playerId].kills++;
+    if(matchResult.killRecords !== undefined && matchResult.killRecords !== null){
+      for(var killerIdIndex = 0; killerIdIndex < matchResult.killRecords.length; killerIdIndex++){
+        if(matchResult.killRecords[killerIdIndex] === playerId){
+          statsObjectToEdit[playerId].kills++;
+        }
       }
     }
 
-    for(var voterIdIndex = 0; voterIdIndex < matchResult.voteRecords.length; voterIdIndex++){
-      if(matchResult.voteRecords[voterIdIndex] === playerId){
-        statsObjectToEdit[playerId].votesEarned++;
+    if(matchResult.voteRecords !== undefined && matchResult.voteRecords !== null){
+      for(var voterIdIndex = 0; voterIdIndex < matchResult.voteRecords.length; voterIdIndex++){
+        if(matchResult.voteRecords[voterIdIndex] === playerId){
+          statsObjectToEdit[playerId].votesEarned++;
+        }
       }
     }
 
