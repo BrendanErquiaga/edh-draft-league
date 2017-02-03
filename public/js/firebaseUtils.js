@@ -181,7 +181,7 @@ function updateRecentlyDraftedCards(snapshot){
     recentlyDraftCards = [];
   }
 
-  if($(document.body).hasClass('draft')) {
+  if($(document.body).hasClass('draft') || $(document.body).hasClass('drafted-cards')) {
     updateRecentlyDraftedCardsUI();
   }
 }

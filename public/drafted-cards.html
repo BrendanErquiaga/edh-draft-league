@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="author" content="Andrew Maul, Brendan Erquiaga">
 	<meta name="description" content="EDH Draft League 2016">
-	<title>Draft Hub</title>
+	<title>Drafted Cards</title>
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
 	<link rel="stylesheet" href="sass/milligram.css">
@@ -45,14 +45,14 @@
 	</script>
 </head>
 
-<body class="draft">
+<body class="drafted-cards">
 	<ul class="nav">
 		<li><a href="#" class="active">Draft</a>
 			<ul>
-				<li><a href="index.html" class="active">Draft</a></li>
-				<li><a href="match-slip.html">Match Slip</a></li>
+				<li><a href="index.html">Draft</a></li>
+				<li><a href="match-slip.html" >Match Slip</a></li>
 				<li><a href="pod-generator.html">Pod Generator</a></li>
-				<li><a href="drafted-cards.html">Drafted Cards</a></li>
+				<li><a href="drafted-cards.html" class="active">Drafted Cards</a></li>
 			</ul>
 		</li>
 		<li><a href="rules.html">Rules</a></li>
@@ -86,15 +86,8 @@
 		</section>
 	</header>
 	<main class="container">
-		<section class="dark recentlyDrafted">
-			<div class="ticker-wrap" id="recentlyDraftedList">
-				<div class="ticker">
-					<div class="ticker__item">Recently Drafted:</div>
-				</div>
-			</div>
-		</section>
-		<section class="header">
-			<h2>Draft Hub</h2>
+		<section>
+			<h1>Drafted Cards</h1>
 		</section>
 		<div class="loadingSection" style="padding: 2rem 2.5rem;">
 			<h3>Setting up the bits and boops...</h3>
@@ -107,79 +100,24 @@
 			<p>The league will be starting soon!</p>
 		</div>
 		<div class="authenticatedUserSection" style="display:none;">
-		<section class="draft-info">
-				<div id="draftInfoSection">
-					<div><p>Round # <br /><span id="roundNumberIndicator"></span></p></div>
-					<div><p>Total Drafted <br /><span id="cardsDraftedIndicator"></span></p></div>
-					<div>
-						<span>Enable All Notifications</span>
-						<br/>
-						<label class="switch">
-							<input type="checkbox" id="globalSubscribeSwitch">
-							<div class="slider round"></div>
-						</label>
-					</div>
-				</div>
-				<div class="turn-order">
-					<div id="player-icon-section"></div>
-				</div>
-		</section>
-		<section class="draft-queue">
-			<h2>Pick a card</h2>
-			<div id="errorMessage"></div>
-			<div id="confirmMessage"></div>
-				<div id="userInput">
-					<input type="text" class="form-control typeahead" id="form-card" placeholder="Enter card name">
-					<button type="submit" class="button" id="modal_Draft-Modal"></button>
-					<div class="clearfix"></div>
-				</div>
-				<div id="queueSection">
-					<label class="switch">
-					<input type="checkbox" id="autoDraftSwitch">
-					<div class="slider round"></div>
-				</label>
-					<span class="switch-caption">Enable Auto Draft</span>
-					<div class="clearfix"></div>
-					<h2 id="queueHeader">Queue (<span id="userQueuedCardCountIndicator"></span>)</h2>
-					<button type="submit" class="button-add button-disabled" id="draft-first-item">Draft Top Card</button>
-					<div class="clearfix"></div>
-					<ul id="queuedCards">
-					</ul>
-				</div>
-			</div><!--End Auth'd User Section-->
-		</section>
+			<section id="draftedCardSection">
+					<ul id="draftedCardList"></ul>
+			</section>
+		</div>
 		<footer>
 			<section>
 				<p>Magic the Gathering, FNM is TM and copyright Wizards of the Coast, Inc, a subsidiary of Hasbro, Inc. All rights reserved. This site is unaffiliated. /legalese
-					<br /> Site built using <a href="https://milligram.github.io/" target="new">Milligram.io</a>, <a href="http://www.chartjs.org/" target="new">Chart.js</a>, and <a href="https://www.w3.org/TR/css-flexbox-1/" target="new">Flexbox</a>.
+					<br /> Site built using <a href="https://milligram.github.io/" target="new">Milligram.io</a> and <a href="http://www.chartjs.org/" target="new">Chart.js</a>
 				</p>
 			</section>
 		</footer>
 	</main>
-	<!-- Draft Confirmation Modal -->
-	<div class="modal" id="Draft-Modal">
-		<div class="modal-content">
-			<div class="modal-header">
-				<span class="modal-close">&times;</span>
-				<h3>Confirm Draft Pick</h3>
-			</div>
-			<div class="modal-body row">
-				<div class="column">
-					<img id="cardToView" src="img/draft-placeholder.jpg">
-				</div>
-				<div class="column">
-					<p>You are drafting <span class="drafted-card">CARD NAME</span> Are you sure?</p>
-					<button class="button-add" id="draft-confirm-selection">Confirm Pick</button>
-				</div>
-			</div>
-		</div>
-	</div><!-- End of draft confirmation modal -->
 	<!-- General Notification Modal -->
 	<div class="modal" id="Notification-Modal">
 		<div class="modal-content">
 			<div class="modal-header">
 				<span class="modal-close">&times;</span>
-				<h3 id="notification-title"></h3>
+				<h3 id="notification-title">Confirm Draft Pick</h3>
 			</div>
 			<div class="modal-body row">
 				<div class="column">
@@ -188,14 +126,13 @@
 			</div>
 		</div>
 	</div><!-- End of General Notification modal -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script>
+		window.jQuery || document.write('<script src="js/vendor/jquery.min.js"><\/script>')
+	</script>
+	<script data-main="js/draftedCards" src="require.js"></script>
+	<script src="js/firebaseLogin.js"></script>
+	<script src="js/frontend.js"></script>
 </body>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script>
-	window.jQuery || document.write('<script src="js/vendor/jquery.min.js"><\/script>')
-</script>
-<script src="js/typeahead.js"></script>
-<script data-main="js/draft" src="require.js"></script>
-<script src="js/firebaseLogin.js"></script>
-<script src="js/frontend.js"></script>
 </html>
