@@ -15,7 +15,9 @@ var usersSnapshot,
     resultsToApproveSnapshot,
     playerStatsSnapshot,
     playerEloSnapshot,
-    matchResultsSnapshot;
+    matchResultsSnapshot,
+    waiverWireData,
+    waiverWiredPairSnapshot;
 
 function getFirebaseData() {
     if(!dataScriptLoaded && !userScriptLoaded){
@@ -91,6 +93,10 @@ function getFirebaseData() {
         updateApprovableResultsObject(snapshot);
     });
 
+    firebase.database().ref('waiverWireData').on('value', function(snapshot) {
+        updateWaiverWireSnapshot(snapshot);
+    });
+
     //Should be last because it attempts to autodraft
     firebase.database().ref('turns').on('value', function(snapshot){
         updateTurnOrderData(snapshot);
@@ -121,6 +127,14 @@ function handleNotification(payload) {
 /*
 ~~~~~~~FIREBASE UPDATE~~~~~~~~~~
 */
+
+function updateWaiverWireSnapshot(snapshot) {
+  waiverWireData = snapshot.val();
+
+  if($(document.body).hasClass('waiver')) {
+    updateWaiverWireData();
+  }
+}
 
 function updatePlayerEloSnapshot(snapshot) {
   playerEloSnapshot = snapshot;
