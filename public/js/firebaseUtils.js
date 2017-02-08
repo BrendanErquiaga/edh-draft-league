@@ -64,10 +64,6 @@ function getFirebaseData() {
       firebase.database().ref('playerStats').on('value', function(snapshot) {
           updatePlayerStatsSnapshot(snapshot);
       });
-
-      firebase.database().ref('playerElo').on('value', function(snapshot) {
-          updatePlayerEloSnapshot(snapshot);
-      });
     }
 
     //Standings only section
@@ -75,11 +71,11 @@ function getFirebaseData() {
       firebase.database().ref('playerStats').on('value', function(snapshot) {
           updatePlayerStatsSnapshot(snapshot);
       });
-
-      firebase.database().ref('playerElo').on('value', function(snapshot) {
-          updatePlayerEloSnapshot(snapshot);
-      });
     }
+
+    firebase.database().ref('playerElo').on('value', function(snapshot) {
+        updatePlayerEloSnapshot(snapshot);
+    });
 
     firebase.database().ref('matchResults').on('value', function(snapshot) {
         updatematchResultsSnapshot(snapshot);
@@ -141,6 +137,8 @@ function updatePlayerEloSnapshot(snapshot) {
 
   if($(document.body).hasClass('standings')) {
     updateEloStandingsChart();
+  } else if($(document.body).hasClass('waiver')) {
+    updateWaiverWireOrder();
   }
 }
 

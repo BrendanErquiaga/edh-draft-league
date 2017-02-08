@@ -3,7 +3,8 @@
 var recentlyDraftedCardArrayLimit = 0,
     slipOptionsObject = {
       minimumSwipeVelocity: 0.4
-    };
+    },
+    waiverWireOrder = [];
 
 $(document).ready(function() {
     requirejs(['./utils','./firebaseUtils', './slip'], function(){
@@ -30,9 +31,57 @@ function pageReady(){
 }
 
 function updateWaiverWireData() {
-  var nextWireDate = new Date(waiverWireData.nextWireDate);
-  console.log(nextWireDate);
-  initializeClock('clockdiv', nextWireDate);
+  initializeClock('clockdiv', new Date(waiverWireData.nextWireDate));
+}
+
+function updateWaiverWireOrder() {
+  createWaiverWireOrder();
+  updateWaiverWireVisuals();
+}
+
+function createWaiverWireOrder() {
+  playerEloSnapshot.forEach(function(childSnapshot) {
+      var key = childSnapshot.key;
+      var val = childSnapshot.val();
+
+      val.key = key;
+
+      waiverWireOrder.push(val);
+  });
+
+  waiverWireOrder = waiverWireOrder.sort(compareByElo);
+}
+
+function updateWaiverWireVisuals() {
+  var waiverOrderDiv = $('.waiver-wire-order #player-icon-section');
+  waiverOrderDiv.empty();
+
+  for(var i = 0; i < waiverWireOrder.length;i++){
+    var arrowSrc = '/img/icons/arrow-right.svg';
+
+    waiverOrderDiv.append($('<img>', {
+        src: usersSnapshot[waiverWireOrder[i].key].profile_picture,
+        class: 'playerTurnIndicator ',
+        id: 'selectionIcon_' + waiverWireOrder[i].key
+    }));
+
+    if(i !== waiverWireOrder.length - 1){
+      waiverOrderDiv.append($('<img>', {
+          src: arrowSrc,
+          class: 'turnDirectionIndicator'
+      }));
+    }
+  }
+}
+
+function compareByElo(a,b) {
+  if(a.currentElo < b.currentElo){
+    return -1;
+  } else if(a.currentElo > b.currentElo) {
+    return 1;
+  } else {
+    return 0;
+  }
 }
 
 function getTimeRemaining(endtime) {
