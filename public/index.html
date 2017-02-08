@@ -54,7 +54,7 @@
 	}
 
 	#clockdiv>div {
-		padding: 6px;
+		padding: 10px;
 		border-radius: 3px;
 		background: #9b4dca;
 		display: inline-block;
@@ -151,12 +151,21 @@
 							<div class="smalltext">Seconds</div>
 						</div>
 					</div>
-					<div id="waiver-wire-pairs"></div>
-					<button type="submit" class="button-add" id="add-waiver-pair">+</button>
+					<div class="clearfix"></div>
+					<button type="submit" class="button-outline" id="reset-waiver-pairs" style="margin-top:10px">Reset</button>
+					<ol id="waiver-wire-pairs"></ol>
+					<div class="clearfix"></div>
+					<div id="errorMessage"></div>
+					<div id="confirmMessage"></div>
+					<div id="userInput" >
+						<input type="text" class="form-control typeahead" id="waiver-pick-up" placeholder="Card To Pick Up">
+						<input type="text" class="form-control typeahead" id="waiver-drop" placeholder="Card To Drop">
+						<button type="submit" class="button-add" id="add-waiver-pair">+</button>
+					</div>
 				</div>
 			</section>
 			<section id="waiverOrder">
-				<div class="waiver-wire-order">
+				<div class="turn-order">
 					<h3>Waiver Wire Order</h3>
 					<div id="player-icon-section"></div>
 				</div>

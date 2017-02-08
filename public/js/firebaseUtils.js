@@ -17,7 +17,7 @@ var usersSnapshot,
     playerEloSnapshot,
     matchResultsSnapshot,
     waiverWireData,
-    waiverWiredPairSnapshot;
+    waiverWirePairsSnapshot;
 
 function getFirebaseData() {
     if(!dataScriptLoaded && !userScriptLoaded){
@@ -77,6 +77,10 @@ function getFirebaseData() {
         updatePlayerEloSnapshot(snapshot);
     });
 
+    firebase.database().ref('waiverWirePairs').on('value', function(snapshot) {
+        updateWaiverWirePairsSnapshot(snapshot);
+    });
+
     firebase.database().ref('matchResults').on('value', function(snapshot) {
         updatematchResultsSnapshot(snapshot);
     });
@@ -123,6 +127,10 @@ function handleNotification(payload) {
 /*
 ~~~~~~~FIREBASE UPDATE~~~~~~~~~~
 */
+
+function updateWaiverWirePairsSnapshot(snapshot) {
+  waiverWirePairsSnapshot = snapshot;
+}
 
 function updateWaiverWireSnapshot(snapshot) {
   waiverWireData = snapshot.val();
@@ -422,6 +430,18 @@ function saveCardToUserQueue(card){
 
 function updateUserQueuedCards() {
   firebase.database().ref('queuedUserCards/').child(currentUserId).set(userQueuedCards);
+}
+
+function saveWaiverWirePairToUser(waiverPair){
+    var newPairRef = firebase.database().ref('waiverWirePairs').child(currentUserId).push();
+    newPairRef.set({
+        cardToPickUp: waiverPair.cardToPickUp,
+        cardToDrop: waiverPair.cardToDrop
+    });
+}
+
+function clearWaiverWiresForUser(){
+    var newPairRef = firebase.database().ref('waiverWirePairs').child(currentUserId).set({});
 }
 
 function saveNewBanList(banList) {

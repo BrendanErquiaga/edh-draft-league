@@ -2,6 +2,7 @@
 
 var currentUserId,
     userQueuedCards,
+    userWaiverWires,
     notificationToken,
     dataScriptLoaded = false,
     userScriptLoaded = false;
@@ -134,6 +135,24 @@ function updateReferencesWithUserId(){
   firebase.database().ref('queuedUserCards/' + currentUserId + '/').on('value', function(snapshot) {
       updateQueuedCardData(snapshot);
   });
+
+  firebase.database().ref('waiverWirePairs/' + currentUserId + '/').on('value', function(snapshot) {
+      updateWaiverWirePairs(snapshot);
+  });
+}
+
+function updateWaiverWirePairs(snapshot) {
+  userWaiverWires = snapshot.val();
+
+  if(userWaiverWires !== null){
+    userWaiverWires = Object.values(userWaiverWires);
+  } else {
+    userWaiverWires = [];
+  }
+
+  if($(document.body).hasClass('waiver')) {
+    updateWaiverWirePairVisuals();
+  }
 }
 
 function updateQueuedCardData(snapshot){
