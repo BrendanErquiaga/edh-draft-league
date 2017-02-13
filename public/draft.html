@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="author" content="Andrew Maul, Brendan Erquiaga">
 	<meta name="description" content="EDH Draft League 2016">
-	<title>League Hub</title>
+	<title>Draft Hub</title>
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
 	<link rel="stylesheet" href="sass/milligram.css">
@@ -43,45 +43,16 @@
 		};
 		firebase.initializeApp(config);
 	</script>
-	<style>
-	#clockdiv {
-		font-family: sans-serif;
-		color: #fff;
-		display: inline-block;
-		font-weight: 100;
-		text-align: center;
-		font-size: 20px;
-	}
-
-	#clockdiv>div {
-		padding: 10px;
-		border-radius: 3px;
-		background: #9b4dca;
-		display: inline-block;
-	}
-
-	#clockdiv div>span {
-		padding: 10px;
-		border-radius: 3px;
-		background: #461e5f;
-		display: inline-block;
-	}
-
-	.smalltext {
-		padding-top: 2px;
-		font-size: 12px;
-	}
-</style>
 </head>
 
-<body class="waiver">
+<body class="draft">
 	<ul class="nav">
-		<li><a href="#" class="active">Hub</a>
+		<li><a href="#" class="active">Draft</a>
 			<ul>
-				<li><a href="index.html" class="active">Waiver Wire</a></li>
+				<li><a href="index.html" >Waiver Wire</a></li>
 				<li><a href="match-slip.html">Match Slip</a></li>
 				<li><a href="pod-generator.html">Pod Generator</a></li>
-				<li><a href="draft.html">Draft</a></li>
+				<li><a href="draft.html" class="active">Draft</a></li>
 				<li><a href="drafted-cards.html">Drafted Cards</a></li>
 			</ul>
 		</li>
@@ -116,63 +87,68 @@
 		</section>
 	</header>
 	<main class="container">
+		<section class="dark recentlyDrafted">
+			<div class="ticker-wrap" id="recentlyDraftedList">
+				<div class="ticker">
+					<div class="ticker__item">Recently Drafted:</div>
+				</div>
+			</div>
+		</section>
 		<section class="header">
-			<h2>League Hub</h2>
+			<h2>Draft Hub</h2>
 		</section>
 		<div class="loadingSection" style="padding: 2rem 2.5rem;">
-			<h3>Calm the fuck down, shit is loading...</h3>
+			<h3>Setting up the bits and boops...</h3>
 		</div>
 		<div class="unauthenticatedUserSection" style="display:none; padding: 2rem 2.5rem;">
 			<h2>You have to sign in to use this page</h2>
 		</div>
 		<div class="nonLeagueSection" style="display:none; padding: 2rem 2.5rem;">
 			<h4>You are not in an active league</h4>
-			<p>But why tho?</p>
+			<p>The league will be starting soon!</p>
 		</div>
 		<div class="authenticatedUserSection" style="display:none;">
-			<section id="upcomingWaivers">
-				<div class="waiver-wires">
-					<h3>Next Waiver Wire</h3>
-					<div id="clockdiv">
-						<div>
-							<span class="days"></span>
-							<div class="smalltext">Days</div>
-						</div>
-						<div>
-							<span class="hours"></span>
-							<div class="smalltext">Hours</div>
-						</div>
-						<div>
-							<span class="minutes"></span>
-							<div class="smalltext">Minutes</div>
-						</div>
-						<div>
-							<span class="seconds"></span>
-							<div class="smalltext">Seconds</div>
-						</div>
-					</div>
-					<div class="clearfix"></div>
-					<button type="submit" class="button-danger" id="reset-waiver-pairs" style="margin-top:10px">Reset</button>
-					<ol id="waiver-wire-pairs"></ol>
-					<div class="clearfix"></div>
-					<div id="errorMessage"></div>
-					<div id="confirmMessage"></div>
-					<div id="userInput" >
-						<input type="text" class="form-control typeahead" id="waiver-pick-up" placeholder="Card To Pick Up">
-						<input type="text" class="form-control typeahead" id="waiver-drop" placeholder="Card To Drop">
-						<button type="submit" class="button-add" id="add-waiver-pair">+</button>
+		<section class="draft-info">
+				<div id="draftInfoSection">
+					<div><p>Round # <br /><span id="roundNumberIndicator"></span></p></div>
+					<div><p>Total Drafted <br /><span id="cardsDraftedIndicator"></span></p></div>
+					<div>
+						<span>Enable All Notifications</span>
+						<br/>
+						<label class="switch">
+							<input type="checkbox" id="globalSubscribeSwitch">
+							<div class="slider round"></div>
+						</label>
 					</div>
 				</div>
-			</section>
-			<section id="waiverOrder">
 				<div class="turn-order">
-					<h3>Waiver Wire Order</h3>
 					<div id="player-icon-section"></div>
 				</div>
-			</section>
-
-		</div>
-		<!--End Auth'd User Section-->
+		</section>
+		<section class="draft-queue">
+			<h2>Pick a card</h2>
+			<div id="errorMessage"></div>
+			<div id="confirmMessage"></div>
+				<div id="userInput">
+					<input type="text" class="form-control typeahead" id="form-card" placeholder="Enter card name">
+					<button type="submit" class="button" id="modal_Draft-Modal"></button>
+					<div class="clearfix"></div>
+				</div>
+				<div id="queueSection">
+					<label class="switch">
+					<input type="checkbox" id="autoDraftSwitch">
+					<div class="slider round"></div>
+				</label>
+					<span class="switch-caption">Enable Auto Draft</span>
+					<div class="clearfix"></div>
+					<h2 id="queueHeader">Queue (<span id="userQueuedCardCountIndicator"></span>)</h2>
+					<button type="submit" class="button-add button-disabled" id="draft-first-item">Draft Top Card</button>
+					<div class="clearfix"></div>
+					<ul id="queuedCards">
+					</ul>
+				</div>
+			</div><!--End Auth'd User Section-->
+		</section>
 		<footer>
 			<section>
 				<p>Magic the Gathering, FNM is TM and copyright Wizards of the Coast, Inc, a subsidiary of Hasbro, Inc. All rights reserved. This site is unaffiliated. /legalese
@@ -181,6 +157,24 @@
 			</section>
 		</footer>
 	</main>
+	<!-- Draft Confirmation Modal -->
+	<div class="modal" id="Draft-Modal">
+		<div class="modal-content">
+			<div class="modal-header">
+				<span class="modal-close">&times;</span>
+				<h3>Confirm Draft Pick</h3>
+			</div>
+			<div class="modal-body row">
+				<div class="column">
+					<img id="cardToView" src="img/draft-placeholder.jpg">
+				</div>
+				<div class="column">
+					<p>You are drafting <span class="drafted-card">CARD NAME</span> Are you sure?</p>
+					<button class="button-add" id="draft-confirm-selection">Confirm Pick</button>
+				</div>
+			</div>
+		</div>
+	</div><!-- End of draft confirmation modal -->
 	<!-- General Notification Modal -->
 	<div class="modal" id="Notification-Modal">
 		<div class="modal-content">
@@ -194,8 +188,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
-	<!-- End of General Notification modal -->
+	</div><!-- End of General Notification modal -->
 </body>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -203,8 +196,7 @@
 	window.jQuery || document.write('<script src="js/vendor/jquery.min.js"><\/script>')
 </script>
 <script src="js/typeahead.js"></script>
-<script data-main="js/waiver" src="require.js"></script>
+<script data-main="js/draft" src="require.js"></script>
 <script src="js/firebaseLogin.js"></script>
 <script src="js/frontend.js"></script>
-
 </html>
