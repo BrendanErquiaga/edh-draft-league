@@ -15,7 +15,9 @@ var usersSnapshot,
     resultsToApproveSnapshot,
     playerStatsSnapshot,
     playerEloSnapshot,
-    matchResultsSnapshot;
+    matchResultsSnapshot,
+    waiverWireData,
+    waiverWirePairsSnapshot;
 
 function getFirebaseData() {
     if(!dataScriptLoaded && !userScriptLoaded){
@@ -62,10 +64,6 @@ function getFirebaseData() {
       firebase.database().ref('playerStats').on('value', function(snapshot) {
           updatePlayerStatsSnapshot(snapshot);
       });
-
-      firebase.database().ref('playerElo').on('value', function(snapshot) {
-          updatePlayerEloSnapshot(snapshot);
-      });
     }
 
     //Standings only section
@@ -73,11 +71,15 @@ function getFirebaseData() {
       firebase.database().ref('playerStats').on('value', function(snapshot) {
           updatePlayerStatsSnapshot(snapshot);
       });
-
-      firebase.database().ref('playerElo').on('value', function(snapshot) {
-          updatePlayerEloSnapshot(snapshot);
-      });
     }
+
+    firebase.database().ref('playerElo').on('value', function(snapshot) {
+        updatePlayerEloSnapshot(snapshot);
+    });
+
+    firebase.database().ref('waiverWirePairs').on('value', function(snapshot) {
+        updateWaiverWirePairsSnapshot(snapshot);
+    });
 
     firebase.database().ref('matchResults').on('value', function(snapshot) {
         updatematchResultsSnapshot(snapshot);
@@ -89,6 +91,10 @@ function getFirebaseData() {
 
     firebase.database().ref('resultsWaitingApproval').on('value', function(snapshot) {
         updateApprovableResultsObject(snapshot);
+    });
+
+    firebase.database().ref('waiverWireData').on('value', function(snapshot) {
+        updateWaiverWireSnapshot(snapshot);
     });
 
     //Should be last because it attempts to autodraft
@@ -122,11 +128,25 @@ function handleNotification(payload) {
 ~~~~~~~FIREBASE UPDATE~~~~~~~~~~
 */
 
+function updateWaiverWirePairsSnapshot(snapshot) {
+  waiverWirePairsSnapshot = snapshot;
+}
+
+function updateWaiverWireSnapshot(snapshot) {
+  waiverWireData = snapshot.val();
+
+  if($(document.body).hasClass('waiver')) {
+    updateWaiverWireData();
+  }
+}
+
 function updatePlayerEloSnapshot(snapshot) {
   playerEloSnapshot = snapshot;
 
   if($(document.body).hasClass('standings')) {
     updateEloStandingsChart();
+  } else if($(document.body).hasClass('waiver')) {
+    updateWaiverWireOrder();
   }
 }
 
@@ -410,6 +430,18 @@ function saveCardToUserQueue(card){
 
 function updateUserQueuedCards() {
   firebase.database().ref('queuedUserCards/').child(currentUserId).set(userQueuedCards);
+}
+
+function saveWaiverWirePairToUser(waiverPair){
+    var newPairRef = firebase.database().ref('waiverWirePairs').child(currentUserId).push();
+    newPairRef.set({
+        cardToPickUp: waiverPair.cardToPickUp,
+        cardToDrop: waiverPair.cardToDrop
+    });
+}
+
+function clearWaiverWiresForUser(){
+    var newPairRef = firebase.database().ref('waiverWirePairs').child(currentUserId).set({});
 }
 
 function saveNewBanList(banList) {

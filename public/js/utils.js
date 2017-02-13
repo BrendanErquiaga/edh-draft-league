@@ -46,6 +46,24 @@ function cardIsFree(card) {
     }
 }
 
+function currentUserHasCard(card) {
+  var currentUserHasCard = false;
+  draftedCardsSnapshot.forEach(function(childSnapshot) {
+      var key = childSnapshot.key;
+      var val = childSnapshot.val();
+      if(childSnapshot.key === currentUserId){
+        childSnapshot.forEach(function(cardObjectSnapshot) {
+            if (cardObjectSnapshot.val().name == card) {
+                currentUserHasCard = true;
+                return;
+            }
+        });
+      }
+  });
+
+  return currentUserHasCard;
+}
+
 function cardIsBanned(card) {
     if ($.inArray(card, bannedCardList) !== -1) {
         return true;
