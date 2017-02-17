@@ -180,22 +180,8 @@ function updateWaiverWireData() {
 }
 
 function updateWaiverWireOrder() {
-  createWaiverWireOrder();
+  waiverWireOrder = createWaiverWireOrder();
   updateWaiverWireVisuals();
-}
-
-function createWaiverWireOrder() {
-  waiverWireOrder = [];
-  playerEloSnapshot.forEach(function(childSnapshot) {
-      var key = childSnapshot.key;
-      var val = childSnapshot.val();
-
-      val.key = key;
-
-      waiverWireOrder.push(val);
-  });
-
-  waiverWireOrder = waiverWireOrder.sort(compareByElo);
 }
 
 function updateWaiverWirePairVisuals() {
@@ -232,16 +218,6 @@ function updateWaiverWireVisuals() {
           class: 'turnDirectionIndicator'
       }));
     }
-  }
-}
-
-function compareByElo(a,b) {
-  if(a.currentElo < b.currentElo){
-    return -1;
-  } else if(a.currentElo > b.currentElo) {
-    return 1;
-  } else {
-    return 0;
   }
 }
 

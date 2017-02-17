@@ -47,21 +47,25 @@ function cardIsFree(card) {
 }
 
 function currentUserHasCard(card) {
-  var currentUserHasCard = false;
+  return checkIfUserHasCard(currentUserId, card);
+}
+
+function checkIfUserHasCard(userID, card) {
+  var userHasCard = false;
   draftedCardsSnapshot.forEach(function(childSnapshot) {
       var key = childSnapshot.key;
       var val = childSnapshot.val();
-      if(childSnapshot.key === currentUserId){
+      if(childSnapshot.key === userID){
         childSnapshot.forEach(function(cardObjectSnapshot) {
             if (cardObjectSnapshot.val().name == card) {
-                currentUserHasCard = true;
+                userHasCard = true;
                 return;
             }
         });
       }
   });
 
-  return currentUserHasCard;
+  return userHasCard;
 }
 
 function cardIsBanned(card) {
@@ -520,3 +524,30 @@ function combinations(set) {
 	}
 	return combs;
 }
+
+function createWaiverWireOrder() {
+  var tempWaiverWireOrder = [];
+  playerEloSnapshot.forEach(function(childSnapshot) {
+      var key = childSnapshot.key;
+      var val = childSnapshot.val();
+
+      val.key = key;
+
+      tempWaiverWireOrder.push(val);
+  });
+
+  tempWaiverWireOrder = tempWaiverWireOrder.sort(compareByElo);
+
+  return tempWaiverWireOrder;
+}
+
+function compareByElo(a,b) {
+  if(a.currentElo < b.currentElo){
+    return -1;
+  } else if(a.currentElo > b.currentElo) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+

@@ -5,7 +5,9 @@ var draftMasterId,
     recentlyDraftedCardArrayLimit = 3,
     adminSectionShown = false,
     autoDraftDelay = 7000,
-    autoDraftTimeout;
+    autoDraftTimeout,
+    waiverWireOrder = [],
+    waiverWirePicks = [];
 
 $(document).ready(function() {
     requirejs(['./utils','./firebaseUtils', './calculations'], function(){
@@ -41,6 +43,86 @@ function catchAdminPageInput(){
   $('#resultsToApprove').on('click',"input", function(e) {
       approveOrDenyMatchResult($(this));
   });
+
+  $('#acceptWaiverWires').on('click', function(e) {
+      acceptWaiverWires();
+  });
+}
+
+function acceptWaiverWires() {
+  var cardsPickedUp = [];
+  waiverWirePicks = [];
+  waiverWireOrder = createWaiverWireOrder();
+
+  for(var i = 0; i < waiverWireOrder.length; i++){
+    var waiverWireKeysToRemove = [];
+    waiverWirePairsSnapshot.forEach(function(childSnapshot) {
+        var key = childSnapshot.key;
+        if(key === waiverWireOrder[i].key){
+          var pickedForThisUser = false;
+          childSnapshot.forEach(function(waiverWireSnapshot) {
+              var cardToPickUp = waiverWireSnapshot.val().cardToPickUp;
+
+              if(!cardIsFree(cardToPickUp) || !cardIsFreeThisWire(cardsPickedUp, cardToPickUp)){
+                waiverWireKeysToRemove.push(waiverWireSnapshot.key);
+              }
+
+              if(!pickedForThisUser && cardIsFreeThisWire(cardsPickedUp, cardToPickUp) && cardIsFree(cardToPickUp)){
+                var waiverWirePickup = waiverWireSnapshot.val();
+                waiverWirePickup.userId = waiverWireOrder[i].key;
+                waiverWirePicks.push(waiverWirePickup);
+                cardsPickedUp.push(cardToPickUp);
+                pickedForThisUser = true;
+
+                waiverWireKeysToRemove.push(waiverWireSnapshot.key);
+              }
+          });
+        }
+    });
+
+    for(var j = 0; j < waiverWireKeysToRemove.length; j++){
+      removeWaiverWirePairFromFirebase(waiverWireKeysToRemove[j], waiverWireOrder[i].key);
+    }
+  }
+
+  processWaiverWirePicks();
+}
+
+function processWaiverWirePicks() {
+  for(var i = 0; i < waiverWirePicks.length; i++){
+    console.log(usersSnapshot[waiverWirePicks[i].userId].username + ': - ' + waiverWirePicks[i].cardToDrop + ', + ' + waiverWirePicks[i].cardToPickUp);
+    removeCardFromUsersList(waiverWirePicks[i].cardToDrop,waiverWirePicks[i].userId);
+    savePickedCardToFirebase(getCardObject(waiverWirePicks[i].cardToPickUp), waiverWirePicks[i].userId);
+  }
+}
+
+function removeCardFromUsersList(cardToDrop, userId) {
+  var cardToRemoveSnapshot = {};
+  draftedCardsSnapshot.forEach(function(childSnapshot) {
+      var key = childSnapshot.key;
+      var val = childSnapshot.val();
+      if(key === userId){
+        var cardFound = false;
+        childSnapshot.forEach(function(cardSnapshot) {
+          if(!cardFound && cardSnapshot.val().name === cardToDrop){
+            cardToRemoveSnapshot = cardSnapshot;
+            cardFound = true;
+          }
+        });
+      }
+  });
+
+  if(cardToRemoveSnapshot !== {}){
+    removeDraftedCardFromFirebase(cardToRemoveSnapshot.key, userId);
+  }
+}
+
+function cardIsFreeThisWire(wireCardsPickedUp, cardToPickUp) {
+  if ($.inArray(cardToPickUp, wireCardsPickedUp) === -1) {
+      return true;
+  } else {
+    return false;
+  }
 }
 
 function approveOrDenyMatchResult(inputObject) {
@@ -174,15 +256,20 @@ function updateLeagueDataUI() {
     return;
   }
 
-  $("#leagueName").html(leagueDataObject[currentUserId].name);
+  // $("#leagueName").html(leagueDataObject[currentUserId].name);
+  //
+  // var leagueMembersUL = $("#leagueMembers");
+  //
+  // leagueMembersUL.empty();
+  //
+  // for(var i = 0; i < leagueDataObject[currentUserId].members.length; i++){
+  //   leagueMembersUL.append('<li>' + getDisplayNameFromID(leagueDataObject[currentUserId].members[i]) + '</li>');
+  // }
+}
 
-  var leagueMembersUL = $("#leagueMembers");
-
-  leagueMembersUL.empty();
-
-  for(var i = 0; i < leagueDataObject[currentUserId].members.length; i++){
-    leagueMembersUL.append('<li>' + getDisplayNameFromID(leagueDataObject[currentUserId].members[i]) + '</li>');
-  }
+function updateWaiverWireData() {
+  //initializeClock('clockdiv', new Date(waiverWireData.nextWireDate));
+  $("#waiverWireTime").html(new Date(waiverWireData.nextWireDate));
 }
 
 function updateResultsToApproveUI() {
