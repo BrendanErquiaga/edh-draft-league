@@ -49,18 +49,20 @@ function calculateNewPlayerElo(eloObjectToEdit, matchResult) {
   var convertedAverageRating = getConvertedRating(averageElo);
 
   $.each(tempEloObject,function(playerId, playerEloObject) {
-    var convertedPlayerRating = getConvertedRating(playerEloObject.currentElo),
-        expectedScore = convertedPlayerRating / (convertedPlayerRating + convertedAverageRating),
-        sValue = getSValue(playerId, matchResult),
-        newEloRating = 0;
+    if($.inArray(playerId, matchResult.players) !== -1){
+      var convertedPlayerRating = getConvertedRating(playerEloObject.currentElo),
+          expectedScore = convertedPlayerRating / (convertedPlayerRating + convertedAverageRating),
+          sValue = getSValue(playerId, matchResult),
+          newEloRating = 0;
 
-    newEloRating = Math.floor(playerEloObject.currentElo + kValue * (sValue - expectedScore));
+      newEloRating = Math.floor(playerEloObject.currentElo + kValue * (sValue - expectedScore));
 
-    playerEloObject.eloDelta = Math.floor(newEloRating - playerEloObject.currentElo);
+      playerEloObject.eloDelta = Math.floor(newEloRating - playerEloObject.currentElo);
 
-    playerEloObject.currentElo = newEloRating;
+      playerEloObject.currentElo = newEloRating;
 
-    playerEloObject = calculateNewEloHighLows(playerEloObject);
+      playerEloObject = calculateNewEloHighLows(playerEloObject);
+    }
   });
 
   return tempEloObject;
