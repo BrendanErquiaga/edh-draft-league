@@ -9,7 +9,9 @@ var recentlyDraftedCardArrayLimit = 0,
       'rgba(153, 102, 255, 0.7)',
       'rgba(255, 159, 64, 0.7)',
       'rgba(111, 64, 255, 0.7)',
-      'rgba(10, 162, 43, 0.7)'
+      'rgba(10, 162, 43, 0.7)',
+      'rgba(245, 66, 101, 0.7)',
+      'rgba(96, 207, 255, 0.7)'
     ];
 
 $(document).ready(function() {
@@ -24,14 +26,17 @@ function pageReady() {
 
 function updateEloStandingsChart() {
     var eloData = [],
-        chartLabels = [];
+        chartLabels = [],
+        sortedPlayerElo = [];
 
     $('#eloStandings').replaceWith('<canvas id="eloStandings"></canvas>');//Delete the old chart
 
-    playerEloSnapshot.forEach(function(obj) {
-        eloData.push(obj.val().currentElo);
-        chartLabels.push(usersSnapshot[obj.key].username.substr(0, usersSnapshot[obj.key].username.indexOf(' ')));
-    });
+    sortedPlayerElo = createWaiverWireOrder();
+
+    for(var i = sortedPlayerElo.length - 1; i >= 0; i--){
+      eloData.push(sortedPlayerElo[i].currentElo);
+      chartLabels.push(usersSnapshot[sortedPlayerElo[i].key].username.substr(0, usersSnapshot[sortedPlayerElo[i].key].username.indexOf(' ')));
+    }
 
     var ctx = $("#eloStandings");
     var eloStandingsChart = new Chart(ctx, {
