@@ -94,7 +94,7 @@ function getFirebaseData() {
     });
 
     firebase.database().ref('waiverWireData').on('value', function(snapshot) {
-        updateWaiverWireSnapshot(snapshot);
+        updateWaiverWireDataSnapshot(snapshot);
     });
 
     //Should be last because it attempts to autodraft
@@ -132,10 +132,10 @@ function updateWaiverWirePairsSnapshot(snapshot) {
   waiverWirePairsSnapshot = snapshot;
 }
 
-function updateWaiverWireSnapshot(snapshot) {
+function updateWaiverWireDataSnapshot(snapshot) {
   waiverWireData = snapshot.val();
 
-  if($(document.body).hasClass('waiver')) {
+  if($(document.body).hasClass('waiver') || $(document.body).hasClass('admin')) {
     updateWaiverWireData();
   }
 }
@@ -387,6 +387,12 @@ function savePickedCardToFirebase(cardObject, idToUse){
   incrementCardsDraftedCounter();
 }
 
+function removeDraftedCardFromFirebase(cardKey, userId) {
+  var cardToRemoveRef = draftedCardsRef.child(userId).child(cardKey);
+
+  cardToRemoveRef.remove();
+}
+
 function incrementCardsDraftedCounter() {
   var newCount = 0;
 
@@ -442,6 +448,12 @@ function saveWaiverWirePairToUser(waiverPair){
 
 function clearWaiverWiresForUser(){
     var newPairRef = firebase.database().ref('waiverWirePairs').child(currentUserId).set({});
+}
+
+function removeWaiverWirePairFromFirebase(waiverPairKey, userId) {
+  var waiverPairToRemove = firebase.database().ref('waiverWirePairs').child(userId).child(waiverPairKey);
+
+  waiverPairToRemove.remove();
 }
 
 function saveNewBanList(banList) {

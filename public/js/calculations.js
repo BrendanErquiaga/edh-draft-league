@@ -24,7 +24,6 @@ function recalculatePlayerElo(){
     //TODO Save out Elo Delta
   });
 
-  //console.log(newEloObject);
   savePlayerElo(newEloObject);
 }
 
