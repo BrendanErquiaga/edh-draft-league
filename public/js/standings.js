@@ -91,7 +91,7 @@ function updateEloStandingsChart() {
 }
 
 function updatePlayerStatsTable() {
-  var statsTable = $(".standings-table table");
+  var statsTable = $(".standings-table");
 
   statsTable.empty();
 
