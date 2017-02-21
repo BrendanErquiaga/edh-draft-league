@@ -507,6 +507,7 @@ footer {
 	}
 }
 .standings-table {
+	max-width: 100%;
 	@extend .generic-table;
 	tr.data-row:nth-child(odd){
 		.dark & {

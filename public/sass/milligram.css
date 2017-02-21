@@ -1011,26 +1011,28 @@ footer p {
   width: 25%;
   padding-left: 5px; }
 
-.dark .standings-table tr.data-row:nth-child(odd) {
-  background: #333; }
-.dark .standings-table tr.data-row:nth-child(odd) td {
-  border-bottom: 0.1rem solid #404040;
-  border-top: 0.1rem solid #404040; }
-.standings-table th.cell-kills, .standings-table th.cell-votes, .standings-table td.cell-kills, .standings-table td.cell-votes {
-  text-align: right; }
-  .standings-table th.cell-kills td, .standings-table th.cell-votes td, .standings-table td.cell-kills td, .standings-table td.cell-votes td {
+.standings-table {
+  max-width: 100%; }
+  .dark .standings-table tr.data-row:nth-child(odd) {
+    background: #333; }
+  .dark .standings-table tr.data-row:nth-child(odd) td {
+    border-bottom: 0.1rem solid #404040;
+    border-top: 0.1rem solid #404040; }
+  .standings-table th.cell-kills, .standings-table th.cell-votes, .standings-table td.cell-kills, .standings-table td.cell-votes {
     text-align: right; }
-.standings-table th.cell-votes, .standings-table td.cell-votes {
-  padding-right: 5px; }
-  @media (min-width: 1170px) {
-    .standings-table th.cell-votes, .standings-table td.cell-votes {
-      padding-right: 15px; } }
-.standings-table th.cell-players, .standings-table td.cell-players {
-  padding-left: 5px; }
-.standings-table th {
-  border-bottom: 0.1rem solid #404040; }
-.standings-table td {
-  border: none; }
+    .standings-table th.cell-kills td, .standings-table th.cell-votes td, .standings-table td.cell-kills td, .standings-table td.cell-votes td {
+      text-align: right; }
+  .standings-table th.cell-votes, .standings-table td.cell-votes {
+    padding-right: 5px; }
+    @media (min-width: 1170px) {
+      .standings-table th.cell-votes, .standings-table td.cell-votes {
+        padding-right: 15px; } }
+  .standings-table th.cell-players, .standings-table td.cell-players {
+    padding-left: 5px; }
+  .standings-table th {
+    border-bottom: 0.1rem solid #404040; }
+  .standings-table td {
+    border: none; }
 
 @media (min-width: 1170px) {
   #queuedCards {
