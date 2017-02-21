@@ -99,7 +99,7 @@ function updatePlayerStatsTable() {
     statsTable.append(getPlayerStatsTableRow(obj.key, obj.val()));
   });
 
-  $(statsTable).prepend('<tr class="data-header-fixed"><th class="cell-players">Players</th><th class="cell-games">Games</th><th class="cell-wins">Wins</th><th class="cell-kills">Kills</th><th class="cell-votes">Votes</th></tr>');
+  $(statsTable).prepend('<tr class="data-header-fixed"><th class="cell-players">Players</th><th class="cell-games">Games</th><th class="cell-wins">Wins</th><th class="cell-kills">Kills</th><th class="cell-votes">Votes</th><th class="cell-votes">Win %</th><th class="cell-votes">KPG</th><th class="cell-votes">VPG</th></tr>');
 }
 
 function updateMatchRecordsTable() {
@@ -120,19 +120,28 @@ function getPlayerStatsTableRow(playerId, playerStatObject) {
         playerGameCountCell = $('<td>', {class: 'cell-games'}),
         playerWinCountCell = $('<td>', {class: 'cell-wins'}),
         playerKillCountCell = $('<td>', {class: 'cell-kills'}),
-        playerVoteCountCell = $('<td>', {class: 'cell-votes'});
+        playerVoteCountCell = $('<td>', {class: 'cell-votes'}),
+        playerWinPercentCell = $('<td>', {class: 'cell-votes'}),
+        playerKPGCell = $('<td>', {class: 'cell-votes'}),
+        playerVPGCell = $('<td>', {class: 'cell-votes'});
 
     playerNameCell.html(usersSnapshot[playerId].username);
     playerGameCountCell.html(playerStatObject.gamesPlayed);
     playerWinCountCell.html(playerStatObject.gamesWon);
     playerKillCountCell.html(playerStatObject.kills);
     playerVoteCountCell.html(playerStatObject.votesEarned);
+    playerWinPercentCell.html(getWinPercentage(playerStatObject.gamesPlayed, playerStatObject.gamesWon));
+    playerKPGCell.html(getKillsPerGame(playerStatObject.gamesPlayed, playerStatObject.kills));
+    playerVPGCell.html(getVotesPerGame(playerStatObject.gamesPlayed, playerStatObject.votesEarned));
 
     baseRowObject.append(playerNameCell);
     baseRowObject.append(playerGameCountCell);
     baseRowObject.append(playerWinCountCell);
     baseRowObject.append(playerKillCountCell);
     baseRowObject.append(playerVoteCountCell);
+    baseRowObject.append(playerWinPercentCell);
+    baseRowObject.append(playerKPGCell);
+    baseRowObject.append(playerVPGCell);
 
     return baseRowObject;
 }
@@ -241,4 +250,19 @@ function getTableResultsRow(resultKey, result) {
   baseTableItem.append(eloCell);
 
   return baseTableItem;
+}
+
+function getWinPercentage(gamesPlayed, gamesWon) {
+  var winPercentage = gamesWon / gamesPlayed;
+  winPercentage = Math.round(winPercentage * 100);
+
+  return winPercentage.toString() + '%';
+}
+
+function getKillsPerGame(gamesPlayed, totalKills) {
+  return Math.round((totalKills / gamesPlayed) * 100) / 100;
+}
+
+function getVotesPerGame(gamesPlayed, totalVotes) {
+  return Math.round((totalVotes / gamesPlayed) * 100) / 100;
 }
