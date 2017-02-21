@@ -29,6 +29,8 @@ function recalculatePlayerElo(){
     //newEloObject = calculateNewPlayerElo(newEloObject, matchResult);
 
     newEloObject = calculateNewPlayerWinElo(newEloObject, matchResult);
+
+    //TODO Save Elo Delta to Match Results (getEloUpdatedMatchResult)
   });
 
   savePlayerElo(newEloObject);
