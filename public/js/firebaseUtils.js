@@ -456,6 +456,12 @@ function removeWaiverWirePairFromFirebase(waiverPairKey, userId) {
   waiverPairToRemove.remove();
 }
 
+function saveNewWaiverWireDate(dateString) {
+  firebase.database().ref('waiverWireData/').set({
+    nextWireDate: dateString
+  });
+}
+
 function saveNewBanList(banList) {
   firebase.database().ref('/').update({
     banList: banList

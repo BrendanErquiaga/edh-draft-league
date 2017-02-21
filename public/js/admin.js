@@ -3,6 +3,7 @@
 var draftMasterId,
     currentlyDraftMaster = false,
     recentlyDraftedCardArrayLimit = 3,
+    daysBetweenEachWireDate = 7,
     adminSectionShown = false,
     autoDraftDelay = 7000,
     autoDraftTimeout,
@@ -47,6 +48,30 @@ function catchAdminPageInput(){
   $('#acceptWaiverWires').on('click', function(e) {
       acceptWaiverWires();
   });
+}
+
+function setupAutomaticWaiver() {
+  var timeDifference = new Date(waiverWireData.nextWireDate).getTime() - Date.now();
+
+  setTimeout(performAutoWaiver, timeDifference);
+}
+
+function performAutoWaiver() {
+  if(currentlyDraftMaster){
+    acceptWaiverWires();
+    var nextWaiverDate = addDays(Date.now(), daysBetweenEachWireDate);
+    saveNewWaiverWireDate(nextWaiverDate.toJSON());
+    updateMasterDrafterStatus(false);
+  }
+  else {
+    console.log("GTFO You aren't the Waiver Master");
+  }
+}
+
+function addDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
 }
 
 function acceptWaiverWires() {
@@ -178,6 +203,7 @@ function updateMasterDrafterStatus(masterDrafterClientEnabled){
     draftMasterId = Date.now();
     currentlyDraftMaster = true;
     saveMasterDrafterStatus();
+    setupAutomaticWaiver();
   }
   else {
     currentlyDraftMaster = false;
