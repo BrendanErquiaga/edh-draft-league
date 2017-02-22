@@ -18,7 +18,9 @@ var playerElo = {},
     sValue_win = 1,
     sValue_lose = 0,
     sValue_vote = 0.25,
-    sValue_kill = 0.33;
+    sValue_kill = 0.33,
+    provisionalGamesCount = 5,
+    provisionalGameKValueMultiplier = 1.5;
 
 function recalculatePlayerElo(){
   var newEloObject = {};
@@ -86,7 +88,13 @@ function calculateNewPlayerWinElo(eloObjectToEdit, matchResult, playerIds) {
           sValue = getSValue_Win(playerId, matchResult),
           newEloRating = 0;
 
-      newEloRating = Math.floor(playerEloObject.winElo + kValue_winElo * (sValue - expectedScore));
+      playerEloObject.provisionalGamesLeft--;
+
+      if(playerEloObject.provisionalGamesLeft <= 0){
+        newEloRating = Math.floor(playerEloObject.winElo + kValue_winElo * (sValue - expectedScore));
+      } else {
+        newEloRating = Math.floor(playerEloObject.winElo + (kValue_winElo * provisionalGameKValueMultiplier) * (sValue - expectedScore));
+      }
 
       playerEloObject.winElo = newEloRating;
     }
@@ -104,7 +112,11 @@ function calculateNewPlayerVoteElo(eloObjectToEdit, matchResult, playerIds) {
           sValue = getSValue_Vote(playerId, matchResult),
           newEloRating = 0;
 
-      newEloRating = Math.floor(playerEloObject.voteElo + kValue_voteElo * (sValue - expectedScore));
+      if(playerEloObject.provisionalGamesLeft <= 0){
+        newEloRating = Math.floor(playerEloObject.voteElo + kValue_voteElo * (sValue - expectedScore));
+      } else {
+        newEloRating = Math.floor(playerEloObject.voteElo + (kValue_voteElo * provisionalGameKValueMultiplier) * (sValue - expectedScore));
+      }
 
       playerEloObject.voteElo = newEloRating;
     }
@@ -122,7 +134,11 @@ function calculateNewPlayerKillElo(eloObjectToEdit, matchResult, playerIds) {
           sValue = getSValue_Kill(playerId, matchResult),
           newEloRating = 0;
 
-      newEloRating = Math.floor(playerEloObject.killElo + kValue_voteElo * (sValue - expectedScore));
+      if(playerEloObject.provisionalGamesLeft <= 0){
+        newEloRating = Math.floor(playerEloObject.killElo + kValue_killElo * (sValue - expectedScore));
+      } else {
+        newEloRating = Math.floor(playerEloObject.killElo + (kValue_killElo * provisionalGameKValueMultiplier) * (sValue - expectedScore));
+      }
 
       playerEloObject.killElo = newEloRating;
     }
@@ -332,6 +348,7 @@ function getBaseAggregateEloObject() {
   tempBaseElo.killElo = defaultElo;
   tempBaseElo.maxElo = defaultElo;
   tempBaseElo.minElo = defaultElo;
+  tempBaseElo.provisionalGamesLeft = provisionalGamesCount;
   tempBaseElo.eloDelta = 0;
 
   return tempBaseElo;
