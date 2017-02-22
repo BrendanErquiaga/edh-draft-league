@@ -12,31 +12,39 @@ var playerElo = {},
     firstVote_SValue = 0,
     secondVote_SValue = 1.5,
     thirdVote_SValue = 2.5,
-    kValue_winElo = 100,
-    kValue_voteElo = 100,
-    kValue_killElo = 100,
+    kValue_winElo = 75,
+    kValue_voteElo = 75,
+    kValue_killElo = 75,
     sValue_win = 1,
     sValue_lose = 0,
     sValue_vote = 0.25,
-    sValue_kill = 0.33;
+    sValue_kill = 0.33,
+    provisionalGamesCount = 5,
+    provisionalGameKValueMultiplier = 2,
+    podScalingMultiplier = 0.5;
 
 function recalculatePlayerElo(){
-  var newEloObject = {};
+  var newEloObject = {},
+      newEloDeltadMatchResults = [];
+
+  playedPodsData = [];//Reset played pods count
 
   matchResultsSnapshot.forEach(function(obj) {
     var matchResult = obj.val();
 
     newEloObject = calculateNewPlayerAggregateElo(newEloObject, matchResult);
 
-    //TODO Save Elo Delta to Match Results (getEloUpdatedMatchResult)
+    newEloDeltadMatchResults[obj.key] = getEloUpdatedMatchResult(newEloObject, matchResult);
   });
 
+  saveUpdatedMatchResults(newEloDeltadMatchResults);
   savePlayerElo(newEloObject);
 }
 
 function calculateNewPlayerAggregateElo(eloObjectToEdit, matchResult) {
   var playerIds = [],
-      tempEloObject = eloObjectToEdit;
+      tempEloObject = eloObjectToEdit,
+      podScaling = getPodScalingValue(matchResult.podId);
 
   if(tempEloObject === null){
     tempEloObject = {};
@@ -50,15 +58,31 @@ function calculateNewPlayerAggregateElo(eloObjectToEdit, matchResult) {
     }
   }
 
-  tempEloObject = calculateNewPlayerWinElo(tempEloObject, matchResult, playerIds);
-  tempEloObject = calculateNewPlayerVoteElo(tempEloObject, matchResult, playerIds);
-  tempEloObject = calculateNewPlayerKillElo(tempEloObject, matchResult, playerIds);
+  tempEloObject = calculateNewPlayerWinElo(tempEloObject, matchResult, playerIds, podScaling);
+  tempEloObject = calculateNewPlayerVoteElo(tempEloObject, matchResult, playerIds, podScaling);
+  tempEloObject = calculateNewPlayerKillElo(tempEloObject, matchResult, playerIds, podScaling);
 
   tempEloObject = calculateAggregatedElo(tempEloObject);
 
-  //console.log(tempEloObject);
-
   return tempEloObject;
+}
+
+function getPodScalingValue(podId) {
+  var podScaling = 1;
+
+  if(playedPodsData[podId] !== undefined){
+    playedPodsData[podId].playedCount = playedPodsData[podId].playedCount + 1;
+    for(var i = 1; i < playedPodsData[podId].playedCount; i++){
+      podScaling = podScaling * podScalingMultiplier;
+    }
+    //console.log("!This pod has been played: " + playedPodsData[podId].playedCount + ' times. Heres the multiplier: ' + podScaling);
+  } else {
+    playedPodsData[podId] = {};
+    playedPodsData[podId].playedCount = 1;
+  }
+  savePodScalingData();
+
+  return podScaling;
 }
 
 function calculateAggregatedElo(eloObjectToEdit) {
@@ -77,7 +101,7 @@ function calculateAggregatedElo(eloObjectToEdit) {
   return tempEloObject;
 }
 
-function calculateNewPlayerWinElo(eloObjectToEdit, matchResult, playerIds) {
+function calculateNewPlayerWinElo(eloObjectToEdit, matchResult, playerIds, podScaling) {
   var averageElo = getAverageEloForMatch(eloObjectToEdit, matchResult, "winElo");
 
   $.each(eloObjectToEdit,function(playerId, playerEloObject) {
@@ -86,7 +110,13 @@ function calculateNewPlayerWinElo(eloObjectToEdit, matchResult, playerIds) {
           sValue = getSValue_Win(playerId, matchResult),
           newEloRating = 0;
 
-      newEloRating = Math.floor(playerEloObject.winElo + kValue_winElo * (sValue - expectedScore));
+      playerEloObject.provisionalGamesLeft--;
+
+      if(playerEloObject.provisionalGamesLeft <= 0){
+        newEloRating = Math.floor(playerEloObject.winElo + (kValue_winElo * podScaling) * (sValue - expectedScore));
+      } else {
+        newEloRating = Math.floor(playerEloObject.winElo + ((kValue_winElo * provisionalGameKValueMultiplier) * podScaling) * (sValue - expectedScore));
+      }
 
       playerEloObject.winElo = newEloRating;
     }
@@ -95,7 +125,7 @@ function calculateNewPlayerWinElo(eloObjectToEdit, matchResult, playerIds) {
   return eloObjectToEdit;
 }
 
-function calculateNewPlayerVoteElo(eloObjectToEdit, matchResult, playerIds) {
+function calculateNewPlayerVoteElo(eloObjectToEdit, matchResult, playerIds, podScaling) {
   var averageElo = getAverageEloForMatch(eloObjectToEdit, matchResult, "voteElo");
 
   $.each(eloObjectToEdit,function(playerId, playerEloObject) {
@@ -104,7 +134,11 @@ function calculateNewPlayerVoteElo(eloObjectToEdit, matchResult, playerIds) {
           sValue = getSValue_Vote(playerId, matchResult),
           newEloRating = 0;
 
-      newEloRating = Math.floor(playerEloObject.voteElo + kValue_voteElo * (sValue - expectedScore));
+      if(playerEloObject.provisionalGamesLeft <= 0){
+        newEloRating = Math.floor(playerEloObject.voteElo + (kValue_voteElo * podScaling) * (sValue - expectedScore));
+      } else {
+        newEloRating = Math.floor(playerEloObject.voteElo + ((kValue_voteElo * provisionalGameKValueMultiplier) * podScaling) * (sValue - expectedScore));
+      }
 
       playerEloObject.voteElo = newEloRating;
     }
@@ -113,7 +147,7 @@ function calculateNewPlayerVoteElo(eloObjectToEdit, matchResult, playerIds) {
   return eloObjectToEdit;
 }
 
-function calculateNewPlayerKillElo(eloObjectToEdit, matchResult, playerIds) {
+function calculateNewPlayerKillElo(eloObjectToEdit, matchResult, playerIds, podScaling) {
   var averageElo = getAverageEloForMatch(eloObjectToEdit, matchResult, "killElo");
 
   $.each(eloObjectToEdit,function(playerId, playerEloObject) {
@@ -122,7 +156,11 @@ function calculateNewPlayerKillElo(eloObjectToEdit, matchResult, playerIds) {
           sValue = getSValue_Kill(playerId, matchResult),
           newEloRating = 0;
 
-      newEloRating = Math.floor(playerEloObject.killElo + kValue_voteElo * (sValue - expectedScore));
+      if(playerEloObject.provisionalGamesLeft <= 0){
+        newEloRating = Math.floor(playerEloObject.killElo + (kValue_killElo * podScaling) * (sValue - expectedScore));
+      } else {
+        newEloRating = Math.floor(playerEloObject.killElo + ((kValue_killElo * provisionalGameKValueMultiplier) * podScaling) * (sValue - expectedScore));
+      }
 
       playerEloObject.killElo = newEloRating;
     }
@@ -332,6 +370,7 @@ function getBaseAggregateEloObject() {
   tempBaseElo.killElo = defaultElo;
   tempBaseElo.maxElo = defaultElo;
   tempBaseElo.minElo = defaultElo;
+  tempBaseElo.provisionalGamesLeft = provisionalGamesCount;
   tempBaseElo.eloDelta = 0;
 
   return tempBaseElo;
