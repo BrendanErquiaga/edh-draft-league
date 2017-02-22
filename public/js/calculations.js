@@ -13,8 +13,8 @@ var playerElo = {},
     secondVote_SValue = 1.5,
     thirdVote_SValue = 2.5,
     kValue_winElo = 100,
-    kValue_voteElo = 50,
-    kValue_killElo = 50,
+    kValue_voteElo = 100,
+    kValue_killElo = 100,
     sValue_win = 1,
     sValue_lose = 0,
     sValue_vote = 0.25,
@@ -26,9 +26,7 @@ function recalculatePlayerElo(){
   matchResultsSnapshot.forEach(function(obj) {
     var matchResult = obj.val();
 
-    //newEloObject = calculateNewPlayerElo(newEloObject, matchResult);
-
-    newEloObject = calculateNewPlayerWinElo(newEloObject, matchResult);
+    newEloObject = calculateNewPlayerAggregateElo(newEloObject, matchResult);
 
     //TODO Save Elo Delta to Match Results (getEloUpdatedMatchResult)
   });
@@ -36,9 +34,8 @@ function recalculatePlayerElo(){
   savePlayerElo(newEloObject);
 }
 
-function calculateNewPlayerWinElo(eloObjectToEdit, matchResult) {
-  var averageElo = 0,
-      playerIds = [],
+function calculateNewPlayerAggregateElo(eloObjectToEdit, matchResult) {
+  var playerIds = [],
       tempEloObject = eloObjectToEdit;
 
   if(tempEloObject === null){
@@ -49,34 +46,119 @@ function calculateNewPlayerWinElo(eloObjectToEdit, matchResult) {
     playerIds.push(matchResult.players[i]);
 
     if(tempEloObject[playerIds[i]] === undefined){
-      tempEloObject[playerIds[i]] = getBaseEloObject();
+      tempEloObject[playerIds[i]] = getBaseAggregateEloObject();
     }
   }
 
-  averageElo = getAverageEloForMatch(tempEloObject, matchResult);
+  tempEloObject = calculateNewPlayerWinElo(tempEloObject, matchResult, playerIds);
+  tempEloObject = calculateNewPlayerVoteElo(tempEloObject, matchResult, playerIds);
+  tempEloObject = calculateNewPlayerKillElo(tempEloObject, matchResult, playerIds);
 
-  $.each(tempEloObject,function(playerId, playerEloObject) {
+  tempEloObject = calculateAggregatedElo(tempEloObject);
+
+  //console.log(tempEloObject);
+
+  return tempEloObject;
+}
+
+function calculateAggregatedElo(eloObjectToEdit) {
+  var tempEloObject = eloObjectToEdit;
+
+  $.each(eloObjectToEdit,function(playerId, playerEloObject) {
+    var newEloRating = Math.floor((playerEloObject.winElo + playerEloObject.voteElo + playerEloObject.killElo) / 3);
+
+    playerEloObject.eloDelta = Math.floor(newEloRating - playerEloObject.currentElo);
+
+    playerEloObject.currentElo = newEloRating;
+
+    playerEloObject = calculateNewEloHighLows(playerEloObject);
+  });
+
+  return tempEloObject;
+}
+
+function calculateNewPlayerWinElo(eloObjectToEdit, matchResult, playerIds) {
+  var averageElo = getAverageEloForMatch(eloObjectToEdit, matchResult, "winElo");
+
+  $.each(eloObjectToEdit,function(playerId, playerEloObject) {
     if($.inArray(playerId, matchResult.players) !== -1){
-      var expectedScore = getExpectedScore(playerEloObject.currentElo, averageElo),
+      var expectedScore = getExpectedScore(playerEloObject.winElo, averageElo),
           sValue = getSValue_Win(playerId, matchResult),
           newEloRating = 0;
 
-      newEloRating = Math.floor(playerEloObject.currentElo + kValue_winElo * (sValue - expectedScore));
+      newEloRating = Math.floor(playerEloObject.winElo + kValue_winElo * (sValue - expectedScore));
 
-      playerEloObject.eloDelta = Math.floor(newEloRating - playerEloObject.currentElo);
-
-      playerEloObject.currentElo = newEloRating;
-
-      playerEloObject = calculateNewEloHighLows(playerEloObject);
+      playerEloObject.winElo = newEloRating;
     }
   });
 
-  console.log(tempEloObject);
-  return tempEloObject;
+  return eloObjectToEdit;
+}
+
+function calculateNewPlayerVoteElo(eloObjectToEdit, matchResult, playerIds) {
+  var averageElo = getAverageEloForMatch(eloObjectToEdit, matchResult, "voteElo");
+
+  $.each(eloObjectToEdit,function(playerId, playerEloObject) {
+    if($.inArray(playerId, matchResult.players) !== -1){
+      var expectedScore = getExpectedScore(playerEloObject.voteElo, averageElo),
+          sValue = getSValue_Vote(playerId, matchResult),
+          newEloRating = 0;
+
+      newEloRating = Math.floor(playerEloObject.voteElo + kValue_voteElo * (sValue - expectedScore));
+
+      playerEloObject.voteElo = newEloRating;
+    }
+  });
+
+  return eloObjectToEdit;
+}
+
+function calculateNewPlayerKillElo(eloObjectToEdit, matchResult, playerIds) {
+  var averageElo = getAverageEloForMatch(eloObjectToEdit, matchResult, "killElo");
+
+  $.each(eloObjectToEdit,function(playerId, playerEloObject) {
+    if($.inArray(playerId, matchResult.players) !== -1){
+      var expectedScore = getExpectedScore(playerEloObject.killElo, averageElo),
+          sValue = getSValue_Kill(playerId, matchResult),
+          newEloRating = 0;
+
+      newEloRating = Math.floor(playerEloObject.killElo + kValue_voteElo * (sValue - expectedScore));
+
+      playerEloObject.killElo = newEloRating;
+    }
+  });
+
+  return eloObjectToEdit;
 }
 
 function getSValue_Win(playerId, matchResult) {
   return (playerId === matchResult.winnerId) ? sValue_win : sValue_lose;
+}
+
+function getSValue_Vote(playerId, matchResult) {
+  var voteCount = 0;
+  if(matchResult.voteRecords !== undefined && matchResult.voteRecords !== null){
+    for(var voterIdIndex = 0; voterIdIndex < matchResult.voteRecords.length; voterIdIndex++){
+      if(matchResult.voteRecords[voterIdIndex] === playerId){
+        voteCount++;
+      }
+    }
+  }
+
+  return voteCount * sValue_vote;
+}
+
+function getSValue_Kill(playerId, matchResult) {
+  var killCount = 0;
+  if(matchResult.killRecords !== undefined && matchResult.killRecords !== null){
+    for(var killerIdIndex = 0; killerIdIndex < matchResult.killRecords.length; killerIdIndex++){
+      if(matchResult.killRecords[killerIdIndex] === playerId){
+        killCount++;
+      }
+    }
+  }
+
+  return killCount * sValue_kill;
 }
 
 function getExpectedScore(playerRating, podAverageRating) {
@@ -89,12 +171,12 @@ function getExpectedScore(playerRating, podAverageRating) {
   return 0.5 / expectedScore;
 }
 
-function getAverageEloForMatch(eloObjectToEdit, matchResult) {
+function getAverageEloForMatch(eloObjectToEdit, matchResult, eloName) {
   var totalElo = 0;
 
   $.each(eloObjectToEdit,function(playerId, playerEloObject) {
     if($.inArray(playerId, matchResult.players) !== -1){
-      totalElo+= parseFloat(playerEloObject.currentElo) || 0;
+      totalElo+= parseFloat(playerEloObject[eloName]) || 0;
     }
   });
 
@@ -234,6 +316,20 @@ function getBaseEloObject() {
   var tempBaseElo = {};
 
   tempBaseElo.currentElo = defaultElo;
+  tempBaseElo.maxElo = defaultElo;
+  tempBaseElo.minElo = defaultElo;
+  tempBaseElo.eloDelta = 0;
+
+  return tempBaseElo;
+}
+
+function getBaseAggregateEloObject() {
+  var tempBaseElo = {};
+
+  tempBaseElo.currentElo = defaultElo;
+  tempBaseElo.winElo = defaultElo;
+  tempBaseElo.voteElo = defaultElo;
+  tempBaseElo.killElo = defaultElo;
   tempBaseElo.maxElo = defaultElo;
   tempBaseElo.minElo = defaultElo;
   tempBaseElo.eloDelta = 0;
