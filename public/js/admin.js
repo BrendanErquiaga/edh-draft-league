@@ -272,6 +272,49 @@ function updateBanList() {
 
 /* ~~~~~~~~~~~~~~~ UI Updates ~~~~~~~~~~~~~~~ */
 
+
+function updateAdminEloDisplay() {
+  var currentEloListItem = $("#currentEloList"),
+      playerNameList = $("#playerNames"),
+      winEloListItem = $("#winEloList"),
+      voteEloListItem = $("#voteEloList"),
+      killEloListItem = $("#killEloList"),
+      totalEloSum = 0,
+      winEloSum = 0,
+      voteEloSum = 0,
+      killEloSum = 0;
+
+  playerNameList.empty();
+  currentEloListItem.empty();
+  winEloListItem.empty();
+  voteEloListItem.empty();
+  killEloListItem.empty();
+
+  playerNameList.append("<li><b>Players</b></li>");
+  currentEloListItem.append("<li><b>Current</b></li>");
+  winEloListItem.append("<li><b>Win</b></li>");
+  voteEloListItem.append("<li><b>Vote</b></li>");
+  killEloListItem.append("<li><b>Kill</b></li>");
+
+  playerEloSnapshot.forEach(function(obj) {
+    playerNameList.append("<li><b>" + usersSnapshot[obj.key].username + "</b></li>");
+    currentEloListItem.append("<li>" + obj.val().currentElo + "</li>");
+    winEloListItem.append("<li>" + obj.val().winElo + "</li>");
+    voteEloListItem.append("<li>" + obj.val().voteElo + "</li>");
+    killEloListItem.append("<li>" + obj.val().killElo + "</li>");
+    totalEloSum += obj.val().currentElo;
+    winEloSum += obj.val().winElo;
+    voteEloSum += obj.val().voteElo;
+    killEloSum += obj.val().killElo;
+  });
+
+  playerNameList.append("<li><b>Elo Sums</b></li>");
+  currentEloListItem.append("<li><b>" + totalEloSum + "</b></li>");
+  winEloListItem.append("<li><b>" + winEloSum + "</b></li>");
+  voteEloListItem.append("<li><b>" + voteEloSum + "</b></li>");
+  killEloListItem.append("<li><b>" + killEloSum + "</b></li>");
+}
+
 function displayAdminSection() {
   $("#adminOnlySection").css('display','inline');
   adminSectionShown = true;

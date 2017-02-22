@@ -147,6 +147,8 @@ function updatePlayerEloSnapshot(snapshot) {
     updateEloStandingsChart();
   } else if($(document.body).hasClass('waiver')) {
     updateWaiverWireOrder();
+  } else if($(document.body).hasClass('admin')) {
+    updateAdminEloDisplay();
   }
 }
 
