@@ -12,28 +12,32 @@ var playerElo = {},
     firstVote_SValue = 0,
     secondVote_SValue = 1.5,
     thirdVote_SValue = 2.5,
-    kValue_winElo = 100,
-    kValue_voteElo = 100,
-    kValue_killElo = 100,
+    kValue_winElo = 75,
+    kValue_voteElo = 75,
+    kValue_killElo = 75,
     sValue_win = 1,
     sValue_lose = 0,
     sValue_vote = 0.25,
     sValue_kill = 0.33,
     provisionalGamesCount = 5,
-    provisionalGameKValueMultiplier = 1.5,
+    provisionalGameKValueMultiplier = 2,
     podScalingMultiplier = 0.5;
 
 function recalculatePlayerElo(){
-  var newEloObject = {};
+  var newEloObject = {},
+      newEloDeltadMatchResults = [];
+
+  playedPodsData = [];//Reset played pods count
 
   matchResultsSnapshot.forEach(function(obj) {
     var matchResult = obj.val();
 
     newEloObject = calculateNewPlayerAggregateElo(newEloObject, matchResult);
 
-    //TODO Save Elo Delta to Match Results (getEloUpdatedMatchResult)
+    newEloDeltadMatchResults[obj.key] = getEloUpdatedMatchResult(newEloObject, matchResult);
   });
 
+  saveUpdatedMatchResults(newEloDeltadMatchResults);
   savePlayerElo(newEloObject);
 }
 
@@ -60,8 +64,6 @@ function calculateNewPlayerAggregateElo(eloObjectToEdit, matchResult) {
 
   tempEloObject = calculateAggregatedElo(tempEloObject);
 
-  //console.log(tempEloObject);
-
   return tempEloObject;
 }
 
@@ -73,7 +75,7 @@ function getPodScalingValue(podId) {
     for(var i = 1; i < playedPodsData[podId].playedCount; i++){
       podScaling = podScaling * podScalingMultiplier;
     }
-    console.log("!This pod has been played: " + playedPodsData[podId].playedCount + ' times. Heres the multiplier: ' + podScaling);
+    //console.log("!This pod has been played: " + playedPodsData[podId].playedCount + ' times. Heres the multiplier: ' + podScaling);
   } else {
     playedPodsData[podId] = {};
     playedPodsData[podId].playedCount = 1;

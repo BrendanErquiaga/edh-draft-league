@@ -485,6 +485,10 @@ function savePodScalingData() {
     firebase.database().ref('playedPodsData').set(playedPodsData);
 }
 
+function saveUpdatedMatchResults(newMatchResults) {
+    firebase.database().ref('matchResults').set(newMatchResults);
+}
+
 /*
 ~~~~~~~FIREBASE NOTIFICATIONS~~~~~~~~~~
 */
