@@ -1,7 +1,7 @@
 "use strict";
 
 var playerElo = {},
-    defaultElo = 1000,
+    defaultElo = 1100,
     ratingDivider = 400,
     ratingExponent = 10,
     kValue = 50,
@@ -12,16 +12,21 @@ var playerElo = {},
     firstVote_SValue = 0,
     secondVote_SValue = 1.5,
     thirdVote_SValue = 2.5,
-    kValue_winElo = 75,
-    kValue_voteElo = 75,
-    kValue_killElo = 75,
+    kValue_winElo = 100,
+    kValue_voteElo = 100,
+    kValue_killElo = 100,
     sValue_win = 1,
     sValue_lose = 0,
     sValue_vote = 0.25,
-    sValue_kill = 0.33,
+    sValue_kill = 0.3333333333333,
+    killSweep_SValue_killer = 0.7,
+    killSweep_SValue_loser = 0.1,
     provisionalGamesCount = 5,
     provisionalGameKValueMultiplier = 2,
-    podScalingMultiplier = 0.5;
+    podScalingMultiplier = 0.5,
+    averageWeighting_Win = 1.05,
+    averageWeighting_Vote = 1.05,
+    averageWeighting_Kill = 0.9;
 
 function recalculatePlayerElo(){
   var newEloObject = {},
@@ -89,7 +94,7 @@ function calculateAggregatedElo(eloObjectToEdit) {
   var tempEloObject = eloObjectToEdit;
 
   $.each(eloObjectToEdit,function(playerId, playerEloObject) {
-    var newEloRating = Math.floor((playerEloObject.winElo + playerEloObject.voteElo + playerEloObject.killElo) / 3);
+    var newEloRating = Math.floor(((averageWeighting_Win * playerEloObject.winElo) + (averageWeighting_Vote * playerEloObject.voteElo) + (averageWeighting_Kill * playerEloObject.killElo)) / 3);
 
     playerEloObject.eloDelta = Math.floor(newEloRating - playerEloObject.currentElo);
 
@@ -187,6 +192,33 @@ function getSValue_Vote(playerId, matchResult) {
 }
 
 function getSValue_Kill(playerId, matchResult) {
+  var killRecordsTheSame = true,
+      killerId = 0;
+
+  if(matchResult.killRecords === undefined || matchResult.killRecords == null){
+    return 0;
+  }
+
+  if(matchResult.killRecords.length !== 3){ //Can't sweep with only 2 kills
+    return getNonSweepSValue_Kill(playerId, matchResult);
+  }
+
+  for(var killerIdIndex = 0; killerIdIndex < matchResult.killRecords.length; killerIdIndex++){
+    if(killerId === 0){
+      killerId = matchResult.killRecords[killerIdIndex];
+    } else if(killerId !== matchResult.killRecords[killerIdIndex]) {
+        killRecordsTheSame = false;
+    }
+  }
+
+  if(killRecordsTheSame) {
+    return (killerId === playerId) ? killSweep_SValue_killer : killSweep_SValue_loser;
+  } else {
+    return getNonSweepSValue_Kill(playerId, matchResult);
+  }
+}
+
+function getNonSweepSValue_Kill(playerId, matchResult) {
   var killCount = 0;
   if(matchResult.killRecords !== undefined && matchResult.killRecords !== null){
     for(var killerIdIndex = 0; killerIdIndex < matchResult.killRecords.length; killerIdIndex++){

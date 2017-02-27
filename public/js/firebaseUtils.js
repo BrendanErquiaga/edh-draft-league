@@ -488,6 +488,7 @@ function savePodScalingData() {
 }
 
 function saveUpdatedMatchResults(newMatchResults) {
+    console.log('Stuff?');
     firebase.database().ref('matchResults').set(newMatchResults);
 }
 
