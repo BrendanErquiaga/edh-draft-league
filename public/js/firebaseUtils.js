@@ -17,7 +17,8 @@ var usersSnapshot,
     playerEloSnapshot,
     matchResultsSnapshot,
     waiverWireData,
-    waiverWirePairsSnapshot;
+    waiverWirePairsSnapshot,
+    playedPodsData;
 
 function getFirebaseData() {
     if(!dataScriptLoaded && !userScriptLoaded){
@@ -97,6 +98,10 @@ function getFirebaseData() {
         updateWaiverWireDataSnapshot(snapshot);
     });
 
+    firebase.database().ref('playedPodsData').on('value', function(snapshot) {
+        updatePlayedPodsSnapshot(snapshot);
+    });
+
     //Should be last because it attempts to autodraft
     firebase.database().ref('turns').on('value', function(snapshot){
         updateTurnOrderData(snapshot);
@@ -128,6 +133,14 @@ function handleNotification(payload) {
 ~~~~~~~FIREBASE UPDATE~~~~~~~~~~
 */
 
+function updatePlayedPodsSnapshot(snapshot) {
+  playedPodsData = snapshot.val();
+
+  if(playedPodsData === null){
+    playedPodsData = [];
+  }
+}
+
 function updateWaiverWirePairsSnapshot(snapshot) {
   waiverWirePairsSnapshot = snapshot;
 }
@@ -147,6 +160,8 @@ function updatePlayerEloSnapshot(snapshot) {
     updateEloStandingsChart();
   } else if($(document.body).hasClass('waiver')) {
     updateWaiverWireOrder();
+  } else if($(document.body).hasClass('admin')) {
+    updateAdminEloDisplay();
   }
 }
 
@@ -466,6 +481,15 @@ function saveNewBanList(banList) {
   firebase.database().ref('/').update({
     banList: banList
   });
+}
+
+function savePodScalingData() {
+    firebase.database().ref('playedPodsData').set(playedPodsData);
+}
+
+function saveUpdatedMatchResults(newMatchResults) {
+    console.log('Stuff?');
+    firebase.database().ref('matchResults').set(newMatchResults);
 }
 
 /*

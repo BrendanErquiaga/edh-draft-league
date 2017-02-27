@@ -1,6 +1,7 @@
 "use strict";
 
-var recentlyDraftedCardArrayLimit = 0,
+var chartStartHeight = 500,
+    recentlyDraftedCardArrayLimit = 0,
     chartBarBackgroundColors = [
       'rgba(255, 99, 132, 0.7)',
       'rgba(54, 162, 235, 0.7)',
@@ -67,7 +68,7 @@ function updateEloStandingsChart() {
             scales: {
                 yAxes: [{
                     ticks: {
-                        beginAtZero: true,
+                        min: chartStartHeight,
                         fontColor: "#222"
                     },
                     gridLines: {
