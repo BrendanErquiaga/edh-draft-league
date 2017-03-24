@@ -161,7 +161,7 @@ function approveOrDenyMatchResult(inputObject) {
 
 function approveMatchResult(resultKey) {
   savePlayerStats(calculateNewPlayerStats(playerStatsSnapshot.val(),resultsToApproveSnapshot.val()[resultKey]));
-  var newEloObject = calculateNewPlayerElo(playerEloSnapshot.val(),resultsToApproveSnapshot.val()[resultKey]);
+  var newEloObject = calculateNewPlayerAggregateElo(playerEloSnapshot.val(),resultsToApproveSnapshot.val()[resultKey]);
   var newResultObject = getEloUpdatedMatchResult(newEloObject, resultsToApproveSnapshot.val()[resultKey]);
   saveApprovedMatchResult(getValidMatchResults(newResultObject));
   savePlayerElo(newEloObject);
