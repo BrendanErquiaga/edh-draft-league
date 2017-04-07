@@ -91,6 +91,7 @@ function calculateGamesPlayed(eloObjectToEdit) {
   for (var playerElo in tempEloObject) {
     if (tempEloObject.hasOwnProperty(playerElo)) {
       var newProvisionalGamesCount = Math.round(tempEloObject[playerElo].gamesPlayed * provisionalGamesPercentage);
+      newProvisionalGamesCount++;
 
       if(newProvisionalGamesCount < provisionalGamesMinCount){
         newProvisionalGamesCount = provisionalGamesMinCount;
