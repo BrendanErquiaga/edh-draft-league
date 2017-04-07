@@ -22,7 +22,14 @@ var playerElo = {},
     killSweep_SValue_killer = 0.7,
     killSweep_SValue_loser = 0.1,
     provisionalGamesCount = 5,
+    provisionalGamesMinCount = 1,
+    provisionalGamesPercentage = 0.3,
     provisionalGameKValueMultiplier = 2,
+    eloDecayDateMin = 20,
+    eloDecay20DayRate = 0.97,
+    eloDecay30DayRate = 0.95,
+    eloDecay40DayRate = 0.90,
+    eloDecayFloor = 1000,
     podScalingMultiplier = 0.5,
     averageWeighting_Win = 1.05,
     averageWeighting_Vote = 1.05,
@@ -34,6 +41,8 @@ function recalculatePlayerElo(){
 
   playedPodsData = [];//Reset played pods count
 
+  newEloObject = calculateGamesPlayed(newEloObject);
+
   matchResultsSnapshot.forEach(function(obj) {
     var matchResult = obj.val();
 
@@ -42,8 +51,78 @@ function recalculatePlayerElo(){
     newEloDeltadMatchResults[obj.key] = getEloUpdatedMatchResult(newEloObject, matchResult);
   });
 
+  //console.log(newEloObject);
+
   saveUpdatedMatchResults(newEloDeltadMatchResults);
   savePlayerElo(newEloObject);
+}
+
+function calculateEloDecayRate(lastPlayedDate, currentPlayedDate) {
+  var lastPlayedDateObject = new Date(lastPlayedDate);
+  var currentPlayedDateObject = new Date(currentPlayedDate);
+  var timeDiff = Math.abs(currentPlayedDateObject.getTime() - lastPlayedDateObject.getTime());;
+  var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+  if(diffDays >= eloDecayDateMin){
+    console.log("!!! ELO MUST DECAY, dayDiff was: " + diffDays);
+
+    if(diffDays < 30){
+      return eloDecay20DayRate;
+    } else if(diffDays < 40) {
+      return eloDecay30DayRate;
+    } else {
+      return eloDecay40DayRate;
+    }
+  }
+
+  return 1;//Return 1 because there is no Elo Decay
+}
+
+function calculateGamesPlayed(eloObjectToEdit) {
+  var tempEloObject = eloObjectToEdit;
+
+  matchResultsSnapshot.forEach(function(obj) {
+    var matchResult = obj.val();
+
+    tempEloObject = incrementGamesPlayed(tempEloObject, matchResult);
+  });
+
+  //Calculate scaling provisionalGamesCount
+  for (var playerElo in tempEloObject) {
+    if (tempEloObject.hasOwnProperty(playerElo)) {
+      var newProvisionalGamesCount = Math.round(tempEloObject[playerElo].gamesPlayed * provisionalGamesPercentage);
+
+      if(newProvisionalGamesCount < provisionalGamesMinCount){
+        newProvisionalGamesCount = provisionalGamesMinCount;
+      }
+      tempEloObject[playerElo].provisionalGamesCount = newProvisionalGamesCount;
+      tempEloObject[playerElo].provisionalGamesLeft = newProvisionalGamesCount;
+    }
+  }
+
+  return tempEloObject;
+}
+
+function incrementGamesPlayed(eloObjectToEdit, matchResult) {
+  var playerIds = [],
+      tempEloObject = eloObjectToEdit;
+
+  if(tempEloObject === null){
+    tempEloObject = {};
+  }
+
+  for(var i = 0; i < matchResult.players.length; i++){
+    playerIds.push(matchResult.players[i]);
+
+    if(tempEloObject[playerIds[i]] === undefined){
+      tempEloObject[playerIds[i]] = getBaseAggregateEloObject();
+      tempEloObject[playerIds[i]].lastPlayedDate = matchResult.submissionDate;//Set first played date
+    }
+
+    tempEloObject[playerIds[i]].gamesPlayed++;
+  }
+
+  return tempEloObject;
 }
 
 function calculateNewPlayerAggregateElo(eloObjectToEdit, matchResult) {
@@ -61,6 +140,18 @@ function calculateNewPlayerAggregateElo(eloObjectToEdit, matchResult) {
     if(tempEloObject[playerIds[i]] === undefined){
       tempEloObject[playerIds[i]] = getBaseAggregateEloObject();
     }
+
+    var eloDecayRate = calculateEloDecayRate(tempEloObject[playerIds[i]].lastPlayedDate,matchResult.submissionDate);
+
+    if(eloDecayRate !== 1 && tempEloObject[playerIds[i]].currentElo >= eloDecayFloor){
+      tempEloObject[playerIds[i]].currentElo = tempEloObject[playerIds[i]].currentElo * eloDecayRate;
+      tempEloObject[playerIds[i]].winElo = tempEloObject[playerIds[i]].winElo * eloDecayRate;
+      tempEloObject[playerIds[i]].killElo = tempEloObject[playerIds[i]].killElo * eloDecayRate;
+      tempEloObject[playerIds[i]].voteElo = tempEloObject[playerIds[i]].voteElo * eloDecayRate;
+      tempEloObject[playerIds[i]].eloDecayNote = "Elo was decayed by: " + eloDecayRate;
+    }
+
+    tempEloObject[playerIds[i]].lastPlayedDate = matchResult.submissionDate;
   }
 
   tempEloObject = calculateNewPlayerWinElo(tempEloObject, matchResult, playerIds, podScaling);
@@ -403,6 +494,7 @@ function getBaseAggregateEloObject() {
   tempBaseElo.maxElo = defaultElo;
   tempBaseElo.minElo = defaultElo;
   tempBaseElo.provisionalGamesLeft = provisionalGamesCount;
+  tempBaseElo.gamesPlayed = 0;
   tempBaseElo.eloDelta = 0;
 
   return tempBaseElo;
