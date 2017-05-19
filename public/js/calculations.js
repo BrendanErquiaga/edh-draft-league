@@ -33,7 +33,8 @@ var playerElo = {},
     podScalingMultiplier = 0.5,
     averageWeighting_Win = 1.05,
     averageWeighting_Vote = 1.05,
-    averageWeighting_Kill = 0.9;
+    averageWeighting_Kill = 0.9,
+    eloDecayCutOffDate = "2017-05-01";
 
 function recalculatePlayerElo(){
   var newEloObject = {},
@@ -62,6 +63,10 @@ function calculateEloDecayRate(lastPlayedDate, currentPlayedDate) {
   var currentPlayedDateObject = new Date(currentPlayedDate);
   var timeDiff = Math.abs(currentPlayedDateObject.getTime() - lastPlayedDateObject.getTime());;
   var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+  if(new Date(eloDecayCutOffDate) < currentPlayedDateObject){
+    return 1;
+  }
 
   if(diffDays >= eloDecayDateMin){
     console.log("!!! ELO MUST DECAY, dayDiff was: " + diffDays);
